@@ -60,7 +60,7 @@ function App() {
 
           <div className="hero-visual">
             <img
-              src="https://www.aurawill.in/cdn/shop/files/008-Product_Image_v1_with_badge_copy.webp?v=1778826178&width=823"
+              src="/product.jpeg"
               alt="GutVaidya Health Mix product"
             />
           </div>
