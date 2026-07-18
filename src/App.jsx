@@ -122,10 +122,10 @@ function App() {
             </p>
           </div>
           <div className="story-visual">
-            <img
+            {/* <img
               src="https://www.aurawill.in/cdn/shop/files/White-label.png?v=1741582343&width=200"
               alt="GutVaidya brand illustration"
-            />
+            /> */}
           </div>
         </section>
       </main>
