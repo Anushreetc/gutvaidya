@@ -29,8 +29,8 @@ export default function ContactSection() {
     },
     {
       title: "Call Us",
-      value: "+91 90250 67516",
-      href: "tel:+919025067516",
+      value: "+91 9008130463",
+      href: "tel:+919008130463",
       icon: Phone,
       desc: "Available Monday - Saturday, 9 AM - 6 PM.",
     },
@@ -42,7 +42,7 @@ export default function ContactSection() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-accent-gold/5 filter blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
@@ -59,7 +59,7 @@ export default function ContactSection() {
 
         {/* Contact layout grid */}
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 max-w-5xl mx-auto items-stretch">
-          
+
           {/* Left: Contact Info cards */}
           <div className="lg:col-span-5 flex flex-col justify-between gap-4">
             <div className="space-y-4">
@@ -100,7 +100,7 @@ export default function ContactSection() {
           {/* Right: Contact Form */}
           <div className="lg:col-span-7">
             <div className="glass-card rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg h-full flex flex-col justify-between">
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <h3 className="text-xl font-serif font-bold text-primary-900 mb-1">

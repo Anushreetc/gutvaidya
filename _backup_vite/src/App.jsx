@@ -42,7 +42,7 @@ function App() {
         <section className="hero-section">
           <div className="hero-copy">
             <p className="eyebrow">Good Food = Good Health</p>
-            <h1>Nature’s best 36+ ingredients in every scoop.</h1>
+            <h1>Nature’s best ingredients selected for best creature.</h1>
             <p className="hero-text">
               GutVaidya Health Mix nourishes your body with improved immunity, gut health,
               and energy with just two spoons every day.
@@ -72,7 +72,7 @@ function App() {
             <span>Community rating</span>
           </div>
           <div>
-            <strong>36+</strong>
+            <strong></strong>
             <span>Handpicked ingredients</span>
           </div>
           <div>
@@ -134,7 +134,7 @@ function App() {
         <div>
           <h2>Contact Us</h2>
           <p>support@gutvaidya.in</p>
-          <p>+91 90250 67516</p>
+          <p>+91 9008130463</p>
         </div>
         <a className="btn btn-primary" href="mailto:support@gutvaidya.in">
           Get in Touch

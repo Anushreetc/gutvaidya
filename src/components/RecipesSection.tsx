@@ -8,14 +8,14 @@ const recipes = [
   {
     id: "drink",
     title: "Health Mix Drink",
-    subtitle: "A quick, nourishing blend for your busy morning routine.",
-    time: "5 mins",
+    subtitle: "A quick, immune boosting and nourishing blend for your busy morning routine.",
+    time: "2 mins",
     difficulty: "Easy",
     ingredients: [
-      "2 tablespoons of GutVaidya Health Mix",
-      "1 cup of Milk (or Water)",
-      "1-2 teaspoons of Jaggery or Honey (optional)",
-      "A pinch of Cardamom powder"
+      "2 tablespoons of GutVaidya Health Mix or 1 scoop (25g)",
+      "1 glasses of Water (or Milk)",
+      "1-2 teaspoons of Jaggery or Salt",
+
     ],
     steps: [
       "Take 2 tablespoons of GutVaidya Health Mix in a small bowl.",
@@ -84,7 +84,7 @@ export default function RecipesSection() {
   return (
     <section id="recipe" className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
@@ -101,7 +101,7 @@ export default function RecipesSection() {
 
         {/* Recipe Interface Layout */}
         <div className="max-w-5xl mx-auto grid lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Left: Tab selectors */}
           <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-3 pb-4 lg:pb-0 scrollbar-none">
             {recipes.map((recipe) => {
@@ -110,11 +110,10 @@ export default function RecipesSection() {
                 <button
                   key={recipe.id}
                   onClick={() => setActiveTab(recipe.id)}
-                  className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl text-left border transition-all flex-shrink-0 lg:flex-shrink w-auto lg:w-full focus:outline-none ${
-                    activeTab === recipe.id
-                      ? "bg-primary-700 border-primary-700 text-white shadow-lg shadow-primary-700/10"
-                      : "bg-[#fdfdfb] border-primary-100 hover:border-primary-200 text-foreground/80"
-                  }`}
+                  className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl text-left border transition-all flex-shrink-0 lg:flex-shrink w-auto lg:w-full focus:outline-none ${activeTab === recipe.id
+                    ? "bg-primary-700 border-primary-700 text-white shadow-lg shadow-primary-700/10"
+                    : "bg-[#fdfdfb] border-primary-100 hover:border-primary-200 text-foreground/80"
+                    }`}
                 >
                   <div className={`p-2.5 rounded-xl ${activeTab === recipe.id ? "bg-white/10 text-white" : "bg-primary-50 text-primary-700"}`}>
                     <RIcon className="w-5 h-5" />
@@ -141,7 +140,7 @@ export default function RecipesSection() {
                 transition={{ duration: 0.4 }}
                 className="glass-card rounded-3xl p-6 sm:p-8 lg:p-10 space-y-8"
               >
-                
+
                 {/* Meta details */}
                 <div className="flex flex-wrap items-start justify-between gap-4 border-b border-primary-100/60 pb-6">
                   <div className="space-y-1">
@@ -153,7 +152,7 @@ export default function RecipesSection() {
                       {activeRecipe.subtitle}
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-50 text-primary-700 text-xs font-semibold">
                       <Clock className="w-3.5 h-3.5" />
@@ -168,7 +167,7 @@ export default function RecipesSection() {
 
                 {/* Grid: Ingredients & Preparation */}
                 <div className="grid md:grid-cols-12 gap-8">
-                  
+
                   {/* Ingredients */}
                   <div className="md:col-span-5 space-y-4">
                     <h4 className="font-serif font-bold text-lg text-primary-800 border-l-4 border-accent-gold pl-3">

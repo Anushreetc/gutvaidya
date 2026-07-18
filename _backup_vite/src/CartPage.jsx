@@ -5,13 +5,31 @@ const cartItems = [
   {
     name: 'GutVaidya Health Mix',
     qty: 1,
-    price: '₹720',
+    price: '₹799',
     note: 'Improves immunity, gut health, and daily energy.',
   },
   {
-    name: 'GutVaidya Ladoo',
+    name: 'GutVaidya Baal Vit',
     qty: 2,
-    price: '₹540',
+    price: '',
+    note: 'A delicious, balanced wellness sweet.',
+  },
+  {
+    name: 'GutVaidya Kanya Hita',
+    qty: 2,
+    price: '',
+    note: 'A delicious, balanced wellness sweet.',
+  },
+  {
+    name: 'GutVaidya Yuva Urja',
+    qty: 2,
+    price: '',
+    note: 'A delicious, balanced wellness sweet.',
+  },
+  {
+    name: 'GutVaidya Yuva Urja',
+    qty: 2,
+    price: '',
     note: 'A delicious, balanced wellness sweet.',
   },
 ]

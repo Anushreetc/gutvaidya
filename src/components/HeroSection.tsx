@@ -9,7 +9,7 @@ const slides = [
   {
     image: "/gutvaidya_banner1.png",
     eyebrow: "Good Food = Good Health",
-    title: "Nature's Best 36+ Ingredients in Every Scoop",
+    title: "Nature’s best ingredients selected for best creature",
     description:
       "Nourish your body with GutVaidya Health Mix. Specially crafted to bring a simple, balanced, and premium rhythm to your daily wellness routine.",
     ctaPrimary: "Shop GutVaidya",

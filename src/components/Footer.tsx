@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className="bg-primary-900 text-white/80 border-t border-primary-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 pb-12 border-b border-primary-800">
-          
+
           {/* Brand Info */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-2 text-2xl font-serif font-bold text-white tracking-wide">
@@ -20,6 +20,17 @@ export default function Footer() {
             <p className="text-sm text-white/60 leading-relaxed max-w-sm">
               Honoring centuries-old wellness traditions with sprouted whole grain mixtures, organic nuts, and premium spices. Nourish your body, balance your gut, elevate your life.
             </p>
+            <div className="flex items-center gap-3 pt-2">
+              <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300">
+                <div className="bg-white px-2 py-1 rounded-lg flex items-center justify-center">
+                  <img src="/FSSAI_logo.png" alt="FSSAI Logo" className="h-6 w-auto object-contain" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[9px] uppercase tracking-wider text-white/40 font-semibold leading-none">Registered License</span>
+                  <span className="text-xs font-mono font-bold text-accent-gold mt-1 leading-none">Lic. No. 21224172000058</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}
@@ -59,8 +70,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-accent-gold" />
-                <a href="tel:+919025067516" className="hover:text-accent-gold transition-colors">
-                  +91 90250 67516
+                <a href="tel:+919008130463" className="hover:text-accent-gold transition-colors">
+                  +91 9008130463
                 </a>
               </li>
               <li className="flex items-start gap-2.5">

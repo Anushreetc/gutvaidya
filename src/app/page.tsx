@@ -4,6 +4,7 @@ import React from "react";
 import { CartProvider } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import HeroSection from "../components/HeroSection";
+import IngredientsSection from "../components/IngredientsSection";
 import ProductsSection from "../components/ProductsSection";
 import RecipesSection from "../components/RecipesSection";
 import AboutUsSection from "../components/AboutUsSection";
@@ -22,6 +23,9 @@ export default function Home() {
         <main className="flex-grow">
           {/* Hero Carousel Banner Section */}
           <HeroSection />
+
+          {/* Ingredients Breakdown */}
+          <IngredientsSection />
 
           {/* Products Catalogue */}
           <ProductsSection />
