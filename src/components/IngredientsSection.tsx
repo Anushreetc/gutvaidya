@@ -253,7 +253,7 @@ export default function IngredientsSection() {
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-accent-gold/5 rounded-full blur-3xl -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/80 text-primary-700 text-xs font-semibold uppercase tracking-wider border border-primary-200/50 shadow-sm">
@@ -270,7 +270,7 @@ export default function IngredientsSection() {
 
         {/* Main Explorer Panel */}
         <div className="grid lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Left Column: Category Tabs */}
           <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-3 pb-4 lg:pb-0 scrollbar-none snap-x snap-mandatory">
             {ingredientCategories.map((category) => {
@@ -280,11 +280,10 @@ export default function IngredientsSection() {
                 <button
                   key={category.title}
                   onClick={() => setActiveTab(category.title)}
-                  className={`flex items-center gap-4 px-5 py-4 rounded-2xl text-left border transition-all duration-300 flex-shrink-0 lg:flex-shrink-0 snap-center w-[260px] lg:w-full focus:outline-none relative group overflow-hidden ${
-                    isSelected
-                      ? "bg-primary-700 border-primary-700 text-white shadow-xl shadow-primary-700/10"
-                      : "bg-white/80 border-primary-100/60 hover:border-primary-200 hover:bg-white text-foreground/80 hover:shadow-md"
-                  }`}
+                  className={`flex items-center gap-4 px-5 py-4 rounded-2xl text-left border transition-all duration-300 flex-shrink-0 lg:flex-shrink-0 snap-center w-[260px] lg:w-full focus:outline-none relative group overflow-hidden ${isSelected
+                    ? "bg-primary-700 border-primary-700 text-white shadow-xl shadow-primary-700/10"
+                    : "bg-white/80 border-primary-100/60 hover:border-primary-200 hover:bg-white text-foreground/80 hover:shadow-md"
+                    }`}
                 >
                   {/* Subtle active background glow decoration */}
                   {isSelected && (
@@ -295,24 +294,21 @@ export default function IngredientsSection() {
                     />
                   )}
 
-                  <div className={`p-3 rounded-xl transition-colors ${
-                    isSelected ? "bg-white/10 text-white" : "bg-primary-50 text-primary-700 group-hover:bg-primary-100"
-                  }`}>
+                  <div className={`p-3 rounded-xl transition-colors ${isSelected ? "bg-white/10 text-white" : "bg-primary-50 text-primary-700 group-hover:bg-primary-100"
+                    }`}>
                     <TabIcon className="w-5 h-5" />
                   </div>
                   <div className="flex-grow min-w-0">
                     <h3 className="font-serif font-bold text-base leading-tight">
                       {category.title}
                     </h3>
-                    <p className={`text-xs mt-0.5 truncate ${
-                      isSelected ? "text-white/70" : "text-foreground/50"
-                    }`}>
+                    <p className={`text-xs mt-0.5 truncate ${isSelected ? "text-white/70" : "text-foreground/50"
+                      }`}>
                       {category.tagline}
                     </p>
                   </div>
-                  <ChevronRight className={`w-4 h-4 opacity-50 transition-transform ${
-                    isSelected ? "translate-x-0.5 text-white" : "group-hover:translate-x-0.5 text-foreground/50"
-                  }`} />
+                  <ChevronRight className={`w-4 h-4 opacity-50 transition-transform ${isSelected ? "translate-x-0.5 text-white" : "group-hover:translate-x-0.5 text-foreground/50"
+                    }`} />
                 </button>
               );
             })}
@@ -330,11 +326,11 @@ export default function IngredientsSection() {
                 className="space-y-8"
               >
                 {/* Category Hero Banner */}
-                <div className="relative h-64 sm:h-72 w-full rounded-3xl overflow-hidden shadow-lg border border-primary-100/50 group">
+                <div className="relative h-64 sm:h-72 w-full rounded-3xl overflow-hidden shadow-lg border border-primary-100/50 group bg-primary-900">
                   <img
                     src={activeCategory.imagePath}
                     alt={activeCategory.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-45"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary-950 via-primary-950/65 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white space-y-2">

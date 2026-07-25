@@ -8,23 +8,16 @@ import { motion } from "framer-motion";
 const products = [
   {
     name: "GutVaidya Health Mix",
-    price: 720,
+    price: 799,
     note: "Contains handpicked traditional grains, millets, nuts, and natural herbs for daily immunity, gut health, and steady energy levels.",
     benefits: ["Organic Ingredients", "Zero Added Sugar", "Rich in Soluble Fiber", "Gut-Friendly Formula"],
     badge: "Bestseller",
     image: "/product.jpeg",
   },
-  {
-    name: "GutVaidya Wholesome Ladoo",
-    price: 540,
-    note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
-    benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
-    badge: "New Release",
-    image: "/product.jpeg",
-  },
+
   {
     name: "GutVaidya Baal Vit",
-    price: 540,
+    price: 899,
     note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
     benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
     badge: "New Release",
@@ -32,7 +25,7 @@ const products = [
   },
   {
     name: "GutVaidya Sampoora",
-    price: 540,
+    price: 899,
     note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
     benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
     badge: "New Release",
@@ -41,7 +34,7 @@ const products = [
 
   {
     name: "GutVaidya Yuva Ojiva",
-    price: 540,
+    price: 899,
     note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
     benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
     badge: "New Release",
@@ -49,7 +42,7 @@ const products = [
   },
   {
     name: "GutVaidya Proliva",
-    price: 540,
+    price: 899,
     note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
     benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
     badge: "New Release",
@@ -57,7 +50,7 @@ const products = [
   },
   {
     name: "GutVaidya Gluco Care",
-    price: 540,
+    price: 899,
     note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
     benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
     badge: "New Release",
@@ -65,7 +58,7 @@ const products = [
   },
   {
     name: "GutVaidya Fat Trim",
-    price: 540,
+    price: 899,
     note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
     benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
     badge: "New Release",

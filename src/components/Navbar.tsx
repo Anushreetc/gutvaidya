@@ -22,7 +22,7 @@ export default function Navbar() {
     { label: "Home", href: "#home" },
     { label: "Products", href: "#products" },
     { label: "Recipe", href: "#recipe" },
-    { label: "About Us", href: "#about-us" },
+    { label: "Reviews", href: "#reviews" },
     { label: "Blogs", href: "#blogs" },
     { label: "Contact", href: "#contact" },
   ];

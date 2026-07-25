@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Coffee, Flame, Clock, ChefHat, Sparkles, CheckCircle2 } from "lucide-react";
+import { Coffee, Flame, Soup, Clock, ChefHat, Sparkles, CheckCircle2 } from "lucide-react";
 
 const recipes = [
   {
@@ -13,19 +13,41 @@ const recipes = [
     difficulty: "Easy",
     ingredients: [
       "2 tablespoons of GutVaidya Health Mix or 1 scoop (25g)",
-      "1 glasses of Water (or Milk)",
+      "2 glasses of Water (or Milk)",
       "1-2 teaspoons of Jaggery or Salt",
 
     ],
     steps: [
       "Take 2 tablespoons of GutVaidya Health Mix in a small bowl.",
-      "Add 1/2 cup of water or milk, mixing thoroughly to make a smooth paste without any lumps.",
-      "Bring the remaining 1/2 cup of liquid to a gentle boil in a pan.",
-      "Pour in the paste while stirring continuously to avoid lump formation.",
-      "Simmer on a low flame for 3 minutes until the mixture thickens and is thoroughly cooked.",
-      "Sweeten with jaggery, honey, or raw sugar as preferred. Garnish with Cardamom and serve warm."
+      "Add 2 glasses of water or milk, mixing thoroughly to make a smooth paste without any lumps.",
+      "Simmer on a low flame for 2 minutes and stir continously to avoid lumps.",
+      "Sweeten with jaggery, honey, or raw sugar as preferred or you can add salt as per your taste."
     ],
     icon: Coffee,
+  },
+  {
+    id: "soup",
+    title: "GutVaidya Soup",
+    subtitle: "A warm, savory, and fiber-rich soup to soothe and comfort your gut.",
+    time: "10 mins",
+    difficulty: "Easy",
+    ingredients: [
+      "2 tablespoons of GutVaidya Health Mix",
+      "2 cups of Water or Vegetable Broth",
+      "1/2 cup of finely chopped mixed vegetables (carrots, beans, peas)",
+      "1/2 teaspoon of Black Pepper & Cumin powder",
+      "Salt to taste",
+      "1 teaspoon of Ghee or Butter",
+      "Fresh Coriander leaves for garnish"
+    ],
+    steps: [
+      "Mix 2 tablespoons of GutVaidya Health Mix in 1/2 cup of water to make a smooth, lump-free paste.",
+      "Heat ghee or butter in a pan, add cumin, and sauté the chopped vegetables for 2 minutes until tender.",
+      "Add the remaining water (or broth) along with salt and pepper, and bring it to a gentle boil.",
+      "Slowly pour in the Health Mix paste while stirring continuously to prevent any lumps from forming.",
+      "Simmer on a low flame for 3-4 minutes until the soup thickens. Garnish with fresh coriander and serve hot."
+    ],
+    icon: Soup,
   },
   {
     id: "dosa",
@@ -73,6 +95,8 @@ const recipes = [
     ],
     icon: ChefHat,
   },
+
+
 ];
 
 export default function RecipesSection() {

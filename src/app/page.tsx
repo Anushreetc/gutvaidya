@@ -7,7 +7,7 @@ import HeroSection from "../components/HeroSection";
 import IngredientsSection from "../components/IngredientsSection";
 import ProductsSection from "../components/ProductsSection";
 import RecipesSection from "../components/RecipesSection";
-import AboutUsSection from "../components/AboutUsSection";
+import ReviewsSection from "../components/ReviewsSection";
 import BlogsSection from "../components/BlogsSection";
 import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
@@ -33,8 +33,9 @@ export default function Home() {
           {/* Recipes Tabs Showcase */}
           <RecipesSection />
 
-          {/* About us / Story block */}
-          <AboutUsSection />
+          {/* Customer Reviews Section */}
+          <ReviewsSection />
+
 
           {/* Blogs and Educational Wellness posts */}
           <BlogsSection />

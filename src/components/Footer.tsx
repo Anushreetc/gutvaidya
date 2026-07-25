@@ -47,7 +47,7 @@ export default function Footer() {
                 <a href="#recipe" className="hover:text-accent-gold transition-colors">Recipes</a>
               </li>
               <li>
-                <a href="#about-us" className="hover:text-accent-gold transition-colors">About Us</a>
+                <a href="#reviews" className="hover:text-accent-gold transition-colors">Reviews</a>
               </li>
               <li>
                 <a href="#blogs" className="hover:text-accent-gold transition-colors">Blogs</a>
