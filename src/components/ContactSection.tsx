@@ -22,15 +22,15 @@ export default function ContactSection() {
   const contactDetails = [
     {
       title: "Email Us",
-      value: "support@gutvaidya.in",
-      href: "mailto:support@gutvaidya.in",
+      value: "gutvaidya@gmail.com",
+      href: "mailto:gutvaidya@gmail.com",
       icon: Mail,
       desc: "For queries, bulk orders, and custom packages.",
     },
     {
       title: "Call Us",
-      value: "+91 9008130463",
-      href: "tel:+919008130463",
+      value: "08043721857",
+      href: "tel:08043721857",
       icon: Phone,
       desc: "Available Monday - Saturday, 9 AM - 6 PM.",
     },
