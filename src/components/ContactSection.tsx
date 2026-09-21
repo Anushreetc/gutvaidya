@@ -6,17 +6,37 @@ import { motion } from "framer-motion";
 
 export default function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "sending" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [feedback, setFeedback] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    // Simulate API request
-    setTimeout(() => {
-      setStatus("success");
-      setForm({ name: "", email: "", message: "" });
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus("success");
+        setFeedback(data.message || "Message sent successfully!");
+        setForm({ name: "", email: "", message: "" });
+        setTimeout(() => {
+          setStatus("idle");
+          setFeedback("");
+        }, 6000);
+      } else {
+        setStatus("error");
+        setFeedback(data.error || "Failed to send message. Please try again.");
+        setTimeout(() => setStatus("idle"), 4000);
+      }
+    } catch (err) {
+      setStatus("error");
+      setFeedback("Network error. Please try again.");
       setTimeout(() => setStatus("idle"), 4000);
-    }, 1500);
+    }
   };
 
   const contactDetails = [
@@ -161,11 +181,24 @@ export default function ContactSection() {
                   </div>
                 </div>
 
+                {/* Feedback message banner */}
+                {feedback && (
+                  <div
+                    className={`p-4 rounded-xl text-sm font-medium ${
+                      status === "success"
+                        ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                        : "bg-red-50 text-red-800 border border-red-200"
+                    }`}
+                  >
+                    {feedback}
+                  </div>
+                )}
+
                 {/* Form Action */}
                 <button
                   type="submit"
-                  disabled={status !== "idle"}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-semibold text-sm transition-all shadow-md hover:shadow-lg focus:outline-none disabled:bg-primary-100 disabled:text-primary-400"
+                  disabled={status === "sending"}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-semibold text-sm transition-all shadow-md hover:shadow-lg focus:outline-none disabled:bg-primary-300 disabled:cursor-not-allowed"
                 >
                   {status === "idle" && (
                     <>
@@ -174,7 +207,8 @@ export default function ContactSection() {
                     </>
                   )}
                   {status === "sending" && <span>Sending message...</span>}
-                  {status === "success" && <span>Message sent successfully!</span>}
+                  {status === "success" && <span>✓ Message Sent!</span>}
+                  {status === "error" && <span>Try Again</span>}
                 </button>
               </form>
 

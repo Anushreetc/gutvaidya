@@ -46,7 +46,7 @@ export default function HeroSection() {
       style={{
         position: "relative",
         width: "100%",
-        minHeight: "85vh",
+        minHeight: "75vh",
         overflow: "hidden",
         display: "flex",
         alignItems: "center",
@@ -69,7 +69,7 @@ export default function HeroSection() {
               alt={`GutVaidya banner ${current + 1}`}
               fill
               priority
-              style={{ objectFit: "cover", objectPosition: "center" }}
+              style={{ objectFit: "cover", objectPosition: "top center" }}
               sizes="100vw"
             />
 
@@ -102,8 +102,8 @@ export default function HeroSection() {
           width: "100%",
           maxWidth: "80rem",
           margin: "0 auto",
-          padding: "6rem 1.5rem",
-          minHeight: "85vh",
+          padding: "3.5rem 1.5rem",
+          minHeight: "75vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

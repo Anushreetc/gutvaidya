@@ -13,8 +13,10 @@ export default function Footer() {
 
           {/* Brand Info */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-2 text-2xl font-serif font-bold text-white tracking-wide">
-              <img src="/logo.jpg" alt="GutVaidya Logo" className="h-8 w-8 rounded-full object-cover border border-primary-800" />
+            <div className="flex items-center gap-2.5 text-2xl font-serif font-bold text-white tracking-wide">
+              <div className="bg-white/95 rounded-lg p-1 flex items-center justify-center shadow-sm">
+                <img src="/logo_transparent.png" alt="GutVaidya Logo" className="h-7 w-auto object-contain" />
+              </div>
               <span>GutVaidya</span>
             </div>
             <p className="text-sm text-white/60 leading-relaxed max-w-sm">
@@ -38,22 +40,22 @@ export default function Footer() {
             <h4 className="font-serif font-bold text-sm text-white uppercase tracking-wider">Quick Navigation</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#home" className="hover:text-accent-gold transition-colors">Home</a>
+                <a href="/#home" className="hover:text-accent-gold transition-colors">Home</a>
               </li>
               <li>
-                <a href="#products" className="hover:text-accent-gold transition-colors">Products</a>
+                <a href="/products" className="hover:text-accent-gold transition-colors">All Products</a>
               </li>
               <li>
-                <a href="#recipe" className="hover:text-accent-gold transition-colors">Recipes</a>
+                <a href="/cart" className="hover:text-accent-gold transition-colors">Shopping Cart</a>
               </li>
               <li>
-                <a href="#reviews" className="hover:text-accent-gold transition-colors">Reviews</a>
+                <a href="/account/orders" className="hover:text-accent-gold transition-colors">Track Orders</a>
               </li>
               <li>
-                <a href="#blogs" className="hover:text-accent-gold transition-colors">Blogs</a>
+                <a href="/account" className="hover:text-accent-gold transition-colors">My Account</a>
               </li>
               <li>
-                <a href="#contact" className="hover:text-accent-gold transition-colors">Contact</a>
+                <a href="/#contact" className="hover:text-accent-gold transition-colors">Contact Support</a>
               </li>
             </ul>
           </div>

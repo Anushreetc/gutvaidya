@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { CartProvider } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import HeroSection from "../components/HeroSection";
 import IngredientsSection from "../components/IngredientsSection";
@@ -14,39 +13,36 @@ import Footer from "../components/Footer";
 
 export default function Home() {
   return (
-    <CartProvider>
-      <div className="flex flex-col min-h-screen">
-        {/* Navigation Bar */}
-        <Navbar />
+    <div className="flex flex-col min-h-screen">
+      {/* Navigation Bar */}
+      <Navbar />
 
-        {/* Core Main content */}
-        <main className="flex-grow">
-          {/* Hero Carousel Banner Section */}
-          <HeroSection />
+      {/* Core Main content */}
+      <main className="flex-grow">
+        {/* Hero Carousel Banner Section */}
+        <HeroSection />
 
-          {/* Ingredients Breakdown */}
-          <IngredientsSection />
+        {/* Ingredients Breakdown */}
+        <IngredientsSection />
 
-          {/* Products Catalogue */}
-          <ProductsSection />
+        {/* Products Catalogue */}
+        <ProductsSection />
 
-          {/* Recipes Tabs Showcase */}
-          <RecipesSection />
+        {/* Recipes Tabs Showcase */}
+        <RecipesSection />
 
-          {/* Customer Reviews Section */}
-          <ReviewsSection />
+        {/* Customer Reviews Section */}
+        <ReviewsSection />
 
+        {/* Blogs and Educational Wellness posts */}
+        <BlogsSection />
 
-          {/* Blogs and Educational Wellness posts */}
-          <BlogsSection />
+        {/* Interactive Contact & Commitments block */}
+        <ContactSection />
+      </main>
 
-          {/* Interactive Contact & Commitments block */}
-          <ContactSection />
-        </main>
-
-        {/* Global footer */}
-        <Footer />
-      </div>
-    </CartProvider>
+      {/* Global footer */}
+      <Footer />
+    </div>
   );
 }

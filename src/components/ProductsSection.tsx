@@ -1,78 +1,33 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import { useCart } from "../context/CartContext";
-import { ShoppingCart, Leaf, Shield, Award, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { SEED_PRODUCTS } from "@/lib/products";
+import { Product } from "@/types/ecommerce";
+import { ShoppingCart, Leaf, Shield, Award, Sparkles, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-
-const products = [
-  {
-    name: "GutVaidya Health Mix",
-    price: 799,
-    note: "Contains handpicked traditional grains, millets, nuts, and natural herbs for daily immunity, gut health, and steady energy levels.",
-    benefits: ["Organic Ingredients", "Zero Added Sugar", "Rich in Soluble Fiber", "Gut-Friendly Formula"],
-    badge: "Bestseller",
-    image: "/product.jpeg",
-  },
-
-  {
-    name: "GutVaidya Baal Vit",
-    price: 899,
-    note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
-    benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
-    badge: "New Release",
-    image: "/product.jpeg",
-  },
-  {
-    name: "GutVaidya Sampoora",
-    price: 899,
-    note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
-    benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
-    badge: "New Release",
-    image: "/product.jpeg",
-  },
-
-  {
-    name: "GutVaidya Yuva Ojiva",
-    price: 899,
-    note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
-    benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
-    badge: "New Release",
-    image: "/product.jpeg",
-  },
-  {
-    name: "GutVaidya Proliva",
-    price: 899,
-    note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
-    benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
-    badge: "New Release",
-    image: "/product.jpeg",
-  },
-  {
-    name: "GutVaidya Gluco Care",
-    price: 899,
-    note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
-    benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
-    badge: "New Release",
-    image: "/product.jpeg",
-  },
-  {
-    name: "GutVaidya Fat Trim",
-    price: 899,
-    note: "Delicious, nutrient-dense wellness energy sweet bites made with traditional goodness, nuts, and healthy fats. Perfectly balanced.",
-    benefits: ["Rich in Proteins", "No Preservatives", "Naturally Sweetened", "Traditional Taste"],
-    badge: "New Release",
-    image: "/product.jpeg",
-  },
-];
 
 export default function ProductsSection() {
   const { addToCart } = useCart();
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // Fetch live products dynamically so any price changes reflect immediately
+  useEffect(() => {
+    fetch('/api/products')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setProducts(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const checkScroll = () => {
     if (scrollRef.current) {
@@ -80,7 +35,6 @@ export default function ProductsSection() {
       setCanScrollLeft(scrollLeft > 10);
       setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
 
-      // Determine active indicator index based on layout
       const cardWidth = scrollWidth / products.length;
       const currentIndex = Math.round(scrollLeft / cardWidth);
       setActiveIndex(currentIndex);
@@ -89,11 +43,8 @@ export default function ProductsSection() {
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const { clientWidth } = scrollRef.current;
-      // Scroll by roughly 1 card width (accounting for gap)
-      const cardOffset = clientWidth < 640 ? 300 : 380;
+      const cardOffset = 360;
       const scrollAmount = direction === "left" ? -cardOffset : cardOffset;
-
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
@@ -126,7 +77,6 @@ export default function ProductsSection() {
       <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-accent-gold/5 filter blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
@@ -143,13 +93,13 @@ export default function ProductsSection() {
 
         {/* Slider Container Wrapper */}
         <div className="relative max-w-6xl mx-auto px-4">
-
-          {/* Navigation side buttons (hidden on mobile, floating on tablet/desktop) */}
+          {/* Navigation side buttons */}
           <button
             onClick={() => handleScroll("left")}
             disabled={!canScrollLeft}
-            className={`absolute top-1/2 -translate-y-1/2 -left-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${!canScrollLeft ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
-              }`}
+            className={`absolute top-1/2 -translate-y-1/2 -left-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${
+              !canScrollLeft ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
+            }`}
             aria-label="Previous Slide"
           >
             <ChevronLeft className="w-6 h-6" />
@@ -158,8 +108,9 @@ export default function ProductsSection() {
           <button
             onClick={() => handleScroll("right")}
             disabled={!canScrollRight}
-            className={`absolute top-1/2 -translate-y-1/2 -right-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${!canScrollRight ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
-              }`}
+            className={`absolute top-1/2 -translate-y-1/2 -right-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${
+              !canScrollRight ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
+            }`}
             aria-label="Next Slide"
           >
             <ChevronRight className="w-6 h-6" />
@@ -181,9 +132,9 @@ export default function ProductsSection() {
                 className="glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between flex-shrink-0 w-[290px] sm:w-[340px] md:w-[360px] snap-start"
               >
                 {/* Product Visual */}
-                <div className="relative h-64 sm:h-72 overflow-hidden bg-primary-100/50">
+                <Link href={`/products/${product.slug}`} className="block relative h-64 sm:h-72 overflow-hidden bg-primary-100/50">
                   <img
-                    src={product.image}
+                    src={product.main_image || (product as any).image || '/product.jpeg'}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   />
@@ -191,28 +142,30 @@ export default function ProductsSection() {
                   {/* Badge Overlay */}
                   <span className="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md z-10">
                     <Sparkles className="w-3 h-3" />
-                    {product.badge}
+                    {product.badge || 'Bestseller'}
                   </span>
 
                   {/* Price tag overlay */}
                   <span className="absolute bottom-4 right-4 bg-primary-900 text-white font-sans font-bold text-base px-3.5 py-1.5 rounded-xl shadow-lg z-10">
                     ₹{product.price}
                   </span>
-                </div>
+                </Link>
 
                 {/* Product Body */}
                 <div className="p-6 sm:p-7 flex-grow flex flex-col justify-between">
                   <div className="space-y-4">
-                    <h3 className="text-xl sm:text-2xl font-serif font-bold text-primary-900 leading-tight">
-                      {product.name}
-                    </h3>
+                    <Link href={`/products/${product.slug}`} className="block group">
+                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-primary-900 leading-tight group-hover:text-accent-gold transition-colors">
+                        {product.name}
+                      </h3>
+                    </Link>
                     <p className="text-xs sm:text-sm text-foreground/75 leading-relaxed line-clamp-3">
-                      {product.note}
+                      {product.short_description || (product as any).note}
                     </p>
 
                     {/* Highlights checklist */}
                     <div className="grid grid-cols-2 gap-2 pt-2 border-t border-primary-100/30">
-                      {product.benefits.map((benefit) => (
+                      {(product.benefits || []).map((benefit) => (
                         <div key={benefit} className="flex items-center gap-2 text-[11px] sm:text-xs text-foreground/80 font-medium">
                           <div className="w-1.5 h-1.5 rounded-full bg-accent-gold flex-shrink-0" />
                           <span className="truncate">{benefit}</span>
@@ -225,16 +178,25 @@ export default function ProductsSection() {
                   <div className="pt-6 flex items-center justify-between border-t border-primary-100/50 mt-6">
                     <div className="flex flex-col">
                       <span className="text-[10px] text-foreground/50 uppercase tracking-wider font-semibold">Price</span>
-                      <span className="text-xl sm:text-2xl font-sans font-bold text-primary-800">₹{product.price}</span>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-xl sm:text-2xl font-sans font-bold text-primary-800">₹{product.price}</span>
+                        {product.compare_at_price && (
+                          <span className="text-xs text-foreground/40 line-through">₹{product.compare_at_price}</span>
+                        )}
+                      </div>
                     </div>
 
                     <button
                       onClick={() =>
                         addToCart({
+                          id: product.id,
+                          slug: product.slug,
                           name: product.name,
                           price: product.price,
-                          note: product.note,
-                          image: product.image,
+                          compare_at_price: product.compare_at_price,
+                          image: product.main_image || (product as any).image || '/product.jpeg',
+                          stock_quantity: product.stock_quantity,
+                          weight_size: product.weight_size || "500g",
                         })
                       }
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg focus:outline-none"
@@ -254,11 +216,23 @@ export default function ProductsSection() {
               <button
                 key={i}
                 onClick={() => scrollToSlide(i)}
-                className={`h-2 rounded-full transition-all duration-300 focus:outline-none ${activeIndex === i ? "w-6 bg-primary-700" : "w-2 bg-primary-200 hover:bg-primary-350"
-                  }`}
+                className={`h-2 rounded-full transition-all duration-300 focus:outline-none ${
+                  activeIndex === i ? "w-6 bg-primary-700" : "w-2 bg-primary-200 hover:bg-primary-350"
+                }`}
                 aria-label={`Go to product slide ${i + 1}`}
               />
             ))}
+          </div>
+
+          {/* Catalog CTA */}
+          <div className="text-center mt-12">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-primary-800 text-white font-semibold text-sm hover:bg-primary-900 transition-all shadow-md hover:shadow-lg group"
+            >
+              <span>Explore All Products & Formulations</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </div>
 
@@ -286,7 +260,6 @@ export default function ProductsSection() {
             <p className="text-xs text-foreground/60">Passed down through generations of wellness care</p>
           </div>
         </div>
-
       </div>
     </section>
   );
