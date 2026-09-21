@@ -1,0 +1,116 @@
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import ProductDetailsClient from '@/components/products/ProductDetailsClient';
+import { getProductBySlug, getRelatedProducts, SEED_PRODUCTS } from '@/lib/products';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export async function generateStaticParams() {
+  return SEED_PRODUCTS.map((product) => ({
+    slug: product.slug,
+  }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      title: 'Product Not Found | GutVaidya',
+    };
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in';
+  const canonicalUrl = `${siteUrl}/products/${product.slug}`;
+
+  return {
+    title: `${product.name} - Traditional Health Mix`,
+    description: product.short_description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${product.name} | GutVaidya Ayurvedic Nutrition`,
+      description: product.short_description,
+      url: canonicalUrl,
+      images: [
+        {
+          url: product.main_image,
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+    },
+  };
+}
+
+export default async function ProductDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    notFound();
+  }
+
+  const relatedProducts = await getRelatedProducts(product.slug, product.category_id);
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in';
+
+  // Schema.org Product Structured Data
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    image: `${siteUrl}${product.main_image}`,
+    description: product.description,
+    sku: product.sku || product.slug,
+    brand: {
+      '@type': 'Brand',
+      name: 'GutVaidya',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: `${siteUrl}/products/${product.slug}`,
+      priceCurrency: 'INR',
+      price: product.price,
+      priceValidUntil: '2027-12-31',
+      itemCondition: 'https://schema.org/NewCondition',
+      availability:
+        product.stock_quantity > 0
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: product.rating || 4.9,
+      reviewCount: product.reviews_count || 50,
+    },
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Navbar />
+
+      <main className="flex-grow">
+        <ProductDetailsClient product={product} relatedProducts={relatedProducts} />
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

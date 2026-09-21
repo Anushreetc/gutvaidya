@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #f4f8f2;
+  --color-primary-100: #e6edd9;
+  --color-primary-200: #ccdbb6;
+  --color-primary-300: #aad68a;
+  --color-primary-600: #1f4f16;
+  --color-primary-700: #163c0f;
+  --color-primary-800: #0f280a;
+  --color-primary-900: #0a1b07;
+  
+  --color-accent-gold: #c39b62;
+  --color-accent-gold-light: #e5cca8;
+  --color-accent-gold-dark: #98723c;
+  
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-outfit);
+}
+
+:root {
+  --background: #fdfdfb;
+  --foreground: #1c241b;
+  --primary: #1f4f16;
+  --accent: #c39b62;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f7f9f4;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccdbb6;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aad68a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Classes */
+.glass-nav {
+  background: rgba(253, 253, 251, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(31, 79, 22, 0.08);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(31, 79, 22, 0.06);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 12px 30px rgba(31, 79, 22, 0.06);
+  border-color: rgba(31, 79, 22, 0.12);
+}
+
+/* Gradient text */
+.gradient-text-primary {
+  background: linear-gradient(135deg, #1f4f16 0%, #163c0f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #c39b62 0%, #98723c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

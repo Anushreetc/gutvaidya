@@ -1,0 +1,18 @@
+[
+  {
+    "id": "msg-1790009446831",
+    "name": "Anushree Test",
+    "email": "anushreetc678@gmail.com",
+    "message": "Testing the live email dispatch from GutVaidya web store!",
+    "status": "unread",
+    "created_at": "2026-09-21T16:50:46.831Z"
+  },
+  {
+    "id": "msg-1790008198344",
+    "name": "Anushree",
+    "email": "customer@example.com",
+    "message": "Hello, I would like to inquire about bulk ordering GutVaidya Health Mix.",
+    "status": "unread",
+    "created_at": "2026-09-21T16:29:58.344Z"
+  }
+]
