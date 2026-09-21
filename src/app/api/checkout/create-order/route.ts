@@ -32,7 +32,25 @@ export async function POST(req: Request) {
     }
 
     // 1. Fetch real products from server to verify prices and stock
-    const allProducts = await getProducts();
+    let allProducts = await getProducts();
+
+    try {
+      const cookieHeader = req.headers.get('cookie') || '';
+      const match = cookieHeader.match(/gutvaidya_custom_products=([^;]+)/);
+      if (match && match[1]) {
+        const overrides = JSON.parse(decodeURIComponent(match[1]));
+        allProducts = allProducts.map((p) => {
+          const override = overrides[p.id] || overrides[p.slug];
+          if (!override) return p;
+          return {
+            ...p,
+            ...(override.price !== undefined ? { price: Number(override.price) } : {}),
+            ...(override.stock_quantity !== undefined ? { stock_quantity: Number(override.stock_quantity) } : {}),
+          };
+        });
+      }
+    } catch (e) {}
+
     const verifiedItems: { product: Product; qty: number; unitPrice: number; totalPrice: number }[] = [];
 
     for (const item of items) {

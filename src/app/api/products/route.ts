@@ -5,9 +5,31 @@ import { getLiveProducts, updateLiveProduct } from '@/lib/products-server';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const products = await getLiveProducts();
+    let products = await getLiveProducts();
+
+    // Check if client sent custom overrides in cookie
+    try {
+      const cookieHeader = req.headers.get('cookie') || '';
+      const match = cookieHeader.match(/gutvaidya_custom_products=([^;]+)/);
+      if (match && match[1]) {
+        const overrides = JSON.parse(decodeURIComponent(match[1]));
+        products = products.map((p) => {
+          const override = overrides[p.id] || overrides[p.slug];
+          if (!override) return p;
+          return {
+            ...p,
+            ...(override.price !== undefined ? { price: Number(override.price) } : {}),
+            ...(override.compare_at_price !== undefined ? { compare_at_price: Number(override.compare_at_price) } : {}),
+            ...(override.stock_quantity !== undefined ? { stock_quantity: Number(override.stock_quantity) } : {}),
+            ...(override.status !== undefined ? { status: override.status } : {}),
+            ...(override.featured !== undefined ? { featured: override.featured } : {}),
+          };
+        });
+      }
+    } catch (e) {}
+
     return NextResponse.json(products, {
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
