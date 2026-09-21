@@ -56,6 +56,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 import { cookies } from 'next/headers';
+import { safeDecodeCookie } from '@/lib/products-client';
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
@@ -70,7 +71,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     const cookieStore = await cookies();
     const cookieVal = cookieStore.get('gutvaidya_custom_products')?.value;
     if (cookieVal) {
-      const overrides = JSON.parse(decodeURIComponent(cookieVal));
+      const overrides = safeDecodeCookie(cookieVal);
       const override = overrides[product.id] || overrides[product.slug];
       if (override) {
         product = {

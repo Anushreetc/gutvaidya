@@ -14,6 +14,31 @@ export interface ProductOverride {
 
 export type ProductOverridesMap = Record<string, ProductOverride>;
 
+export function safeDecodeCookie(val: string): ProductOverridesMap {
+  if (!val) return {};
+  try {
+    let decoded = val;
+    if (decoded.includes('%')) {
+      try {
+        decoded = decodeURIComponent(decoded);
+      } catch (e) {}
+    }
+    if (decoded.includes('%')) {
+      try {
+        decoded = decodeURIComponent(decoded);
+      } catch (e) {}
+    }
+    const parsed = JSON.parse(decoded);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch (e) {
+    try {
+      return JSON.parse(val);
+    } catch (err) {
+      return {};
+    }
+  }
+}
+
 // Get overrides from localStorage and document.cookie
 export function getProductOverrides(): ProductOverridesMap {
   if (typeof window === 'undefined') return {};
@@ -32,7 +57,7 @@ export function getProductOverrides(): ProductOverridesMap {
   try {
     const match = document.cookie.match(new RegExp(`(^| )${COOKIE_NAME}=([^;]+)`));
     if (match && match[2]) {
-      return JSON.parse(decodeURIComponent(match[2]));
+      return safeDecodeCookie(match[2]);
     }
   } catch (e) {}
 

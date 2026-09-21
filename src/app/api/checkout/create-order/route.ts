@@ -5,6 +5,8 @@ import { calculateShipping } from '@/lib/shipping';
 import { createRazorpayOrder } from '@/lib/razorpay';
 import { Product } from '@/types/ecommerce';
 
+import { safeDecodeCookie } from '@/lib/products-client';
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -38,7 +40,7 @@ export async function POST(req: Request) {
       const cookieHeader = req.headers.get('cookie') || '';
       const match = cookieHeader.match(/gutvaidya_custom_products=([^;]+)/);
       if (match && match[1]) {
-        const overrides = JSON.parse(decodeURIComponent(match[1]));
+        const overrides = safeDecodeCookie(match[1]);
         allProducts = allProducts.map((p) => {
           const override = overrides[p.id] || overrides[p.slug];
           if (!override) return p;

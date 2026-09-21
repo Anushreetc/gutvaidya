@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { updateLiveProduct, saveLocalStoredProducts, getLocalStoredProducts } from '@/lib/products-server';
+import { safeDecodeCookie } from '@/lib/products-client';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,9 +15,7 @@ export async function POST(req: Request) {
     let overrides: Record<string, any> = {};
     const match = cookieHeader.match(/gutvaidya_custom_products=([^;]+)/);
     if (match && match[1]) {
-      try {
-        overrides = JSON.parse(decodeURIComponent(match[1]));
-      } catch (e) {}
+      overrides = safeDecodeCookie(match[1]);
     }
 
     if (action === 'update' && product) {
