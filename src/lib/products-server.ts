@@ -5,37 +5,67 @@ import { SEED_PRODUCTS } from './products';
 import { createAdminClient } from './supabase/admin';
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'products.json');
+const TMP_DATA_FILE = '/tmp/products.json';
+
+// In-memory cache across requests inside the same serverless execution container
+let inMemoryProducts: Product[] | null = null;
 
 export function getLocalStoredProducts(): Product[] {
+  // 1. In-memory cache
+  if (inMemoryProducts && inMemoryProducts.length > 0) {
+    return inMemoryProducts;
+  }
+
+  // 2. Try reading from /tmp/products.json (Vercel Serverless writable disk)
+  try {
+    if (fs.existsSync(TMP_DATA_FILE)) {
+      const raw = fs.readFileSync(TMP_DATA_FILE, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        inMemoryProducts = parsed;
+        return parsed;
+      }
+    }
+  } catch (err) {}
+
+  // 3. Try reading from bundled data/products.json
   try {
     if (fs.existsSync(DATA_FILE)) {
       const raw = fs.readFileSync(DATA_FILE, 'utf-8');
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
+        inMemoryProducts = parsed;
         return parsed;
       }
-    } else {
-      // Initialize with SEED_PRODUCTS
-      saveLocalStoredProducts(SEED_PRODUCTS);
     }
   } catch (err) {
     console.warn('Failed to read data/products.json:', err);
   }
+
+  inMemoryProducts = SEED_PRODUCTS;
   return SEED_PRODUCTS;
 }
 
 export function saveLocalStoredProducts(products: Product[]): boolean {
+  inMemoryProducts = products;
+
+  // 1. Try local data file (works in development or writable servers)
   try {
     const dir = path.dirname(DATA_FILE);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
     fs.writeFileSync(DATA_FILE, JSON.stringify(products, null, 2), 'utf-8');
-    return true;
   } catch (err) {
-    console.error('Failed to write data/products.json:', err);
-    return false;
+    // Expected on Vercel read-only filesystem, safe to ignore
   }
+
+  // 2. Try /tmp file (works on Vercel AWS Lambda /tmp)
+  try {
+    fs.writeFileSync(TMP_DATA_FILE, JSON.stringify(products, null, 2), 'utf-8');
+  } catch (err) {}
+
+  return true;
 }
 
 export async function getLiveProducts(): Promise<Product[]> {

@@ -15,26 +15,48 @@ import {
   Save,
 } from "lucide-react";
 
+import {
+  getProductOverrides,
+  applyProductOverrides,
+  saveProductUpdate,
+  subscribeToProductUpdates,
+} from "@/lib/products-client";
+
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
   const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<{ price: number; stock: number; comparePrice: number }>({
     price: 0,
     stock: 0,
     comparePrice: 0,
   });
 
-  // Fetch live products on mount
+  // Fetch live products on mount and apply overrides
   useEffect(() => {
+    // 1. Immediately apply local overrides so there is zero flash
+    const overrides = getProductOverrides();
+    if (Object.keys(overrides).length > 0) {
+      setProducts((prev) => applyProductOverrides(prev, overrides));
+    }
+
+    // 2. Fetch latest from API
     fetch('/api/products')
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setProducts(data);
+          setProducts(applyProductOverrides(data, getProductOverrides()));
         }
       })
       .catch(() => {});
+
+    // 3. Listen for updates across tabs
+    const unsubscribe = subscribeToProductUpdates((latestOverrides) => {
+      setProducts((prev) => applyProductOverrides(prev, latestOverrides));
+    });
+
+    return unsubscribe;
   }, []);
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -65,6 +87,11 @@ export default function AdminProductsPage() {
     });
   };
 
+  const showToast = (msg: string) => {
+    setSaveSuccessMsg(msg);
+    setTimeout(() => setSaveSuccessMsg(null), 3500);
+  };
+
   const saveEdit = async (product: Product) => {
     const updated = {
       ...product,
@@ -73,9 +100,15 @@ export default function AdminProductsPage() {
       stock_quantity: editForm.stock,
     };
 
+    // 1. Save immediately to client store & broadcast to all tabs
+    saveProductUpdate(updated);
+
+    // 2. Update local state
     setProducts((prev) => prev.map((p) => (p.id === product.id ? updated : p)));
     setEditingId(null);
+    showToast(`✓ Updated ${updated.name} to ₹${updated.price} (Synced live to website)`);
 
+    // 3. Persist to server API
     await fetch("/api/admin/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -85,7 +118,9 @@ export default function AdminProductsPage() {
 
   const toggleFeatured = async (product: Product) => {
     const updated = { ...product, featured: !product.featured };
+    saveProductUpdate(updated);
     setProducts((prev) => prev.map((p) => (p.id === product.id ? updated : p)));
+    showToast(`${updated.name} ${updated.featured ? 'featured on' : 'removed from'} homepage`);
 
     await fetch("/api/admin/products", {
       method: "POST",
@@ -97,7 +132,9 @@ export default function AdminProductsPage() {
   const toggleStatus = async (product: Product) => {
     const newStatus = product.status === "active" ? "draft" : "active";
     const updated = { ...product, status: newStatus as any };
+    saveProductUpdate(updated);
     setProducts((prev) => prev.map((p) => (p.id === product.id ? updated : p)));
+    showToast(`Status changed to ${newStatus}`);
 
     await fetch("/api/admin/products", {
       method: "POST",
@@ -145,6 +182,14 @@ export default function AdminProductsPage() {
 
   return (
     <div className="space-y-6">
+      {/* Toast feedback */}
+      {saveSuccessMsg && (
+        <div className="p-3.5 px-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2 shadow-sm animate-in fade-in slide-in-from-top-2">
+          <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+          <span>{saveSuccessMsg}</span>
+        </div>
+      )}
+
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="relative w-full sm:w-80">

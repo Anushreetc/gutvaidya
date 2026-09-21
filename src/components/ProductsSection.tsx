@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCart } from "../context/CartContext";
 import { SEED_PRODUCTS } from "@/lib/products";
 import { Product } from "@/types/ecommerce";
+import { getProductOverrides, applyProductOverrides, subscribeToProductUpdates } from "@/lib/products-client";
 import { ShoppingCart, Leaf, Shield, Award, Sparkles, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -12,21 +13,43 @@ export default function ProductsSection() {
   const { addToCart } = useCart();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => {
+    if (typeof window !== 'undefined') {
+      const overrides = getProductOverrides();
+      if (Object.keys(overrides).length > 0) {
+        return applyProductOverrides(SEED_PRODUCTS, overrides);
+      }
+    }
+    return SEED_PRODUCTS;
+  });
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Fetch live products dynamically so any price changes reflect immediately
+  // Fetch live products dynamically and listen for real-time admin edits
   useEffect(() => {
+    // 1. Immediately apply local overrides on mount
+    const overrides = getProductOverrides();
+    if (Object.keys(overrides).length > 0) {
+      setProducts((prev) => applyProductOverrides(prev, overrides));
+    }
+
+    // 2. Fetch latest from API
     fetch('/api/products')
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setProducts(data);
+          setProducts(applyProductOverrides(data, getProductOverrides()));
         }
       })
       .catch(() => {});
+
+    // 3. Listen for instant broadcast updates from admin tab
+    const unsubscribe = subscribeToProductUpdates((latestOverrides) => {
+      setProducts((prev) => applyProductOverrides(prev, latestOverrides));
+    });
+
+    return unsubscribe;
   }, []);
 
   const checkScroll = () => {

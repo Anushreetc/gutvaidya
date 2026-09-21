@@ -55,13 +55,35 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+import { cookies } from 'next/headers';
+
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  let product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
+
+  // Check if browser sent custom overrides in cookie
+  try {
+    const cookieStore = await cookies();
+    const cookieVal = cookieStore.get('gutvaidya_custom_products')?.value;
+    if (cookieVal) {
+      const overrides = JSON.parse(decodeURIComponent(cookieVal));
+      const override = overrides[product.id] || overrides[product.slug];
+      if (override) {
+        product = {
+          ...product,
+          ...(override.price !== undefined ? { price: Number(override.price) } : {}),
+          ...(override.compare_at_price !== undefined ? { compare_at_price: Number(override.compare_at_price) } : {}),
+          ...(override.stock_quantity !== undefined ? { stock_quantity: Number(override.stock_quantity) } : {}),
+          ...(override.status !== undefined ? { status: override.status } : {}),
+          ...(override.featured !== undefined ? { featured: override.featured } : {}),
+        };
+      }
+    }
+  } catch (e) {}
 
   const relatedProducts = await getRelatedProducts(product.slug, product.category_id);
 

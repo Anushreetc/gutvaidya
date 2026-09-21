@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Product } from "@/types/ecommerce";
@@ -23,14 +23,30 @@ import {
   Award,
 } from "lucide-react";
 
+import { applyProductOverride, subscribeToProductUpdates } from "@/lib/products-client";
+
 interface Props {
   product: Product;
   relatedProducts: Product[];
 }
 
-export default function ProductDetailsClient({ product, relatedProducts }: Props) {
+export default function ProductDetailsClient({ product: initialProduct, relatedProducts }: Props) {
   const router = useRouter();
   const { addToCart } = useCart();
+
+  const [product, setProduct] = useState<Product>(() => applyProductOverride(initialProduct));
+
+  useEffect(() => {
+    // Apply immediate overrides
+    setProduct(applyProductOverride(initialProduct));
+
+    // Listen to real-time broadcasts
+    const unsubscribe = subscribeToProductUpdates((latestOverrides) => {
+      setProduct(applyProductOverride(initialProduct, latestOverrides));
+    });
+
+    return unsubscribe;
+  }, [initialProduct]);
 
   const [selectedImage, setSelectedImage] = useState(product.main_image);
   const [quantity, setQuantity] = useState(1);

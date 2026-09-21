@@ -19,26 +19,50 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { getProductOverrides, applyProductOverrides, subscribeToProductUpdates } from "@/lib/products-client";
+
 export default function ProductsPage() {
   const { addToCart } = useCart();
 
-  const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => {
+    if (typeof window !== 'undefined') {
+      const overrides = getProductOverrides();
+      if (Object.keys(overrides).length > 0) {
+        return applyProductOverrides(SEED_PRODUCTS, overrides);
+      }
+    }
+    return SEED_PRODUCTS;
+  });
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
   const [inStockOnly, setInStockOnly] = useState(false);
   const [maxPrice, setMaxPrice] = useState(1200);
 
-  // Fetch live products on mount so price updates show immediately
+  // Fetch live products on mount and listen for real-time admin edits
   useEffect(() => {
+    // 1. Immediately apply local overrides
+    const overrides = getProductOverrides();
+    if (Object.keys(overrides).length > 0) {
+      setProducts((prev) => applyProductOverrides(prev, overrides));
+    }
+
+    // 2. Fetch latest from API
     fetch('/api/products')
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setProducts(data);
+          setProducts(applyProductOverrides(data, getProductOverrides()));
         }
       })
       .catch(() => {});
+
+    // 3. Listen for real-time broadcasts
+    const unsubscribe = subscribeToProductUpdates((latestOverrides) => {
+      setProducts((prev) => applyProductOverrides(prev, latestOverrides));
+    });
+
+    return unsubscribe;
   }, []);
 
   // Filter & sort logic
