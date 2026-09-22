@@ -43,7 +43,7 @@ function emailWrapper(content: string, previewText: string) {
     </div>
     <div class="footer">
       <p style="margin:0 0 8px 0;"><strong>GutVaidya Health Mix</strong> • Lic. No. 21224172000058 (FSSAI Registered)</p>
-      <p style="margin:0 0 8px 0;">Need support? Email us at <a href="mailto:support@gutvaidya.in">support@gutvaidya.in</a> or call +91 9008130463</p>
+      <p style="margin:0 0 8px 0;">Need support? Email us at <a href="mailto:support@gutvaidya.in">support@gutvaidya.in</a> or call +91 78928 91239</p>
       <p style="margin:0; color: rgba(255,255,255,0.4);">© ${new Date().getFullYear()} GutVaidya. All rights reserved.</p>
     </div>
   </div>

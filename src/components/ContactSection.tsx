@@ -49,8 +49,8 @@ export default function ContactSection() {
     },
     {
       title: "Call Us",
-      value: "08043721857",
-      href: "tel:08043721857",
+      value: "+91 78928 91239",
+      href: "tel:+917892891239",
       icon: Phone,
       desc: "Available Monday - Saturday, 9 AM - 6 PM.",
     },
