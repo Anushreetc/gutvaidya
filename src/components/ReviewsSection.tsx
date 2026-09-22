@@ -13,12 +13,13 @@ interface Review {
   text: string;
   category: string;
   verified: boolean;
-  isWhatsAppProof?: boolean;
+  isWhatsAppReview?: boolean;
 }
 
 const whatsappScreenshots = [
   {
     id: 1,
+    tabLabel: "Infant Nutrition",
     title: "Baby Weaning & Weight Gain",
     subtitle: "Mother sharing healthy infant growth",
     src: "/reviews/whatsapp-review-1.jpg",
@@ -26,15 +27,17 @@ const whatsappScreenshots = [
   },
   {
     id: 2,
-    title: "Doctor's Clinical Feedback",
+    tabLabel: "Clinical Feedback",
+    title: "Doctor's Clinical Assessment",
     subtitle: "Ayurvedic practitioner feedback on patients",
     src: "/reviews/whatsapp-review-2.jpg",
     author: "Dr. Abhi Ayur Healthcare",
   },
   {
     id: 3,
-    title: "Child Nutrition & Growth",
-    subtitle: "Immunity and digestion satisfaction",
+    tabLabel: "Child Wellness",
+    title: "Child Growth & Immunity",
+    subtitle: "Daily vitality and digestion satisfaction",
     src: "/reviews/whatsapp-review-3.jpg",
     author: "Mrs. Salma Aag",
   },
@@ -50,7 +53,7 @@ const reviewsData: Review[] = [
     text: "This is a complete food for babies who have just started their liquid foods. I was so worried about what to give, but this one is so good and healthy at the same time! My baby has it every morning with no tantrums, and she has gained weight with regular intake. Very satisfied!",
     category: "Baby & Kids",
     verified: true,
-    isWhatsAppProof: true,
+    isWhatsAppReview: true,
   },
   {
     id: 2,
@@ -61,7 +64,7 @@ const reviewsData: Review[] = [
     text: "One of the best nutrition powders I used in my patients. Got wonderful response with increasing appetite and reducing fatigue. Reduces mood swings in women and helps in getting good sleep. All patients who used it were very happy.",
     category: "Clinical & Digestion",
     verified: true,
-    isWhatsAppProof: true,
+    isWhatsAppReview: true,
   },
   {
     id: 3,
@@ -72,7 +75,7 @@ const reviewsData: Review[] = [
     text: "It is an immense pleasure to share thanks for giving such a wonderful health supplement for my kid 🙏 My baby is having it without any hesitation and I am observing her steady growth. Recommending this without any doubt to every family!",
     category: "Baby & Kids",
     verified: true,
-    isWhatsAppProof: true,
+    isWhatsAppReview: true,
   },
   {
     id: 4,
@@ -159,13 +162,13 @@ export default function ReviewsSection() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/80 text-primary-700 text-xs font-semibold uppercase tracking-wider border border-primary-200/50 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
-            Real Customer Proof
+            Verified Customer Stories
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight">
             Loved by 1,00,000+ Happy Families
           </h2>
           <p className="text-base sm:text-lg text-foreground/75 leading-relaxed max-w-2xl mx-auto">
-            Real WhatsApp chats, practitioner feedback, and authentic experiences from homes across India.
+            Authentic customer messages, practitioner evaluations, and real wellness experiences from across India.
           </p>
         </div>
 
@@ -214,15 +217,15 @@ export default function ReviewsSection() {
               </div>
             </div>
 
-            {/* WhatsApp Proof Carousel Card */}
+            {/* WhatsApp Experience Showcase Card */}
             <div className="bg-white border border-primary-100/60 p-6 rounded-3xl shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b border-primary-100/60 pb-3">
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                  <h3 className="font-serif font-bold text-primary-900 text-sm sm:text-base">WhatsApp Reviews</h3>
+                  <h3 className="font-serif font-bold text-primary-900 text-sm sm:text-base">Customer WhatsApp Chats</h3>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[10px] font-sans font-bold text-[#25D366] bg-[#25D366]/10 px-2.5 py-0.5 rounded-full">
-                  100% Real
+                  Direct Feedback
                 </span>
               </div>
 
@@ -238,14 +241,14 @@ export default function ReviewsSection() {
                   <button
                     onClick={handlePrevScreenshot}
                     className="p-1.5 rounded-full hover:bg-primary-50 text-primary-800 border border-primary-100 transition-colors"
-                    title="Previous Review"
+                    title="Previous Experience"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={handleNextScreenshot}
                     className="p-1.5 rounded-full hover:bg-primary-50 text-primary-800 border border-primary-100 transition-colors"
-                    title="Next Review"
+                    title="Next Experience"
                   >
                     <ChevronRight className="w-3.5 h-3.5" />
                   </button>
@@ -264,29 +267,29 @@ export default function ReviewsSection() {
                 />
                 <div className="absolute inset-0 bg-primary-950/0 group-hover:bg-primary-950/20 transition-colors flex items-center justify-center">
                   <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 text-primary-900 text-xs font-bold px-3 py-1.5 rounded-full shadow flex items-center gap-1.5">
-                    <Eye className="w-3.5 h-3.5 text-primary-700" /> Click to expand
+                    <Eye className="w-3.5 h-3.5 text-primary-700" /> Click to view full image
                   </span>
                 </div>
               </div>
 
-              {/* Thumbnail Selector Pills */}
-              <div className="grid grid-cols-3 gap-2 pt-1">
+              {/* Category Selector Tabs */}
+              <div className="grid grid-cols-3 gap-1.5 pt-1">
                 {whatsappScreenshots.map((item, idx) => (
                   <button
                     key={item.id}
                     onClick={() => setActiveScreenshotIdx(idx)}
-                    className={`p-1.5 rounded-xl border text-[10px] font-semibold text-center transition-all ${activeScreenshotIdx === idx
+                    className={`px-2 py-1.5 rounded-xl border text-[10px] font-semibold text-center transition-all truncate ${activeScreenshotIdx === idx
                         ? "bg-primary-700 text-white border-primary-700 shadow-sm"
                         : "bg-primary-50/50 text-foreground/70 border-primary-100 hover:bg-primary-100/50"
                       }`}
                   >
-                    Proof #{idx + 1}
+                    {item.tabLabel}
                   </button>
                 ))}
               </div>
 
               <p className="text-[11px] text-foreground/55 text-center leading-relaxed italic">
-                Direct unmodified feedback received on our official WhatsApp support channel.
+                Unmodified messages received directly on our official customer care channel.
               </p>
             </div>
           </div>
@@ -321,7 +324,7 @@ export default function ReviewsSection() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    className={`glass-card rounded-2xl p-6 border transition-all duration-300 hover:shadow-lg flex flex-col justify-between ${review.isWhatsAppProof
+                    className={`glass-card rounded-2xl p-6 border transition-all duration-300 hover:shadow-lg flex flex-col justify-between ${review.isWhatsAppReview
                         ? "border-[#25D366]/40 bg-gradient-to-br from-white to-[#25D366]/5"
                         : "border-primary-100/60 bg-white hover:border-accent-gold/40"
                       }`}
@@ -334,7 +337,7 @@ export default function ReviewsSection() {
                             <Star key={i} className="w-4 h-4 fill-accent-gold text-accent-gold" />
                           ))}
                         </div>
-                        {review.isWhatsAppProof ? (
+                        {review.isWhatsAppReview ? (
                           <span className="inline-flex items-center gap-1 text-[10px] font-sans font-bold text-[#25D366] bg-[#25D366]/10 px-2 py-0.5 rounded-full border border-[#25D366]/20">
                             <MessageCircle className="w-3 h-3" /> WhatsApp
                           </span>
@@ -389,7 +392,7 @@ export default function ReviewsSection() {
           <div className="relative max-w-lg max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl p-2" onClick={(e) => e.stopPropagation()}>
             <img
               src={previewModalImg}
-              alt="Expanded WhatsApp Proof"
+              alt="Customer Feedback Preview"
               className="w-full h-auto max-h-[82vh] object-contain rounded-2xl"
             />
             <div className="p-3 text-center">
