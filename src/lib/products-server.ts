@@ -3,6 +3,7 @@ import path from 'path';
 import { Product } from '@/types/ecommerce';
 import { SEED_PRODUCTS } from './products';
 import { createAdminClient } from './supabase/admin';
+import { withRatings } from './reviews';
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'products.json');
 const TMP_DATA_FILE = '/tmp/products.json';
@@ -79,7 +80,7 @@ export async function getLiveProducts(): Promise<Product[]> {
         .order('name');
 
       if (!error && data && data.length > 0) {
-        return data.map(mapDbProduct);
+        return withRatings(data.map(mapDbProduct));
       }
     } catch (e) {
       // Fallback to local stored products
@@ -97,8 +98,6 @@ function mapDbProduct(p: any): Product {
     category_name: p.categories?.name,
     images: p.images || [p.main_image],
     benefits: Array.isArray(p.benefits) ? p.benefits : [],
-    rating: p.rating || 4.8,
-    reviews_count: p.reviews_count || 45,
   };
 }
 

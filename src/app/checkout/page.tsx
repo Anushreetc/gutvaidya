@@ -8,6 +8,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { createClient } from "@/lib/supabase/client";
+import { INDIAN_STATES } from "@/lib/india-states";
 import { Address } from "@/types/ecommerce";
 import {
   ShieldCheck,
@@ -26,18 +28,18 @@ export default function CheckoutPage() {
   const { user, profile } = useAuth();
 
   const [customerInfo, setCustomerInfo] = useState({
-    name: profile?.name || "Anushree",
-    email: profile?.email || user?.email || "anushreetc678@gmail.com",
-    phone: profile?.phone || "+91 98765 43210",
+    name: "",
+    email: "",
+    phone: "",
   });
 
   const [address, setAddress] = useState<Address>({
-    name: profile?.name || "",
-    phone: profile?.phone || "",
+    name: "",
+    phone: "",
     address_line_1: "",
     address_line_2: "",
     city: "",
-    state: "Karnataka",
+    state: "",
     postal_code: "",
     country: "India",
   });
@@ -46,22 +48,44 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Sync profile data if loaded later
+  // Fill in the signed-in customer's details and saved address, without overwriting
+  // anything they have already typed
   useEffect(() => {
-    if (profile) {
-      if (!customerInfo.name && profile.name) {
-        setCustomerInfo((prev) => ({ ...prev, name: profile.name }));
-        setAddress((prev) => ({ ...prev, name: profile.name }));
-      }
-      if (!customerInfo.email && profile.email) {
-        setCustomerInfo((prev) => ({ ...prev, email: profile.email }));
-      }
-      if (!customerInfo.phone && profile.phone) {
-        setCustomerInfo((prev) => ({ ...prev, phone: profile.phone || "" }));
-        setAddress((prev) => ({ ...prev, phone: profile.phone || "" }));
-      }
-    }
-  }, [profile]);
+    if (!profile || !user) return;
+
+    setCustomerInfo((prev) => ({
+      name: prev.name || profile.name || "",
+      email: prev.email || user.email || profile.email || "",
+      phone: prev.phone || profile.phone || "",
+    }));
+
+    const supabase = createClient();
+    if (!supabase) return;
+    supabase
+      .from("addresses")
+      .select("*")
+      .eq("customer_id", user.id)
+      .order("is_default", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        setAddress((prev) =>
+          prev.address_line_1
+            ? prev
+            : {
+                ...prev,
+                name: prev.name || data?.name || profile.name || "",
+                phone: prev.phone || data?.phone || profile.phone || "",
+                address_line_1: data?.address_line_1 || "",
+                address_line_2: data?.address_line_2 || "",
+                city: data?.city || "",
+                state: data?.state || "",
+                postal_code: data?.postal_code || "",
+              }
+        );
+      });
+  }, [profile, user]);
 
   const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,8 +101,8 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (!address.address_line_1 || !address.city || !address.postal_code) {
-      setErrorMessage("Please complete your delivery address with City and PIN Code.");
+    if (!address.address_line_1 || !address.city || !address.state || !address.postal_code) {
+      setErrorMessage("Please complete your delivery address with City, State and PIN Code.");
       return;
     }
 
@@ -92,6 +116,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items: cart,
           couponCode: appliedCoupon?.code,
+          notes,
           customerInfo: {
             ...customerInfo,
             id: user?.id,
@@ -374,24 +399,15 @@ export default function CheckoutPage() {
                           State *
                         </label>
                         <select
+                          required
                           value={address.state}
                           onChange={(e) => setAddress({ ...address, state: e.target.value })}
                           className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
                         >
-                          {[
-                            "Andhra Pradesh",
-                            "Delhi",
-                            "Goa",
-                            "Gujarat",
-                            "Haryana",
-                            "Karnataka",
-                            "Kerala",
-                            "Maharashtra",
-                            "Tamil Nadu",
-                            "Telangana",
-                            "Uttar Pradesh",
-                            "West Bengal",
-                          ].map((st) => (
+                          <option value="" disabled>
+                            Select state
+                          </option>
+                          {INDIAN_STATES.map((st) => (
                             <option key={st} value={st}>
                               {st}
                             </option>

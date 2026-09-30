@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductDetailsClient from '@/components/products/ProductDetailsClient';
 import { getProductBySlug, getRelatedProducts, SEED_PRODUCTS } from '@/lib/products';
+import { getApprovedReviews } from '@/lib/reviews';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -86,7 +87,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
     }
   } catch (e) {}
 
-  const relatedProducts = await getRelatedProducts(product.slug, product.category_id);
+  const [relatedProducts, reviews] = await Promise.all([
+    getRelatedProducts(product.slug, product.category_id),
+    getApprovedReviews(product.id),
+  ]);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in';
 
@@ -95,7 +99,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    image: `${siteUrl}${product.main_image}`,
+    image: product.main_image.startsWith('http') ? product.main_image : `${siteUrl}${product.main_image}`,
     description: product.description,
     sku: product.sku || product.slug,
     brand: {
@@ -114,11 +118,16 @@ export default async function ProductDetailPage({ params }: PageProps) {
           ? 'https://schema.org/InStock'
           : 'https://schema.org/OutOfStock',
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: product.rating || 4.9,
-      reviewCount: product.reviews_count || 50,
-    },
+    // Only real, approved reviews; search engines penalise invented rating data
+    ...(product.rating && product.reviews_count
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: product.rating,
+            reviewCount: product.reviews_count,
+          },
+        }
+      : {}),
   };
 
   return (
@@ -130,7 +139,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <Navbar />
 
       <main className="flex-grow">
-        <ProductDetailsClient product={product} relatedProducts={relatedProducts} />
+        <ProductDetailsClient product={product} relatedProducts={relatedProducts} reviews={reviews} />
       </main>
 
       <Footer />

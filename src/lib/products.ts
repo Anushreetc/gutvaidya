@@ -1,5 +1,6 @@
 import { Product, Category } from '@/types/ecommerce';
 import { createAdminClient } from './supabase/admin';
+import { withRatings } from './reviews';
 
 export const SEED_CATEGORIES: Category[] = [
   {
@@ -53,8 +54,6 @@ export const SEED_PRODUCTS: Product[] = [
     usage_instructions: 'Take 2 tablespoons (approx. 30g) of GutVaidya Health Mix. Mix with 250ml water or milk until smooth. Cook on medium flame for 3 to 5 minutes while stirring continuously. Add jaggery or honey to taste if desired. Enjoy warm as a wholesome breakfast.',
     weight_size: '500g',
     badge: 'Bestseller',
-    rating: 4.9,
-    reviews_count: 128,
   },
   {
     id: 'a2222222-2222-2222-2222-222222222222',
@@ -82,8 +81,6 @@ export const SEED_PRODUCTS: Product[] = [
     usage_instructions: 'Mix 1-2 spoons in a glass of warm milk. Whisk thoroughly and serve in the morning or after sports.',
     weight_size: '500g',
     badge: 'Kids Favorite',
-    rating: 4.8,
-    reviews_count: 86,
   },
   {
     id: 'a3333333-3333-3333-3333-333333333333',
@@ -111,8 +108,6 @@ export const SEED_PRODUCTS: Product[] = [
     usage_instructions: 'Stir 2 spoons into warm water, buttermilk, or soup broth. Consume once daily after lunch or dinner.',
     weight_size: '500g',
     badge: 'Popular',
-    rating: 4.9,
-    reviews_count: 54,
   },
   {
     id: 'a4444444-4444-4444-4444-444444444444',
@@ -140,8 +135,6 @@ export const SEED_PRODUCTS: Product[] = [
     usage_instructions: 'Blend 2 scoops into your morning smoothie, almond milk, or warm water. Ideal post-workout or as a high-protein breakfast.',
     weight_size: '500g',
     badge: 'Trending',
-    rating: 4.7,
-    reviews_count: 67,
   },
   {
     id: 'a5555555-5555-5555-5555-555555555555',
@@ -169,8 +162,6 @@ export const SEED_PRODUCTS: Product[] = [
     usage_instructions: 'Take 1 teaspoon in lukewarm water first thing in the morning on an empty stomach.',
     weight_size: '500g',
     badge: 'New Release',
-    rating: 4.8,
-    reviews_count: 42,
   },
   {
     id: 'a6666666-6666-6666-6666-666666666666',
@@ -198,8 +189,6 @@ export const SEED_PRODUCTS: Product[] = [
     usage_instructions: 'Take 2 spoons stirred into warm water 15 minutes before breakfast and dinner.',
     weight_size: '500g',
     badge: 'Recommended',
-    rating: 4.9,
-    reviews_count: 73,
   },
   {
     id: 'a7777777-7777-7777-7777-777777777777',
@@ -227,8 +216,6 @@ export const SEED_PRODUCTS: Product[] = [
     usage_instructions: 'Mix 1 tablespoon in warm water with a squeeze of fresh lemon juice, twice daily before meals.',
     weight_size: '500g',
     badge: 'New Release',
-    rating: 4.8,
-    reviews_count: 39,
   },
 ];
 
@@ -298,8 +285,6 @@ export async function getProducts(options?: {
           category_name: p.categories?.name,
           images: p.images || [p.main_image],
           benefits: Array.isArray(p.benefits) ? p.benefits : [],
-          rating: p.rating || 4.8,
-          reviews_count: p.reviews_count || 45,
         }));
 
         if (options?.search) {
@@ -311,6 +296,8 @@ export async function getProducts(options?: {
               p.ingredients.toLowerCase().includes(q)
           );
         }
+
+        mapped = await withRatings(mapped);
 
         if (options?.sortBy) {
           if (options.sortBy === 'price-asc') mapped.sort((a: Product, b: Product) => a.price - b.price);
@@ -384,16 +371,15 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
         .single();
 
       if (!error && data) {
-        return {
+        const [withRating] = await withRatings([{
           ...data,
           price: Number(data.price),
           compare_at_price: data.compare_at_price ? Number(data.compare_at_price) : undefined,
           category_name: data.categories?.name,
           images: data.images || [data.main_image],
           benefits: Array.isArray(data.benefits) ? data.benefits : [],
-          rating: data.rating || 4.9,
-          reviews_count: data.reviews_count || 50,
-        };
+        }]);
+        return withRating;
       }
     } catch (e) {
       console.warn('Supabase product slug lookup failed, using fallback seeds', e);

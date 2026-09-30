@@ -21,7 +21,8 @@ export default async function AdminDashboardPage() {
   // The admin layout's gate runs in the browser; this stops the order data being sent at all
   await requireAdminPage();
 
-  const orders = await getOrders();
+  // Unpaid checkouts are saved as pending orders; they are not sales
+  const orders = await getOrders({ paidOnly: true });
   const products = await getProducts();
 
   // Compute metrics

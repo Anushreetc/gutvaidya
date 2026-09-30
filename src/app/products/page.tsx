@@ -302,12 +302,14 @@ export default function ProductsPage() {
                       {/* Card Body */}
                       <div className="p-5 flex-grow flex flex-col justify-between">
                         <div className="space-y-2.5">
-                          {/* Rating */}
-                          <div className="flex items-center gap-1 text-accent-gold text-xs">
-                            <Star className="w-3.5 h-3.5 fill-current" />
-                            <span className="font-bold text-primary-900">{product.rating}</span>
-                            <span className="text-foreground/40">({product.reviews_count})</span>
-                          </div>
+                          {/* Rating (only from real, approved reviews) */}
+                          {product.rating && product.reviews_count ? (
+                            <div className="flex items-center gap-1 text-accent-gold text-xs">
+                              <Star className="w-3.5 h-3.5 fill-current" />
+                              <span className="font-bold text-primary-900">{product.rating}</span>
+                              <span className="text-foreground/40">({product.reviews_count})</span>
+                            </div>
+                          ) : null}
 
                           <Link href={`/products/${product.slug}`} className="block group">
                             <h3 className="text-lg font-serif font-bold text-primary-900 leading-tight group-hover:text-accent-gold transition-colors line-clamp-1">

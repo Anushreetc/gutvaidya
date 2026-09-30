@@ -29,9 +29,7 @@
     "ingredients": "Sprouted Ragi, Foxtail Millet, Little Millet, Kodo Millet, Barnyard Millet, Sprouted Green Gram, Almonds, Walnuts, Pistachios, Cardamom, Dry Ginger, Shatavari, Licorice, Ashwagandha.",
     "usage_instructions": "Take 2 tablespoons (approx. 30g) of GutVaidya Health Mix. Mix with 250ml water or milk until smooth. Cook on medium flame for 3 to 5 minutes while stirring continuously. Add jaggery or honey to taste if desired. Enjoy warm as a wholesome breakfast.",
     "weight_size": "500g",
-    "badge": "Bestseller",
-    "rating": 4.9,
-    "reviews_count": 128
+    "badge": "Bestseller"
   },
   {
     "id": "a2222222-2222-2222-2222-222222222222",
@@ -61,9 +59,7 @@
     "ingredients": "Sprouted Ragi, Whole Green Gram, Almonds, Cashews, Brahmi, Shankhpushpi, Saffron, Green Cardamom, Sprouted Barley.",
     "usage_instructions": "Mix 1-2 spoons in a glass of warm milk. Whisk thoroughly and serve in the morning or after sports.",
     "weight_size": "500g",
-    "badge": "Kids Favorite",
-    "rating": 4.8,
-    "reviews_count": 86
+    "badge": "Kids Favorite"
   },
   {
     "id": "a3333333-3333-3333-3333-333333333333",
@@ -92,9 +88,7 @@
     "ingredients": "Sprouted Foxtail Millet, Sesame Seeds, Flax Seeds, Turmeric (Curcumin 3%), Dry Ginger, Ashwagandha, Methi (Fenugreek), Ajwain.",
     "usage_instructions": "Stir 2 spoons into warm water, buttermilk, or soup broth. Consume once daily after lunch or dinner.",
     "weight_size": "500g",
-    "badge": "Popular",
-    "rating": 4.9,
-    "reviews_count": 54
+    "badge": "Popular"
   },
   {
     "id": "a4444444-4444-4444-4444-444444444444",
@@ -123,9 +117,7 @@
     "ingredients": "Sprouted Moong, Roasted Bengal Gram, Chia Seeds, Pumpkin Seeds, Moringa Leaf, Safed Musli, Gokshura, Raw Cacao.",
     "usage_instructions": "Blend 2 scoops into your morning smoothie, almond milk, or warm water. Ideal post-workout or as a high-protein breakfast.",
     "weight_size": "500g",
-    "badge": "Trending",
-    "rating": 4.7,
-    "reviews_count": 67
+    "badge": "Trending"
   },
   {
     "id": "a5555555-5555-5555-5555-555555555555",
@@ -154,9 +146,7 @@
     "ingredients": "Bhumyamalaki, Kalmegh, Milk Thistle Seed, Punarnava, Kutki, Sprouted Horsegram, Cumin, Fennel.",
     "usage_instructions": "Take 1 teaspoon in lukewarm water first thing in the morning on an empty stomach.",
     "weight_size": "500g",
-    "badge": "New Release",
-    "rating": 4.8,
-    "reviews_count": 42
+    "badge": "New Release"
   },
   {
     "id": "a6666666-6666-6666-6666-666666666666",
@@ -185,9 +175,7 @@
     "ingredients": "Sprouted Barnyard Millet, Jamun Seed Powder, Karela (Bitter Gourd), Fenugreek Seeds, Vijaysar Bark, Gurmar (Gymnema Sylvestre), Cinnamon.",
     "usage_instructions": "Take 2 spoons stirred into warm water 15 minutes before breakfast and dinner.",
     "weight_size": "500g",
-    "badge": "Recommended",
-    "rating": 4.9,
-    "reviews_count": 73
+    "badge": "Recommended"
   },
   {
     "id": "a7777777-7777-7777-7777-777777777777",
@@ -216,8 +204,6 @@
     "ingredients": "Sprouted Horsegram, Triphala (Amalaki, Bibhitaki, Haritaki), Guggulu, Black Pepper, Long Pepper (Pippali), Ginger, Garcinia Cambogia, Green Tea Extract.",
     "usage_instructions": "Mix 1 tablespoon in warm water with a squeeze of fresh lemon juice, twice daily before meals.",
     "weight_size": "500g",
-    "badge": "New Release",
-    "rating": 4.8,
-    "reviews_count": 39
+    "badge": "New Release"
   }
 ]

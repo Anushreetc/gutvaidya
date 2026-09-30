@@ -7,11 +7,17 @@ import { Product } from '@/types/ecommerce';
 
 import { safeDecodeCookie } from '@/lib/products-client';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
+import { getCurrentUser } from '@/lib/supabase/auth';
+import { createPendingOrder } from '@/lib/orders';
+import { rateLimit } from '@/lib/rate-limit';
 
 export async function POST(req: Request) {
+  const limited = await rateLimit(req, 'checkout', 20, 600);
+  if (limited) return limited;
+
   try {
     const body = await req.json();
-    const { items, couponCode, shippingAddress, customerInfo } = body;
+    const { items, couponCode, shippingAddress, customerInfo, notes } = body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
@@ -119,8 +125,44 @@ export async function POST(req: Request) {
       order_number: orderNumber,
     });
 
+    // 7. Save the order as pending now, so a completed payment always has an order to attach
+    //    to, even if the customer closes the tab before the browser reports back.
+    let pendingOrderId: string | undefined;
+    if (isSupabaseConfigured() && !(rzpOrder as any).isMock) {
+      const user = await getCurrentUser();
+      const pending = await createPendingOrder({
+        order_number: orderNumber,
+        customer_id: user?.id,
+        customer_name: customerInfo.name,
+        customer_email: customerInfo.email,
+        customer_phone: customerInfo.phone,
+        shipping_address: shippingAddress,
+        subtotal,
+        discount,
+        shipping_charge: shipping.shippingCharge,
+        tax: shipping.tax,
+        total,
+        payment_status: 'pending',
+        order_status: 'pending',
+        razorpay_order_id: rzpOrder.id,
+        coupon_code: appliedCode || undefined,
+        notes: typeof notes === 'string' ? notes.slice(0, 1000) : undefined,
+        items: verifiedItems.map((v) => ({
+          product_id: v.product.id,
+          product_name: v.product.name,
+          quantity: v.qty,
+          unit_price: v.unitPrice,
+          total_price: v.totalPrice,
+          image: v.product.main_image,
+        })),
+        created_at: new Date().toISOString(),
+      });
+      pendingOrderId = pending.id;
+    }
+
     return NextResponse.json({
       success: true,
+      orderId: pendingOrderId,
       orderNumber,
       razorpayOrderId: rzpOrder.id,
       amount: total,

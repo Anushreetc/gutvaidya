@@ -22,6 +22,7 @@ export default function RegisterPage() {
   });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,10 +34,10 @@ export default function RegisterPage() {
         email: form.email,
         password: form.password,
         options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/account`,
           data: {
             name: form.name,
             phone: form.phone,
-            role: "customer",
           },
         },
       });
@@ -47,7 +48,15 @@ export default function RegisterPage() {
         return;
       }
 
+      // With email confirmation on, Supabase returns no session until the link is clicked
+      if (!data.session) {
+        setAwaitingConfirmation(true);
+        setLoading(false);
+        return;
+      }
+
       router.push("/account");
+      router.refresh();
     } else {
       setDemoUser("customer");
       router.push("/account");
@@ -75,6 +84,16 @@ export default function RegisterPage() {
             </div>
           )}
 
+          {awaitingConfirmation ? (
+            <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm text-center space-y-2">
+              <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
+              <p className="font-semibold">Check your email to confirm your account</p>
+              <p className="text-xs text-foreground/60">
+                We sent a confirmation link to <strong>{form.email}</strong>. Click it to activate your account,
+                then you&apos;ll be signed in automatically. Don&apos;t see it? Check your spam folder.
+              </p>
+            </div>
+          ) : (
           <form onSubmit={handleRegister} className="space-y-4">
             <div>
               <label className="text-xs font-bold uppercase text-primary-900 block mb-1">
@@ -136,10 +155,10 @@ export default function RegisterPage() {
                 <input
                   type="password"
                   required
-                  minLength={6}
+                  minLength={8}
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  placeholder="••••••••"
+                  placeholder="At least 8 characters"
                   className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
                 />
               </div>
@@ -153,6 +172,7 @@ export default function RegisterPage() {
               {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
+          )}
 
           <div className="text-center pt-2">
             <p className="text-xs text-foreground/60">

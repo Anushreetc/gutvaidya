@@ -1,10 +1,79 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import Script from "next/script";
 
+const CONSENT_KEY = "gv_cookie_consent";
+type Consent = "accepted" | "declined" | null;
+
+function readConsent(): Consent {
+  try {
+    const v = localStorage.getItem(CONSENT_KEY);
+    return v === "accepted" || v === "declined" ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+// Analytics and marketing pixels load only after the visitor accepts (DPDP Act).
+// If no analytics IDs are configured, nothing is shown or loaded.
 export default function Analytics() {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const [consent, setConsent] = useState<Consent>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setConsent(readConsent());
+    setReady(true);
+  }, []);
+
+  const choose = (value: "accepted" | "declined") => {
+    try {
+      localStorage.setItem(CONSENT_KEY, value);
+    } catch {}
+    setConsent(value);
+  };
+
+  if (!gaId && !metaPixelId) return null;
+
+  if (ready && consent === null) {
+    return (
+      <div
+        role="dialog"
+        aria-label="Cookie consent"
+        className="fixed inset-x-0 bottom-0 z-[60] p-4"
+        style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
+      >
+        <div className="mx-auto max-w-3xl rounded-2xl bg-primary-900 text-white/90 shadow-2xl border border-primary-700 p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:items-center">
+          <p className="text-xs leading-relaxed flex-1">
+            We use cookies to keep you signed in and your cart working. With your permission we&apos;d also like to use
+            analytics cookies to understand how visitors use our site.{" "}
+            <Link href="/privacy-policy" className="underline font-semibold text-accent-gold">
+              Privacy Policy
+            </Link>
+          </p>
+          <div className="flex gap-2 flex-shrink-0">
+            <button
+              onClick={() => choose("declined")}
+              className="px-4 py-2 rounded-full border border-white/30 text-xs font-bold hover:bg-white/10"
+            >
+              Decline
+            </button>
+            <button
+              onClick={() => choose("accepted")}
+              className="px-4 py-2 rounded-full bg-accent-gold text-primary-900 text-xs font-bold hover:opacity-90"
+            >
+              Accept
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (consent !== "accepted") return null;
 
   return (
     <>
