@@ -5,7 +5,7 @@ import { Mail, Phone, MapPin, Send, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function ContactSection() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [feedback, setFeedback] = useState("");
 
@@ -22,7 +22,7 @@ export default function ContactSection() {
       if (res.ok) {
         setStatus("success");
         setFeedback(data.message || "Message sent successfully!");
-        setForm({ name: "", email: "", message: "" });
+        setForm({ name: "", email: "", message: "", website: "" });
         setTimeout(() => {
           setStatus("idle");
           setFeedback("");
@@ -122,6 +122,17 @@ export default function ContactSection() {
             <div className="glass-card rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg h-full flex flex-col justify-between">
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot: hidden from people and screen readers; bots that fill it are ignored */}
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={form.website}
+                  onChange={(e) => setForm({ ...form, website: e.target.value })}
+                  className="absolute -left-[9999px] w-px h-px opacity-0"
+                />
                 <div>
                   <h3 className="text-xl font-serif font-bold text-primary-900 mb-1">
                     Send a Message

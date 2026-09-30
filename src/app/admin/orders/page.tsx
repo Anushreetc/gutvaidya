@@ -282,8 +282,15 @@ export default function AdminOrdersPage() {
                     ₹{order.total}
                   </td>
                   <td className="py-4 px-4">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase">
-                      {order.payment_status}
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                        order.payment_status === "paid"
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-amber-100 text-amber-800"
+                      }`}
+                      title={order.payment_status === "pending" ? "Checkout started but payment not received (yet)" : undefined}
+                    >
+                      {order.payment_status === "pending" ? "awaiting payment" : order.payment_status}
                     </span>
                   </td>
                   {/* Status Dropdown */}

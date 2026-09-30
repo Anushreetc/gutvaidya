@@ -14,7 +14,7 @@ export default async function AccountOrdersPage() {
   if (isSupabaseConfigured()) {
     const user = await getCurrentUser();
     if (!user) redirect("/auth/login?next=/account/orders");
-    orders = await getOrders({ customerId: user.id, email: user.email });
+    orders = await getOrders({ customerId: user.id, email: user.email, paidOnly: true });
   } else {
     orders = await getOrders();
   }

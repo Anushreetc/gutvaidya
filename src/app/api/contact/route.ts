@@ -4,6 +4,7 @@ import path from 'path';
 import { sendContactInquiryEmail } from '@/lib/email';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { requireAdminApi } from '@/lib/supabase/auth';
+import { rateLimit } from '@/lib/rate-limit';
 
 const MESSAGES_FILE = path.join(process.cwd(), 'data', 'messages.json');
 
@@ -31,7 +32,17 @@ function saveMessageLocally(messageData: any) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, message } = body;
+    const { name, email, message, website } = body;
+
+    // Honeypot: the "website" field is hidden from people, so only bots fill it in.
+    // Pretend success so they don't retry.
+    if (website) {
+      return NextResponse.json({ success: true, message: 'Your message has been sent successfully.' });
+    }
+
+    // 5 messages per hour per visitor keeps the inbox safe from floods
+    const limited = await rateLimit(req, 'contact', 5, 3600);
+    if (limited) return limited;
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -40,11 +51,15 @@ export async function POST(req: Request) {
       );
     }
 
+    if (String(name).length > 200 || String(email).length > 320 || String(message).length > 5000) {
+      return NextResponse.json({ error: 'Please keep your message under 5000 characters.' }, { status: 400 });
+    }
+
     const messageRecord = {
       id: `msg-${Date.now()}`,
-      name: name.trim(),
-      email: email.trim(),
-      message: message.trim(),
+      name: String(name).trim(),
+      email: String(email).trim(),
+      message: String(message).trim(),
       status: 'unread',
       created_at: new Date().toISOString(),
     };

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Product } from "@/types/ecommerce";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import type { PublicReview } from "@/lib/reviews";
 import {
   Star,
   ShieldCheck,
@@ -29,11 +31,13 @@ import { BUSINESS } from "@/lib/business";
 interface Props {
   product: Product;
   relatedProducts: Product[];
+  reviews: PublicReview[];
 }
 
-export default function ProductDetailsClient({ product: initialProduct, relatedProducts }: Props) {
+export default function ProductDetailsClient({ product: initialProduct, relatedProducts, reviews }: Props) {
   const router = useRouter();
   const { addToCart } = useCart();
+  const { user } = useAuth();
 
   const [product, setProduct] = useState<Product>(() => applyProductOverride(initialProduct));
 
@@ -53,36 +57,10 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"benefits" | "ingredients" | "usage" | "reviews">("benefits");
 
-  // Local reviews state for interactive customer review submission
-  const [reviews, setReviews] = useState([
-    {
-      id: "rev-1",
-      name: "Radhika Mehra",
-      rating: 5,
-      date: "2 weeks ago",
-      comment: "A noticeable difference in my digestion within just 5 days. It's light, fragrant with cardamom, and doesn't cause any acidity.",
-      verified: true,
-    },
-    {
-      id: "rev-2",
-      name: "Dr. Aniruddha S.",
-      rating: 5,
-      date: "1 month ago",
-      comment: "Superb formulation. Sprouted millets and grains make absorption effortless. I recommend this to all my patients suffering from sluggish digestion.",
-      verified: true,
-    },
-    {
-      id: "rev-3",
-      name: "Karan Johar",
-      rating: 4,
-      date: "1 month ago",
-      comment: "Tastes like authentic traditional homemade porridge. Zero synthetic aftertaste. A staple in our morning breakfast now.",
-      verified: true,
-    },
-  ]);
-
   const [reviewForm, setReviewForm] = useState({ name: "", rating: 5, comment: "" });
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [reviewError, setReviewError] = useState<string | null>(null);
+  const [reviewSending, setReviewSending] = useState(false);
 
   const images = product.images && product.images.length > 0 ? product.images : [product.main_image];
 
@@ -126,25 +104,31 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
     router.push("/checkout");
   };
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
+  // Reviews are saved for admin approval; they appear on the page once approved
+  const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!reviewForm.name || !reviewForm.comment) return;
-
-    setReviews([
-      {
-        id: `rev-${Date.now()}`,
-        name: reviewForm.name,
-        rating: reviewForm.rating,
-        date: "Just now",
-        comment: reviewForm.comment,
-        verified: true,
-      },
-      ...reviews,
-    ]);
-
-    setReviewSubmitted(true);
-    setReviewForm({ name: "", rating: 5, comment: "" });
-    setTimeout(() => setReviewSubmitted(false), 5000);
+    setReviewError(null);
+    setReviewSending(true);
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product.id,
+          rating: reviewForm.rating,
+          review: reviewForm.comment,
+          name: reviewForm.name,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Could not submit your review.");
+      setReviewSubmitted(true);
+      setReviewForm({ name: "", rating: 5, comment: "" });
+    } catch (err: any) {
+      setReviewError(err.message);
+    } finally {
+      setReviewSending(false);
+    }
   };
 
   return (
@@ -223,15 +207,19 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                 <span className="text-xs uppercase tracking-wider font-bold text-accent-gold-dark">
                   {product.category_name || "Wellness Formulation"}
                 </span>
-                <div className="flex items-center gap-1.5 text-xs text-accent-gold font-bold">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
-                    ))}
+                {product.rating && product.reviews_count ? (
+                  <div className="flex items-center gap-1.5 text-xs text-accent-gold font-bold">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`w-4 h-4 ${i < Math.round(product.rating || 0) ? "fill-current" : "opacity-30"}`} />
+                      ))}
+                    </div>
+                    <span className="text-primary-900">{product.rating}</span>
+                    <span className="text-foreground/40">
+                      ({product.reviews_count} {product.reviews_count === 1 ? "review" : "reviews"})
+                    </span>
                   </div>
-                  <span className="text-primary-900">{product.rating}</span>
-                  <span className="text-foreground/40">({product.reviews_count} reviews)</span>
-                </div>
+                ) : null}
               </div>
 
               {/* Title */}
@@ -470,7 +458,15 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
 
                   {reviewSubmitted ? (
                     <div className="p-4 rounded-2xl bg-emerald-100 text-emerald-800 font-semibold text-sm">
-                      Thank you! Your review has been submitted and posted.
+                      Thank you! Your review has been received and will appear here once our team has checked it.
+                    </div>
+                  ) : !user ? (
+                    <div className="p-4 rounded-2xl bg-white border border-primary-100 text-sm text-foreground/70">
+                      Please{" "}
+                      <Link href={`/auth/login?next=/products/${product.slug}`} className="font-bold text-primary-700 hover:underline">
+                        sign in
+                      </Link>{" "}
+                      to write a review.
                     </div>
                   ) : (
                     <form onSubmit={handleReviewSubmit} className="space-y-4">
@@ -479,10 +475,10 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                           <label className="text-xs font-bold uppercase text-primary-900 block mb-1">Your Name</label>
                           <input
                             type="text"
-                            required
+                            maxLength={80}
                             value={reviewForm.name}
                             onChange={(e) => setReviewForm({ ...reviewForm, name: e.target.value })}
-                            placeholder="Enter your name"
+                            placeholder="Name to show (optional)"
                             className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-600"
                           />
                         </div>
@@ -496,6 +492,8 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                             <option value={5}>⭐⭐⭐⭐⭐ (5 Stars - Excellent)</option>
                             <option value={4}>⭐⭐⭐⭐ (4 Stars - Very Good)</option>
                             <option value={3}>⭐⭐⭐ (3 Stars - Average)</option>
+                            <option value={2}>⭐⭐ (2 Stars - Poor)</option>
+                            <option value={1}>⭐ (1 Star - Very Poor)</option>
                           </select>
                         </div>
                       </div>
@@ -503,6 +501,8 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                         <label className="text-xs font-bold uppercase text-primary-900 block mb-1">Your Review</label>
                         <textarea
                           required
+                          minLength={10}
+                          maxLength={2000}
                           rows={3}
                           value={reviewForm.comment}
                           onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
@@ -510,18 +510,28 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                           className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 resize-none"
                         />
                       </div>
+                      {reviewError && (
+                        <p className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-xl p-3">{reviewError}</p>
+                      )}
                       <button
                         type="submit"
-                        className="px-6 py-2.5 rounded-full bg-primary-700 text-white font-semibold text-xs hover:bg-primary-800 transition-colors shadow-sm"
+                        disabled={reviewSending}
+                        className="px-6 py-2.5 rounded-full bg-primary-700 text-white font-semibold text-xs hover:bg-primary-800 transition-colors shadow-sm disabled:opacity-50"
                       >
-                        Submit Review
+                        {reviewSending ? "Submitting..." : "Submit Review"}
                       </button>
+                      <p className="text-[11px] text-foreground/50">Reviews are checked by our team before they appear.</p>
                     </form>
                   )}
                 </div>
 
-                {/* Reviews List */}
+                {/* Reviews List (approved reviews only) */}
                 <div className="space-y-4">
+                  {reviews.length === 0 && (
+                    <p className="text-sm text-foreground/50 text-center py-6">
+                      No reviews yet. Bought this product? Be the first to share your experience.
+                    </p>
+                  )}
                   {reviews.map((rev) => (
                     <div
                       key={rev.id}
@@ -529,21 +539,23 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className="font-serif font-bold text-primary-900 text-sm">{rev.name}</span>
-                          {rev.verified && (
+                          <span className="font-serif font-bold text-primary-900 text-sm">{rev.customer_name}</span>
+                          {rev.verified_purchase && (
                             <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold">
                               <CheckCircle2 className="w-3 h-3" /> Verified Buyer
                             </span>
                           )}
                         </div>
-                        <span className="text-xs text-foreground/40">{rev.date}</span>
+                        <span className="text-xs text-foreground/40">
+                          {new Date(rev.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                        </span>
                       </div>
                       <div className="flex text-accent-gold text-xs mb-2">
                         {[...Array(rev.rating)].map((_, i) => (
                           <Star key={i} className="w-3.5 h-3.5 fill-current" />
                         ))}
                       </div>
-                      <p className="text-xs sm:text-sm text-foreground/75 leading-relaxed">{rev.comment}</p>
+                      <p className="text-xs sm:text-sm text-foreground/75 leading-relaxed whitespace-pre-line break-words">{rev.review}</p>
                     </div>
                   ))}
                 </div>

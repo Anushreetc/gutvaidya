@@ -52,83 +52,129 @@ let memoryOrders: Order[] = [
   },
 ];
 
-export async function createOrder(orderData: Omit<Order, 'id'>): Promise<Order> {
-  const adminClient = createAdminClient();
+type AdminClient = NonNullable<ReturnType<typeof createAdminClient>>;
 
-  if (adminClient) {
-    try {
-      // 1. Insert Order
-      const { data: orderRow, error: orderErr } = await adminClient
-        .from('orders')
-        .insert({
-          order_number: orderData.order_number,
-          customer_id: orderData.customer_id || null,
-          customer_name: orderData.customer_name,
-          customer_email: orderData.customer_email,
-          customer_phone: orderData.customer_phone,
-          shipping_address: orderData.shipping_address,
-          subtotal: orderData.subtotal,
-          discount: orderData.discount,
-          shipping_charge: orderData.shipping_charge,
-          tax: orderData.tax,
-          total: orderData.total,
-          payment_status: orderData.payment_status,
-          order_status: orderData.order_status,
-          razorpay_order_id: orderData.razorpay_order_id,
-          razorpay_payment_id: orderData.razorpay_payment_id,
-          razorpay_signature: orderData.razorpay_signature,
-          coupon_code: orderData.coupon_code,
-          notes: orderData.notes,
-        })
-        .select()
-        .single();
+// Inserts the order row and its line items. Stock and coupons are not touched here.
+async function insertOrderRows(adminClient: AdminClient, orderData: Omit<Order, 'id'>) {
+  const { data: orderRow, error: orderErr } = await adminClient
+    .from('orders')
+    .insert({
+      order_number: orderData.order_number,
+      customer_id: orderData.customer_id || null,
+      customer_name: orderData.customer_name,
+      customer_email: orderData.customer_email,
+      customer_phone: orderData.customer_phone,
+      shipping_address: orderData.shipping_address,
+      subtotal: orderData.subtotal,
+      discount: orderData.discount,
+      shipping_charge: orderData.shipping_charge,
+      tax: orderData.tax,
+      total: orderData.total,
+      payment_status: orderData.payment_status,
+      order_status: orderData.order_status,
+      razorpay_order_id: orderData.razorpay_order_id,
+      razorpay_payment_id: orderData.razorpay_payment_id,
+      razorpay_signature: orderData.razorpay_signature,
+      coupon_code: orderData.coupon_code,
+      notes: orderData.notes,
+    })
+    .select()
+    .single();
+  if (orderErr) throw orderErr;
 
-      if (orderErr) throw orderErr;
-      if (orderRow) {
-        // 2. Insert Order Items
-        const itemsToInsert = orderData.items.map((item) => ({
-          order_id: orderRow.id,
-          product_id: item.product_id,
-          product_name: item.product_name,
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-          total_price: item.total_price,
-          image: item.image,
-        }));
-
-        const { error: itemsErr } = await adminClient.from('order_items').insert(itemsToInsert);
-        if (itemsErr) console.error('Order items insert failed', orderRow.order_number, itemsErr);
-
-        // 3. Decrement inventory atomically
-        for (const item of orderData.items) {
-          const { error } = await adminClient.rpc('decrement_product_stock', {
-            p_id: item.product_id,
-            p_qty: item.quantity,
-          });
-          if (error) console.error('Stock decrement failed', item.product_id, error);
-        }
-
-        // 4. Increment coupon usage atomically
-        if (orderData.coupon_code) {
-          const { error } = await adminClient.rpc('increment_coupon_usage', {
-            p_code: orderData.coupon_code,
-          });
-          if (error) console.error('Coupon usage increment failed', orderData.coupon_code, error);
-        }
-
-        return {
-          ...orderData,
-          id: orderRow.id,
-        };
-      }
-    } catch (e) {
-      // A paid order must never vanish into the in-memory store on a real deployment
-      console.error('Database order insert failed', orderData.order_number, e);
-      throw e;
-    }
+  const { error: itemsErr } = await adminClient.from('order_items').insert(
+    orderData.items.map((item) => ({
+      order_id: orderRow.id,
+      product_id: item.product_id,
+      product_name: item.product_name,
+      quantity: item.quantity,
+      unit_price: item.unit_price,
+      total_price: item.total_price,
+      image: item.image,
+    }))
+  );
+  if (itemsErr) {
+    // An order without items is useless; remove it so the error surfaces cleanly
+    await adminClient.from('orders').delete().eq('id', orderRow.id);
+    throw itemsErr;
   }
 
-  // Fallback in-memory order creation (demo mode only)
+  return orderRow;
+}
+
+// Runs once per order, when it becomes paid
+async function applyPaidSideEffects(adminClient: AdminClient, order: Order) {
+  for (const item of order.items) {
+    const { error } = await adminClient.rpc('decrement_product_stock', {
+      p_id: item.product_id,
+      p_qty: item.quantity,
+    });
+    if (error) console.error('Stock decrement failed', item.product_id, error);
+  }
+
+  if (order.coupon_code) {
+    const { error } = await adminClient.rpc('increment_coupon_usage', { p_code: order.coupon_code });
+    if (error) console.error('Coupon usage increment failed', order.coupon_code, error);
+  }
+}
+
+// Saves the order before the customer pays, so a payment can never arrive for an order we
+// don't have. It becomes a real order only when markOrderPaid runs.
+export async function createPendingOrder(orderData: Omit<Order, 'id'>): Promise<Order> {
+  const adminClient = createAdminClient();
+  if (!adminClient) throw new Error('Pending orders need the database');
+
+  const row = await insertOrderRows(adminClient, {
+    ...orderData,
+    payment_status: 'pending',
+    order_status: 'pending',
+  });
+  return { ...orderData, id: row.id, payment_status: 'pending', order_status: 'pending' };
+}
+
+// Marks the pending order for a Razorpay order as paid. Safe to call from both the browser
+// callback and the webhook: the conditional update lets exactly one caller win, and only
+// that caller decrements stock and sends emails (justPaid = true).
+export async function markOrderPaid(params: {
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  razorpaySignature?: string;
+}): Promise<{ order: Order; justPaid: boolean } | null> {
+  const adminClient = createAdminClient();
+  if (!adminClient) return null;
+
+  const { data: updated, error } = await adminClient
+    .from('orders')
+    .update({
+      payment_status: 'paid',
+      order_status: 'confirmed',
+      razorpay_payment_id: params.razorpayPaymentId,
+      ...(params.razorpaySignature ? { razorpay_signature: params.razorpaySignature } : {}),
+      updated_at: new Date().toISOString(),
+    })
+    .eq('razorpay_order_id', params.razorpayOrderId)
+    .eq('payment_status', 'pending')
+    .select('*, order_items (*)');
+  if (error) throw error;
+
+  if (updated && updated.length > 0) {
+    const order = { ...updated[0], items: updated[0].order_items || [] } as Order;
+    await applyPaidSideEffects(adminClient, order);
+    return { order, justPaid: true };
+  }
+
+  // Already marked paid by the other caller (or no such order)
+  const { data: existing } = await adminClient
+    .from('orders')
+    .select('*, order_items (*)')
+    .eq('razorpay_order_id', params.razorpayOrderId)
+    .maybeSingle();
+  if (!existing) return null;
+  return { order: { ...existing, items: existing.order_items || [] } as Order, justPaid: false };
+}
+
+// Demo mode (no database): keep orders in memory
+export async function createOrder(orderData: Omit<Order, 'id'>): Promise<Order> {
   const newOrder: Order = {
     ...orderData,
     id: `ord-${Date.now()}`,
@@ -143,6 +189,7 @@ export async function getOrders(options?: {
   customerId?: string;
   email?: string;
   status?: string;
+  paidOnly?: boolean;
 }): Promise<Order[]> {
   const adminClient = createAdminClient();
 
@@ -167,6 +214,10 @@ export async function getOrders(options?: {
 
       if (options?.status) {
         query = query.eq('order_status', options.status);
+      }
+
+      if (options?.paidOnly) {
+        query = query.eq('payment_status', 'paid');
       }
 
       const { data, error } = await query;

@@ -12,6 +12,7 @@ import {
   Users,
   Tag,
   MessageSquare,
+  Star,
   ArrowLeft,
   ShieldCheck,
   Lock,
@@ -21,7 +22,7 @@ import {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user, profile, isAdmin, setDemoUser } = useAuth();
+  const { user, profile, isAdmin, isLoading, setDemoUser } = useAuth();
 
   const navItems = [
     { label: "Overview", href: "/admin", icon: LayoutDashboard },
@@ -29,8 +30,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: "Orders & Shipments", href: "/admin/orders", icon: ShoppingCart },
     { label: "Customers", href: "/admin/customers", icon: Users },
     { label: "Coupons & Offers", href: "/admin/coupons", icon: Tag },
+    { label: "Product Reviews", href: "/admin/reviews", icon: Star },
     { label: "Messages & Queries", href: "/admin/messages", icon: MessageSquare },
   ];
+
+  // Wait for the session and the profile (which carries the role) before deciding,
+  // otherwise real admins briefly see the access gate
+  if (isLoading || (user && !profile)) {
+    return (
+      <div className="min-h-screen bg-[#f7f9f4] flex items-center justify-center">
+        <div className="flex items-center gap-3 text-xs text-foreground/50">
+          <span className="w-4 h-4 rounded-full border-2 border-primary-200 border-t-primary-700 animate-spin" />
+          Checking admin access…
+        </div>
+      </div>
+    );
+  }
 
   // If user is not admin, show secure access gate with developer preview switch
   if (!isAdmin) {
