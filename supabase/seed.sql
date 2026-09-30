@@ -15,7 +15,7 @@ insert into public.products (
     category_id, main_image, status, featured, benefits, ingredients, usage_instructions, weight_size, badge
 ) values
 (
-    'p1111111-1111-1111-1111-111111111111',
+    'a1111111-1111-1111-1111-111111111111',
     'GutVaidya Health Mix',
     'gutvaidya-health-mix',
     'Contains handpicked traditional grains, millets, nuts, and natural herbs for daily immunity, gut health, and steady energy levels.',
@@ -35,7 +35,7 @@ insert into public.products (
     'Bestseller'
 ),
 (
-    'p2222222-2222-2222-2222-222222222222',
+    'a2222222-2222-2222-2222-222222222222',
     'GutVaidya Baal Vit',
     'gutvaidya-baal-vit',
     'Delicious, nutrient-dense wellness energy formulation specially balanced for growing children and youth.',
@@ -55,7 +55,7 @@ insert into public.products (
     'Kids Favorite'
 ),
 (
-    'p3333333-3333-3333-3333-333333333333',
+    'a3333333-3333-3333-3333-333333333333',
     'GutVaidya Sampoora',
     'gutvaidya-sampoora',
     'Complete senior wellness and vitality nutrition for holistic daily strength and digestive ease.',
@@ -75,7 +75,7 @@ insert into public.products (
     'Popular'
 ),
 (
-    'p4444444-4444-4444-4444-444444444444',
+    'a4444444-4444-4444-4444-444444444444',
     'GutVaidya Yuva Ojiva',
     'gutvaidya-yuva-ojiva',
     'High-vitality active lifestyle protein and adaptogen blend for working professionals and athletes.',
@@ -95,7 +95,7 @@ insert into public.products (
     'Trending'
 ),
 (
-    'p5555555-5555-5555-5555-555555555555',
+    'a5555555-5555-5555-5555-555555555555',
     'GutVaidya Proliva',
     'gutvaidya-proliva',
     'Liver detox and natural bile support blend promoting cellular gut-liver axis cleansing.',
@@ -115,7 +115,7 @@ insert into public.products (
     'New Release'
 ),
 (
-    'p6666666-6666-6666-6666-666666666666',
+    'a6666666-6666-6666-6666-666666666666',
     'GutVaidya Gluco Care',
     'gutvaidya-gluco-care',
     'Low-glycemic metabolic formula with bitter melon, jamun seeds, and soluble prebiotic fibers.',
@@ -135,7 +135,7 @@ insert into public.products (
     'Recommended'
 ),
 (
-    'p7777777-7777-7777-7777-777777777777',
+    'a7777777-7777-7777-7777-777777777777',
     'GutVaidya Fat Trim',
     'gutvaidya-fat-trim',
     'Thermogentic Ayurvedic metabolism booster designed to assist healthy weight management and gut transit.',

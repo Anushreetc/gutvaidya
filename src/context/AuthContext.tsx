@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { UserProfile } from "@/types/ecommerce";
 import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 interface AuthContextType {
   user: any | null;
@@ -50,8 +51,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // Check saved demo user first (for dev/preview when Supabase keys are not yet configured)
-    const savedDemo = localStorage.getItem("gutvaidya_demo_user");
+    // Demo users only exist while Supabase keys are not configured
+    if (isSupabaseConfigured()) localStorage.removeItem("gutvaidya_demo_user");
+    const savedDemo = isSupabaseConfigured() ? null : localStorage.getItem("gutvaidya_demo_user");
     if (savedDemo) {
       try {
         const parsed = JSON.parse(savedDemo);
@@ -110,6 +112,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const setDemoUser = (role: "customer" | "admin") => {
+    if (isSupabaseConfigured()) return;
     const demoProfile: UserProfile = {
       id: role === "admin" ? "demo-admin-id" : "demo-customer-id",
       name: role === "admin" ? "Vaidya Admin" : "Demo Customer",

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { sendContactInquiryEmail } from '@/lib/email';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { requireAdminApi } from '@/lib/supabase/auth';
 
 const MESSAGES_FILE = path.join(process.cwd(), 'data', 'messages.json');
 
@@ -47,8 +49,19 @@ export async function POST(req: Request) {
       created_at: new Date().toISOString(),
     };
 
-    // 1. Save message locally for Admin dashboard
-    saveMessageLocally(messageRecord);
+    // 1. Save message for the Admin dashboard (database, or local file in demo mode)
+    const adminClient = createAdminClient();
+    if (adminClient) {
+      const { data, error } = await adminClient
+        .from('contact_messages')
+        .insert({ name: messageRecord.name, email: messageRecord.email, message: messageRecord.message })
+        .select('id')
+        .single();
+      if (error) throw new Error(`Could not save your message: ${error.message}`);
+      messageRecord.id = data.id;
+    } else {
+      saveMessageLocally(messageRecord);
+    }
 
     // 2. Dispatch email to store administrator
     await sendContactInquiryEmail({
@@ -72,6 +85,19 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
+  const denied = await requireAdminApi();
+  if (denied) return denied;
+
+  const adminClient = createAdminClient();
+  if (adminClient) {
+    const { data, error } = await adminClient
+      .from('contact_messages')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(data);
+  }
+
   try {
     if (fs.existsSync(MESSAGES_FILE)) {
       const raw = fs.readFileSync(MESSAGES_FILE, 'utf-8');

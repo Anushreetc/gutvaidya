@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getOrderByIdOrNumber } from '@/lib/orders';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { CheckCircle2, PackageCheck, Truck, ArrowRight, ShieldCheck, FileText } from 'lucide-react';
 
 interface PageProps {
@@ -12,7 +13,9 @@ interface PageProps {
 
 export default async function OrderConfirmationPage({ searchParams }: PageProps) {
   const { order_id } = await searchParams;
-  const order = order_id ? await getOrderByIdOrNumber(order_id) : null;
+  // Only accept the unguessable order UUID here; order numbers are sequential-looking
+  const isUuid = !!order_id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(order_id);
+  const order = order_id && (isUuid || !isSupabaseConfigured()) ? await getOrderByIdOrNumber(order_id) : null;
 
   // Compute estimated delivery window (3 to 5 business days)
   const deliveryStart = new Date(Date.now() + 86400000 * 3).toLocaleDateString('en-IN', {

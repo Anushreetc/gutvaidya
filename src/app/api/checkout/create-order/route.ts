@@ -6,6 +6,7 @@ import { createRazorpayOrder } from '@/lib/razorpay';
 import { Product } from '@/types/ecommerce';
 
 import { safeDecodeCookie } from '@/lib/products-client';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
 
 export async function POST(req: Request) {
   try {
@@ -36,7 +37,9 @@ export async function POST(req: Request) {
     // 1. Fetch real products from server to verify prices and stock
     let allProducts = await getProducts();
 
-    try {
+    // Demo mode only: admin price edits live in a cookie. With a database the cookie is
+    // ignored, since shoppers can edit their own cookies.
+    if (!isSupabaseConfigured()) try {
       const cookieHeader = req.headers.get('cookie') || '';
       const match = cookieHeader.match(/gutvaidya_custom_products=([^;]+)/);
       if (match && match[1]) {

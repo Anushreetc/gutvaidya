@@ -8,15 +8,18 @@ export async function POST(req: Request) {
     const rawBody = await req.text();
     const signature = req.headers.get('x-razorpay-signature');
 
-    if (webhookSecret && signature) {
-      const expectedSignature = crypto
-        .createHmac('sha256', webhookSecret)
-        .update(rawBody)
-        .digest('hex');
+    // Unsigned events can't be trusted, so ignore them entirely
+    if (!webhookSecret || !signature) {
+      return NextResponse.json({ error: 'Webhook signature missing' }, { status: 400 });
+    }
 
-      if (expectedSignature !== signature) {
-        return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
-      }
+    const expectedSignature = crypto
+      .createHmac('sha256', webhookSecret)
+      .update(rawBody)
+      .digest('hex');
+
+    if (expectedSignature !== signature) {
+      return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
     }
 
     const event = JSON.parse(rawBody);

@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server';
 import { updateOrderStatus, getOrderByIdOrNumber } from '@/lib/orders';
 import { sendOrderStatusUpdateEmail } from '@/lib/email';
 import { OrderStatus } from '@/types/ecommerce';
+import { requireAdminApi } from '@/lib/supabase/auth';
 
 export async function POST(req: Request) {
+  const denied = await requireAdminApi();
+  if (denied) return denied;
+
   try {
     const body = await req.json();
     const { orderId, status } = body;

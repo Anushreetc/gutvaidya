@@ -1,4 +1,6 @@
 import { Product } from '@/types/ecommerce';
+import { createClient } from '@/lib/supabase/client';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
 
 const STORAGE_KEY = 'gutvaidya_custom_products';
 const COOKIE_NAME = 'gutvaidya_custom_products';
@@ -40,8 +42,10 @@ export function safeDecodeCookie(val: string): ProductOverridesMap {
 }
 
 // Get overrides from localStorage and document.cookie
+// With Supabase connected the database is the source of truth, so local overrides
+// (a demo-mode mechanism) are ignored.
 export function getProductOverrides(): ProductOverridesMap {
-  if (typeof window === 'undefined') return {};
+  if (typeof window === 'undefined' || isSupabaseConfigured()) return {};
 
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -103,11 +107,11 @@ export function saveProductUpdate(product: Product): ProductOverridesMap {
   currentOverrides[product.id] = override;
   currentOverrides[product.slug] = override;
 
-  try {
+  if (!isSupabaseConfigured()) try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(currentOverrides));
   } catch (e) {}
 
-  try {
+  if (!isSupabaseConfigured()) try {
     // Set cookie valid for 1 year across all paths
     const cookieVal = encodeURIComponent(JSON.stringify(currentOverrides));
     document.cookie = `${COOKIE_NAME}=${cookieVal}; path=/; max-age=31536000; SameSite=Lax`;
@@ -159,8 +163,26 @@ export function subscribeToProductUpdates(callback: (overrides: ProductOverrides
   window.addEventListener('gutvaidya_products_updated', handleCustomEvent);
   window.addEventListener('storage', handleStorageEvent);
 
+  // Supabase Realtime: every visitor sees admin price/stock edits without reloading
+  const supabase = createClient();
+  const channel = supabase
+    ?.channel(`products-live-${Math.random().toString(36).slice(2)}`)
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'products' }, (payload) => {
+      const row = payload.new as any;
+      const override: ProductOverride = {
+        price: Number(row.price),
+        compare_at_price: row.compare_at_price ? Number(row.compare_at_price) : undefined,
+        stock_quantity: Number(row.stock_quantity),
+        status: row.status,
+        featured: row.featured,
+      };
+      callback({ [row.id]: override, [row.slug]: override });
+    })
+    .subscribe();
+
   return () => {
     if (bc) bc.close();
+    if (supabase && channel) supabase.removeChannel(channel);
     window.removeEventListener('gutvaidya_products_updated', handleCustomEvent);
     window.removeEventListener('storage', handleStorageEvent);
   };

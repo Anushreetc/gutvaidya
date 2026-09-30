@@ -92,6 +92,27 @@ export default function AdminProductsPage() {
     setTimeout(() => setSaveSuccessMsg(null), 3500);
   };
 
+  // Saves to the server; on failure, tells the admin and reloads the true values
+  const persistProduct = async (action: "update" | "create", product: Product): Promise<Product | null> => {
+    try {
+      const res = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action, product }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Save failed");
+      return data.product as Product;
+    } catch (err: any) {
+      showToast(`⚠ Could not save ${product.name}: ${err.message}`);
+      fetch("/api/products")
+        .then((r) => r.json())
+        .then((data) => Array.isArray(data) && data.length > 0 && setProducts(data))
+        .catch(() => {});
+      return null;
+    }
+  };
+
   const saveEdit = async (product: Product) => {
     const updated = {
       ...product,
@@ -109,11 +130,7 @@ export default function AdminProductsPage() {
     showToast(`✓ Updated ${updated.name} to ₹${updated.price} (Synced live to website)`);
 
     // 3. Persist to server API
-    await fetch("/api/admin/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "update", product: updated }),
-    });
+    await persistProduct("update", updated);
   };
 
   const toggleFeatured = async (product: Product) => {
@@ -122,11 +139,7 @@ export default function AdminProductsPage() {
     setProducts((prev) => prev.map((p) => (p.id === product.id ? updated : p)));
     showToast(`${updated.name} ${updated.featured ? 'featured on' : 'removed from'} homepage`);
 
-    await fetch("/api/admin/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "update", product: updated }),
-    });
+    await persistProduct("update", updated);
   };
 
   const toggleStatus = async (product: Product) => {
@@ -136,11 +149,7 @@ export default function AdminProductsPage() {
     setProducts((prev) => prev.map((p) => (p.id === product.id ? updated : p)));
     showToast(`Status changed to ${newStatus}`);
 
-    await fetch("/api/admin/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "update", product: updated }),
-    });
+    await persistProduct("update", updated);
   };
 
   const handleCreateProduct = async (e: React.FormEvent) => {
@@ -173,11 +182,11 @@ export default function AdminProductsPage() {
     setProducts([created, ...products]);
     setIsAddModalOpen(false);
 
-    await fetch("/api/admin/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "create", product: created }),
-    });
+    // Swap the placeholder for the saved row (the database assigns the real id)
+    const saved = await persistProduct("create", created);
+    if (saved) {
+      setProducts((prev) => prev.map((p) => (p.id === created.id ? saved : p)));
+    }
   };
 
   return (

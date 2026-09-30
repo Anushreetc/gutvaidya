@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/context/AuthContext";
 import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { Lock, Mail, ArrowRight, ShieldCheck, UserCheck } from "lucide-react";
 
 export default function LoginPage() {
@@ -36,7 +37,10 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/account");
+      // Return to the page that sent the user here (only same-site paths)
+      const next = new URLSearchParams(window.location.search).get("next");
+      router.push(next && next.startsWith("/") && !next.startsWith("//") ? next : "/account");
+      router.refresh();
     } else {
       // In dev fallback mode
       setDemoUser("customer");
@@ -126,7 +130,8 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Quick Demo Access Switch */}
+          {/* Quick Demo Access Switch (demo mode only) */}
+          {!isSupabaseConfigured() && (
           <div className="pt-4 border-t border-primary-100/60 space-y-2 text-center">
             <span className="text-[11px] uppercase font-bold text-foreground/40 block">
               Quick Preview Sign-In
@@ -148,6 +153,7 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
+          )}
 
           <div className="text-center pt-2">
             <p className="text-xs text-foreground/60">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SEED_COUPONS } from "@/lib/coupons";
 import { Coupon } from "@/types/ecommerce";
 import { Tag, Plus, Check, X, Percent, DollarSign, Calendar } from "lucide-react";
@@ -8,6 +8,15 @@ import { Tag, Plus, Check, X, Percent, DollarSign, Calendar } from "lucide-react
 export default function AdminCouponsPage() {
   const [coupons, setCoupons] = useState<Coupon[]>(SEED_COUPONS);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/coupons")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.live && Array.isArray(data.coupons)) setCoupons(data.coupons);
+      })
+      .catch(() => {});
+  }, []);
 
   const [form, setForm] = useState({
     code: "",
@@ -56,11 +65,16 @@ export default function AdminCouponsPage() {
       usage_limit: 500,
     });
 
-    await fetch("/api/admin/coupons", {
+    // Swap in the saved row so later toggles use the database id
+    const res = await fetch("/api/admin/coupons", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "create", coupon: newCoupon }),
     });
+    const data = await res.json().catch(() => null);
+    if (data?.coupon) {
+      setCoupons((prev) => prev.map((c) => (c.id === newCoupon.id ? data.coupon : c)));
+    }
   };
 
   return (

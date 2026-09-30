@@ -23,21 +23,16 @@ export default function AdminOrdersPage() {
   const [activeOrder, setActiveOrder] = useState<Order | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  // Fetch orders from API
-  const loadOrders = async () => {
-    try {
-      const res = await fetch("/api/checkout/create-order"); // fallback fetcher or load
-      // Or fetch from orders API
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   useEffect(() => {
-    // Initial fetch from memory / DB via client
-    fetch("/api/checkout/verify-payment", { method: "GET" }).catch(() => {});
-    // Let's populate default orders for client view
-    setOrders([
+    // With a database connected, show real orders; otherwise keep the sample orders below
+    fetch("/api/admin/orders")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.live && Array.isArray(data.orders)) setOrders(data.orders);
+      })
+      .catch(() => {});
+
+    setOrders((prev) => (prev.length > 0 ? prev : [
       {
         id: "ord-seed-001",
         order_number: "GV-849201",
@@ -157,7 +152,7 @@ export default function AdminOrdersPage() {
         ],
         created_at: new Date(Date.now() - 3600000 * 5).toISOString(),
       },
-    ]);
+    ]));
     setLoading(false);
   }, []);
 

@@ -27,7 +27,7 @@ export const SEED_CATEGORIES: Category[] = [
 
 export const SEED_PRODUCTS: Product[] = [
   {
-    id: 'p1111111-1111-1111-1111-111111111111',
+    id: 'a1111111-1111-1111-1111-111111111111',
     name: 'GutVaidya Health Mix',
     slug: 'gutvaidya-health-mix',
     short_description: 'Contains handpicked traditional grains, millets, nuts, and natural herbs for daily immunity, gut health, and steady energy levels.',
@@ -57,7 +57,7 @@ export const SEED_PRODUCTS: Product[] = [
     reviews_count: 128,
   },
   {
-    id: 'p2222222-2222-2222-2222-222222222222',
+    id: 'a2222222-2222-2222-2222-222222222222',
     name: 'GutVaidya Baal Vit',
     slug: 'gutvaidya-baal-vit',
     short_description: 'Delicious, nutrient-dense wellness energy formulation specially balanced for growing children and youth.',
@@ -86,7 +86,7 @@ export const SEED_PRODUCTS: Product[] = [
     reviews_count: 86,
   },
   {
-    id: 'p3333333-3333-3333-3333-333333333333',
+    id: 'a3333333-3333-3333-3333-333333333333',
     name: 'GutVaidya Sampoora',
     slug: 'gutvaidya-sampoora',
     short_description: 'Complete senior wellness and vitality nutrition for holistic daily strength and digestive ease.',
@@ -115,7 +115,7 @@ export const SEED_PRODUCTS: Product[] = [
     reviews_count: 54,
   },
   {
-    id: 'p4444444-4444-4444-4444-444444444444',
+    id: 'a4444444-4444-4444-4444-444444444444',
     name: 'GutVaidya Yuva Ojiva',
     slug: 'gutvaidya-yuva-ojiva',
     short_description: 'High-vitality active lifestyle protein and adaptogen blend for working professionals and athletes.',
@@ -144,7 +144,7 @@ export const SEED_PRODUCTS: Product[] = [
     reviews_count: 67,
   },
   {
-    id: 'p5555555-5555-5555-5555-555555555555',
+    id: 'a5555555-5555-5555-5555-555555555555',
     name: 'GutVaidya Proliva',
     slug: 'gutvaidya-proliva',
     short_description: 'Liver detox and natural bile support blend promoting cellular gut-liver axis cleansing.',
@@ -173,7 +173,7 @@ export const SEED_PRODUCTS: Product[] = [
     reviews_count: 42,
   },
   {
-    id: 'p6666666-6666-6666-6666-666666666666',
+    id: 'a6666666-6666-6666-6666-666666666666',
     name: 'GutVaidya Gluco Care',
     slug: 'gutvaidya-gluco-care',
     short_description: 'Low-glycemic metabolic formula with bitter melon, jamun seeds, and soluble prebiotic fibers.',
@@ -202,7 +202,7 @@ export const SEED_PRODUCTS: Product[] = [
     reviews_count: 73,
   },
   {
-    id: 'p7777777-7777-7777-7777-777777777777',
+    id: 'a7777777-7777-7777-7777-777777777777',
     name: 'GutVaidya Fat Trim',
     slug: 'gutvaidya-fat-trim',
     short_description: 'Thermogentic Ayurvedic metabolism booster designed to assist healthy weight management and gut transit.',
