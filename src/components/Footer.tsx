@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Mail, Phone, Clock } from "lucide-react";
+import { BUSINESS, POLICY_LINKS } from "@/lib/business";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -29,7 +31,7 @@ export default function Footer() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[9px] uppercase tracking-wider text-white/40 font-semibold leading-none">Registered License</span>
-                  <span className="text-xs font-mono font-bold text-accent-gold mt-1 leading-none">Lic. No. 21224172000058</span>
+                  <span className="text-xs font-mono font-bold text-accent-gold mt-1 leading-none">Lic. No. {BUSINESS.fssaiLicense}</span>
                 </div>
               </div>
             </div>
@@ -91,10 +93,13 @@ export default function Footer() {
         {/* Copyright strip */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/40 gap-4">
           <p>© {currentYear} GutVaidya Health Mix. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#home" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#home" className="hover:text-white transition-colors">Terms of Service</a>
-          </div>
+          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2" aria-label="Store policies">
+            {POLICY_LINKS.map((link) => (
+              <Link key={link.href} href={link.href} className="hover:text-white transition-colors">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
       </div>

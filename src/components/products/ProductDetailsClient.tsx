@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 
 import { applyProductOverride, subscribeToProductUpdates } from "@/lib/products-client";
+import { BUSINESS } from "@/lib/business";
 
 interface Props {
   product: Product;
@@ -347,7 +348,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
               <div className="p-3 rounded-2xl bg-white border border-primary-100/60 shadow-sm flex flex-col items-center">
                 <ShieldCheck className="w-5 h-5 text-accent-gold mb-1" />
                 <span className="text-[11px] font-bold text-primary-900 leading-tight">FSSAI Certified</span>
-                <span className="text-[10px] text-foreground/50">100% Hygienic</span>
+                <span className="text-[10px] text-foreground/50">Lic. No. {BUSINESS.fssaiLicense}</span>
               </div>
               <div className="p-3 rounded-2xl bg-white border border-primary-100/60 shadow-sm flex flex-col items-center">
                 <Award className="w-5 h-5 text-accent-gold mb-1" />

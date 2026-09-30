@@ -13,6 +13,8 @@ import {
   Package,
   AlertTriangle,
   Save,
+  Camera,
+  Loader2,
 } from "lucide-react";
 
 import {
@@ -110,6 +112,29 @@ export default function AdminProductsPage() {
         .then((data) => Array.isArray(data) && data.length > 0 && setProducts(data))
         .catch(() => {});
       return null;
+    }
+  };
+
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+
+  const uploadPhoto = async (product: Product, file: File | undefined) => {
+    if (!file) return;
+    setUploadingId(product.id);
+    try {
+      const form = new FormData();
+      form.append("productId", product.id);
+      form.append("file", file);
+      const res = await fetch("/api/admin/products/image", { method: "POST", body: form });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      setProducts((prev) =>
+        prev.map((p) => (p.id === product.id ? { ...p, main_image: data.main_image, images: [data.main_image] } : p))
+      );
+      showToast(`✓ New photo saved for ${product.name}`);
+    } catch (err: any) {
+      showToast(`⚠ Photo upload failed for ${product.name}: ${err.message}`);
+    } finally {
+      setUploadingId(null);
     }
   };
 
@@ -221,6 +246,11 @@ export default function AdminProductsPage() {
         </button>
       </div>
 
+      <p className="text-[11px] text-foreground/50 flex items-center gap-1.5">
+        <Camera className="w-3.5 h-3.5 text-accent-gold" />
+        Click a product&apos;s photo to upload a new one (JPG, PNG or WebP, up to 4 MB). It updates on the website immediately.
+      </p>
+
       {/* Products Table */}
       <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
@@ -245,11 +275,38 @@ export default function AdminProductsPage() {
                   <tr key={p.id} className="hover:bg-primary-50/20 transition-colors">
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
-                        <img
-                          src={p.main_image}
-                          alt={p.name}
-                          className="w-10 h-10 rounded-xl object-cover border border-primary-100 flex-shrink-0"
-                        />
+                        <label
+                          className="relative w-12 h-12 flex-shrink-0 cursor-pointer group"
+                          title="Change product photo (JPG, PNG or WebP, max 4 MB)"
+                        >
+                          <img
+                            src={p.main_image}
+                            alt={p.name}
+                            className="w-12 h-12 rounded-xl object-cover border border-primary-100"
+                          />
+                          <span className="absolute inset-0 rounded-xl bg-primary-900/55 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            {uploadingId === p.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Camera className="w-4 h-4" />
+                            )}
+                          </span>
+                          {uploadingId === p.id && (
+                            <span className="absolute inset-0 rounded-xl bg-primary-900/55 flex items-center justify-center">
+                              <Loader2 className="w-4 h-4 text-white animate-spin" />
+                            </span>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            className="sr-only"
+                            disabled={uploadingId !== null}
+                            onChange={(e) => {
+                              uploadPhoto(p, e.target.files?.[0]);
+                              e.target.value = "";
+                            }}
+                          />
+                        </label>
                         <div>
                           <span className="font-serif font-bold text-primary-900 text-sm block">
                             {p.name}

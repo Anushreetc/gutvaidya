@@ -12,6 +12,7 @@ export interface ProductOverride {
   stock_quantity?: number;
   status?: 'active' | 'draft' | 'archived';
   featured?: boolean;
+  main_image?: string;
 }
 
 export type ProductOverridesMap = Record<string, ProductOverride>;
@@ -81,6 +82,7 @@ export function applyProductOverride(product: Product, overrides?: ProductOverri
     ...(override.stock_quantity !== undefined ? { stock_quantity: Number(override.stock_quantity) } : {}),
     ...(override.status !== undefined ? { status: override.status } : {}),
     ...(override.featured !== undefined ? { featured: override.featured } : {}),
+    ...(override.main_image ? { main_image: override.main_image, images: [override.main_image] } : {}),
   };
 }
 
@@ -175,6 +177,7 @@ export function subscribeToProductUpdates(callback: (overrides: ProductOverrides
         stock_quantity: Number(row.stock_quantity),
         status: row.status,
         featured: row.featured,
+        main_image: row.main_image,
       };
       callback({ [row.id]: override, [row.slug]: override });
     })
