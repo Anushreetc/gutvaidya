@@ -528,6 +528,12 @@ export default function CheckoutPage() {
                       <p>
                         Your payment information is encrypted and processed directly by Razorpay.
                       </p>
+                      <p>
+                        By placing this order you agree to our{" "}
+                        <Link href="/terms" className="underline hover:text-primary-700">Terms</Link>,{" "}
+                        <Link href="/refund-policy" className="underline hover:text-primary-700">Refund</Link> and{" "}
+                        <Link href="/shipping-policy" className="underline hover:text-primary-700">Shipping</Link> policies.
+                      </p>
                     </div>
                   </div>
                 </div>
