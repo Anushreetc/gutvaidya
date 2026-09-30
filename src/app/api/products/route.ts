@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getLiveProducts, updateLiveProduct } from '@/lib/products-server';
 import { safeDecodeCookie } from '@/lib/products-client';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
+import { requireAdminApi } from '@/lib/supabase/auth';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -10,8 +12,8 @@ export async function GET(req: Request) {
   try {
     let products = await getLiveProducts();
 
-    // Check if client sent custom overrides in cookie
-    try {
+    // Demo mode only: apply admin edits stored in the cookie
+    if (!isSupabaseConfigured()) try {
       const cookieHeader = req.headers.get('cookie') || '';
       const match = cookieHeader.match(/gutvaidya_custom_products=([^;]+)/);
       if (match && match[1]) {
@@ -44,6 +46,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const denied = await requireAdminApi();
+  if (denied) return denied;
+
   try {
     const body = await req.json();
     const { action, product } = body;

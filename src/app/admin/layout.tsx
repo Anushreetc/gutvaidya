@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import {
   LayoutDashboard,
   Package,
@@ -49,13 +50,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </p>
 
           <div className="pt-2 space-y-3">
-            <button
-              onClick={() => setDemoUser("admin")}
-              className="w-full py-3.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
-            >
-              <ShieldCheck className="w-4 h-4 text-accent-gold" />
-              Sign In as Administrator (Demo Preview)
-            </button>
+            {isSupabaseConfigured() ? (
+              <Link
+                href="/auth/login?next=/admin"
+                className="w-full py-3.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4 text-accent-gold" />
+                Sign In with an Administrator Account
+              </Link>
+            ) : (
+              <button
+                onClick={() => setDemoUser("admin")}
+                className="w-full py-3.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4 text-accent-gold" />
+                Sign In as Administrator (Demo Preview)
+              </button>
+            )}
 
             <Link
               href="/"

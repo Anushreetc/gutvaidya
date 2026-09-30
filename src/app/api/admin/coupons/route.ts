@@ -1,8 +1,26 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { SEED_COUPONS } from '@/lib/coupons';
+import { requireAdminApi } from '@/lib/supabase/auth';
+
+export async function GET() {
+  const denied = await requireAdminApi();
+  if (denied) return denied;
+
+  const adminClient = createAdminClient();
+  if (!adminClient) {
+    return NextResponse.json({ live: false, coupons: SEED_COUPONS });
+  }
+
+  const { data, error } = await adminClient.from('coupons').select('*').order('created_at', { ascending: false });
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ live: true, coupons: data });
+}
 
 export async function POST(req: Request) {
+  const denied = await requireAdminApi();
+  if (denied) return denied;
+
   try {
     const body = await req.json();
     const { action, coupon } = body;

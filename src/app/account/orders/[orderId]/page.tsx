@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOrderByIdOrNumber } from "@/lib/orders";
+import { getCurrentUser, isUserAdmin } from "@/lib/supabase/auth";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -34,6 +36,18 @@ export default async function OrderDetailPage({ params }: PageProps) {
 
   if (!order) {
     notFound();
+  }
+
+  // Only the customer who placed the order (or an admin) may view it
+  if (isSupabaseConfigured()) {
+    const user = await getCurrentUser();
+    const ownsOrder =
+      !!user &&
+      (order.customer_id === user.id ||
+        order.customer_email.toLowerCase() === (user.email || "").toLowerCase());
+    if (!user || (!ownsOrder && !(await isUserAdmin(user.id)))) {
+      notFound();
+    }
   }
 
   // Determine current active step index in the tracker

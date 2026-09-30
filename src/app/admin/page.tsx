@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { getOrders } from "@/lib/orders";
+import { requireAdminPage } from "@/lib/supabase/auth";
 import { getProducts } from "@/lib/products";
 import {
   DollarSign,
@@ -13,7 +14,13 @@ import {
   Sparkles,
 } from "lucide-react";
 
+// Per-request: shows private order data for the signed-in user
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
+  // The admin layout's gate runs in the browser; this stops the order data being sent at all
+  await requireAdminPage();
+
   const orders = await getOrders();
   const products = await getProducts();
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, Mail, Phone, Calendar, ShoppingBag } from "lucide-react";
 
 interface CustomerRecord {
@@ -55,6 +55,16 @@ const SEED_CUSTOMERS: CustomerRecord[] = [
 export default function AdminCustomersPage() {
   const [customers, setCustomers] = useState(SEED_CUSTOMERS);
   const [search, setSearch] = useState("");
+
+  // Replace the sample list with real customers once a database is connected
+  useEffect(() => {
+    fetch("/api/admin/customers")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.live && Array.isArray(data.customers)) setCustomers(data.customers);
+      })
+      .catch(() => {});
+  }, []);
 
   const filtered = customers.filter(
     (c) =>

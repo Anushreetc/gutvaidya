@@ -32,7 +32,7 @@ let memoryOrders: Order[] = [
     coupon_code: 'FESTIVE100',
     items: [
       {
-        product_id: 'p1111111-1111-1111-1111-111111111111',
+        product_id: 'a1111111-1111-1111-1111-111111111111',
         product_name: 'GutVaidya Health Mix',
         quantity: 1,
         unit_price: 799,
@@ -40,7 +40,7 @@ let memoryOrders: Order[] = [
         image: '/product.jpeg',
       },
       {
-        product_id: 'p2222222-2222-2222-2222-222222222222',
+        product_id: 'a2222222-2222-2222-2222-222222222222',
         product_name: 'GutVaidya Baal Vit',
         quantity: 1,
         unit_price: 899,
@@ -83,7 +83,8 @@ export async function createOrder(orderData: Omit<Order, 'id'>): Promise<Order> 
         .select()
         .single();
 
-      if (!orderErr && orderRow) {
+      if (orderErr) throw orderErr;
+      if (orderRow) {
         // 2. Insert Order Items
         const itemsToInsert = orderData.items.map((item) => ({
           order_id: orderRow.id,
@@ -95,44 +96,24 @@ export async function createOrder(orderData: Omit<Order, 'id'>): Promise<Order> 
           image: item.image,
         }));
 
-        await adminClient.from('order_items').insert(itemsToInsert);
+        const { error: itemsErr } = await adminClient.from('order_items').insert(itemsToInsert);
+        if (itemsErr) console.error('Order items insert failed', orderRow.order_number, itemsErr);
 
-        // 3. Decrement Inventory
+        // 3. Decrement inventory atomically
         for (const item of orderData.items) {
-          try {
-            await adminClient.rpc('decrement_product_stock', {
-              p_id: item.product_id,
-              p_qty: item.quantity,
-            });
-          } catch (e) {
-            // Fallback manual stock update
-            const { data: prod } = await adminClient
-              .from('products')
-              .select('stock_quantity')
-              .eq('id', item.product_id)
-              .single();
-            if (prod) {
-              await adminClient
-                .from('products')
-                .update({ stock_quantity: Math.max(0, prod.stock_quantity - item.quantity) })
-                .eq('id', item.product_id);
-            }
-          }
+          const { error } = await adminClient.rpc('decrement_product_stock', {
+            p_id: item.product_id,
+            p_qty: item.quantity,
+          });
+          if (error) console.error('Stock decrement failed', item.product_id, error);
         }
 
-        // 4. Increment coupon usage
+        // 4. Increment coupon usage atomically
         if (orderData.coupon_code) {
-          const { data: c } = await adminClient
-            .from('coupons')
-            .select('used_count')
-            .eq('code', orderData.coupon_code)
-            .single();
-          if (c) {
-            await adminClient
-              .from('coupons')
-              .update({ used_count: (c.used_count || 0) + 1 })
-              .eq('code', orderData.coupon_code);
-          }
+          const { error } = await adminClient.rpc('increment_coupon_usage', {
+            p_code: orderData.coupon_code,
+          });
+          if (error) console.error('Coupon usage increment failed', orderData.coupon_code, error);
         }
 
         return {
@@ -141,11 +122,13 @@ export async function createOrder(orderData: Omit<Order, 'id'>): Promise<Order> 
         };
       }
     } catch (e) {
-      console.warn('Database order insert failed, using fallback store', e);
+      // A paid order must never vanish into the in-memory store on a real deployment
+      console.error('Database order insert failed', orderData.order_number, e);
+      throw e;
     }
   }
 
-  // Fallback in-memory order creation
+  // Fallback in-memory order creation (demo mode only)
   const newOrder: Order = {
     ...orderData,
     id: `ord-${Date.now()}`,
@@ -153,6 +136,8 @@ export async function createOrder(orderData: Omit<Order, 'id'>): Promise<Order> 
   memoryOrders.unshift(newOrder);
   return newOrder;
 }
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function getOrders(options?: {
   customerId?: string;
@@ -171,7 +156,10 @@ export async function getOrders(options?: {
         `)
         .order('created_at', { ascending: false });
 
-      if (options?.customerId) {
+      if (options?.customerId && options?.email) {
+        // Include guest orders placed with the same email before the account existed
+        query = query.or(`customer_id.eq.${options.customerId},customer_email.eq."${options.email}"`);
+      } else if (options?.customerId) {
         query = query.eq('customer_id', options.customerId);
       } else if (options?.email) {
         query = query.eq('customer_email', options.email);
@@ -194,7 +182,11 @@ export async function getOrders(options?: {
   }
 
   let results = [...memoryOrders];
-  if (options?.customerId) {
+  if (options?.customerId && options?.email) {
+    results = results.filter(
+      (o) => o.customer_id === options.customerId || o.customer_email.toLowerCase() === options.email?.toLowerCase()
+    );
+  } else if (options?.customerId) {
     results = results.filter((o) => o.customer_id === options.customerId);
   } else if (options?.email) {
     results = results.filter((o) => o.customer_email.toLowerCase() === options.email?.toLowerCase());
@@ -218,8 +210,8 @@ export async function getOrderByIdOrNumber(idOrNumber: string): Promise<Order | 
           *,
           order_items (*)
         `)
-        .or(`id.eq.${idOrNumber},order_number.eq.${idOrNumber}`)
-        .single();
+        .eq(UUID_RE.test(idOrNumber) ? 'id' : 'order_number', idOrNumber)
+        .maybeSingle();
 
       if (!error && data) {
         return {

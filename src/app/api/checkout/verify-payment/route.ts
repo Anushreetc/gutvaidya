@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { verifyRazorpaySignature } from '@/lib/razorpay';
+import { verifyRazorpaySignature, razorpayInstance } from '@/lib/razorpay';
 import { createOrder } from '@/lib/orders';
+import { getProducts } from '@/lib/products';
+import { getCurrentUser } from '@/lib/supabase/auth';
 import { sendOrderConfirmationEmail } from '@/lib/email';
 import { Order } from '@/types/ecommerce';
 
@@ -38,10 +40,37 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Build verified order record
+    // 2. Take the amount and order number from Razorpay itself, not from the browser
+    let paidTotal = Number(breakdown?.total) || 0;
+    let verifiedOrderNumber = orderNumber || `GV-${Date.now().toString().slice(-6)}`;
+    if (razorpayInstance) {
+      const rzpOrder = await razorpayInstance.orders.fetch(razorpayOrderId);
+      paidTotal = Number(rzpOrder.amount) / 100;
+      if (rzpOrder.receipt) verifiedOrderNumber = rzpOrder.receipt;
+    }
+
+    // 3. Resolve line items against the catalogue so ids and prices are server-trusted
+    const catalogue = await getProducts();
+    const orderItems = (items as any[]).map((i) => {
+      const product = catalogue.find((p) => p.id === i.id || p.slug === i.slug || p.name === i.name);
+      const quantity = Math.max(1, Number(i.qty) || 1);
+      const unitPrice = product ? product.price : Number(i.price);
+      return {
+        product_id: product ? product.id : i.id,
+        product_name: product ? product.name : i.name,
+        quantity,
+        unit_price: unitPrice,
+        total_price: unitPrice * quantity,
+        image: product?.main_image || i.image,
+      };
+    });
+
+    // 4. Link the order to the signed-in account (never to an id sent by the browser)
+    const user = await getCurrentUser();
+
     const orderData: Omit<Order, 'id'> = {
-      order_number: orderNumber || `GV-${Date.now().toString().slice(-6)}`,
-      customer_id: customerInfo?.id || undefined,
+      order_number: verifiedOrderNumber,
+      customer_id: user?.id || undefined,
       customer_name: customerInfo.name,
       customer_email: customerInfo.email,
       customer_phone: customerInfo.phone,
@@ -50,7 +79,7 @@ export async function POST(req: Request) {
       discount: breakdown.discount || 0,
       shipping_charge: breakdown.shippingCharge || 0,
       tax: breakdown.tax || 0,
-      total: breakdown.total,
+      total: paidTotal,
       payment_status: 'paid',
       order_status: 'confirmed',
       razorpay_order_id: razorpayOrderId,
@@ -58,21 +87,14 @@ export async function POST(req: Request) {
       razorpay_signature: razorpaySignature,
       coupon_code: couponCode || undefined,
       notes: notes || undefined,
-      items: items.map((i: any) => ({
-        product_id: i.id,
-        product_name: i.name,
-        quantity: i.qty,
-        unit_price: i.price,
-        total_price: i.price * i.qty,
-        image: i.image,
-      })),
+      items: orderItems,
       created_at: new Date().toISOString(),
     };
 
-    // 3. Atomically save order, items, decrement stock, increment coupon
+    // 5. Save order, items, decrement stock, increment coupon, items, decrement stock, increment coupon
     const savedOrder = await createOrder(orderData);
 
-    // 4. Trigger asynchronous email notifications
+    // 6. Trigger asynchronous email notifications
     sendOrderConfirmationEmail(savedOrder).catch((err) =>
       console.error('Background order email error', err)
     );

@@ -79,16 +79,7 @@ export async function getLiveProducts(): Promise<Product[]> {
         .order('name');
 
       if (!error && data && data.length > 0) {
-        return data.map((p: any) => ({
-          ...p,
-          price: Number(p.price),
-          compare_at_price: p.compare_at_price ? Number(p.compare_at_price) : undefined,
-          category_name: p.categories?.name,
-          images: p.images || [p.main_image],
-          benefits: Array.isArray(p.benefits) ? p.benefits : [],
-          rating: p.rating || 4.8,
-          reviews_count: p.reviews_count || 45,
-        }));
+        return data.map(mapDbProduct);
       }
     } catch (e) {
       // Fallback to local stored products
@@ -98,28 +89,42 @@ export async function getLiveProducts(): Promise<Product[]> {
   return getLocalStoredProducts();
 }
 
+function mapDbProduct(p: any): Product {
+  return {
+    ...p,
+    price: Number(p.price),
+    compare_at_price: p.compare_at_price ? Number(p.compare_at_price) : undefined,
+    category_name: p.categories?.name,
+    images: p.images || [p.main_image],
+    benefits: Array.isArray(p.benefits) ? p.benefits : [],
+    rating: p.rating || 4.8,
+    reviews_count: p.reviews_count || 45,
+  };
+}
+
 export async function updateLiveProduct(updatedProduct: Partial<Product> & { id: string }): Promise<Product> {
   const adminClient = createAdminClient();
 
   if (adminClient) {
-    try {
-      await adminClient
-        .from('products')
-        .update({
-          price: updatedProduct.price,
-          compare_at_price: updatedProduct.compare_at_price,
-          stock_quantity: updatedProduct.stock_quantity,
-          status: updatedProduct.status,
-          featured: updatedProduct.featured,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', updatedProduct.id);
-    } catch (e) {
-      console.warn('Supabase product update failed, updating local file:', e);
-    }
+    const { data, error } = await adminClient
+      .from('products')
+      .update({
+        price: updatedProduct.price,
+        compare_at_price: updatedProduct.compare_at_price || null,
+        stock_quantity: updatedProduct.stock_quantity,
+        status: updatedProduct.status,
+        featured: updatedProduct.featured,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', updatedProduct.id)
+      .select('*, categories(name, slug)')
+      .single();
+
+    if (error) throw new Error(`Could not save product: ${error.message}`);
+    return mapDbProduct(data);
   }
 
-  // Always update local file
+  // Demo mode: persist to the local file
   const all = getLocalStoredProducts();
   const index = all.findIndex((p) => p.id === updatedProduct.id || p.slug === (updatedProduct as any).slug);
 
@@ -134,4 +139,43 @@ export async function updateLiveProduct(updatedProduct: Partial<Product> & { id:
 
   saveLocalStoredProducts(all);
   return result;
+}
+
+export async function createLiveProduct(product: Product): Promise<Product> {
+  const adminClient = createAdminClient();
+
+  if (adminClient) {
+    // Only send real table columns; the database generates the id
+    const { data, error } = await adminClient
+      .from('products')
+      .insert({
+        name: product.name,
+        slug: product.slug,
+        short_description: product.short_description,
+        description: product.description,
+        price: product.price,
+        compare_at_price: product.compare_at_price || null,
+        stock_quantity: product.stock_quantity,
+        category_id: product.category_id || null,
+        main_image: product.main_image || '/product.jpeg',
+        status: product.status || 'active',
+        featured: product.featured ?? false,
+        benefits: product.benefits || [],
+        ingredients: product.ingredients,
+        usage_instructions: product.usage_instructions,
+        weight_size: product.weight_size,
+        badge: product.badge || null,
+      })
+      .select('*, categories(name, slug)')
+      .single();
+
+    if (error) throw new Error(`Could not create product: ${error.message}`);
+    return mapDbProduct(data);
+  }
+
+  const all = getLocalStoredProducts();
+  const created = { ...product, id: product.id || `p-${Date.now()}` };
+  all.push(created);
+  saveLocalStoredProducts(all);
+  return created;
 }

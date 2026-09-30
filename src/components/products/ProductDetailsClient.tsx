@@ -42,7 +42,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
 
     // Listen to real-time broadcasts
     const unsubscribe = subscribeToProductUpdates((latestOverrides) => {
-      setProduct(applyProductOverride(initialProduct, latestOverrides));
+      setProduct((prev) => applyProductOverride(prev, latestOverrides));
     });
 
     return unsubscribe;

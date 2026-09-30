@@ -1,10 +1,23 @@
 import React from "react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getOrders } from "@/lib/orders";
+import { getCurrentUser } from "@/lib/supabase/auth";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { Package, ChevronRight, Clock, CheckCircle2, Truck } from "lucide-react";
 
+// Per-request: shows private order data for the signed-in user
+export const dynamic = "force-dynamic";
+
 export default async function AccountOrdersPage() {
-  const orders = await getOrders();
+  let orders;
+  if (isSupabaseConfigured()) {
+    const user = await getCurrentUser();
+    if (!user) redirect("/auth/login?next=/account/orders");
+    orders = await getOrders({ customerId: user.id, email: user.email });
+  } else {
+    orders = await getOrders();
+  }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
