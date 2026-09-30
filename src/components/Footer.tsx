@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Mail, Phone, Clock } from "lucide-react";
+import { Mail, Phone, Clock, Facebook, Instagram } from "lucide-react";
 import { BUSINESS, POLICY_LINKS } from "@/lib/business";
 
 export default function Footer() {
@@ -34,6 +34,29 @@ export default function Footer() {
                   <span className="text-xs font-mono font-bold text-accent-gold mt-1 leading-none">Lic. No. {BUSINESS.fssaiLicense}</span>
                 </div>
               </div>
+            </div>
+
+            {/* Social links */}
+            <div className="flex items-center gap-3 pt-2">
+              <span className="text-xs uppercase tracking-wider text-white/40 font-semibold">Follow us</span>
+              <a
+                href={BUSINESS.facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GutVaidya on Facebook"
+                className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent-gold hover:text-primary-900 hover:border-accent-gold transition-colors"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href={BUSINESS.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GutVaidya on Instagram"
+                className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent-gold hover:text-primary-900 hover:border-accent-gold transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
             </div>
           </div>
 

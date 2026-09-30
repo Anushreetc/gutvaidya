@@ -14,6 +14,8 @@ export const BUSINESS = {
   freeShippingThreshold: DEFAULT_SHIPPING_CONFIG.freeShippingThreshold,
   standardShippingFee: DEFAULT_SHIPPING_CONFIG.standardShippingFee,
   policiesLastUpdated: '30 September 2026',
+  facebookUrl: 'https://www.facebook.com/profile.php?id=61592725623923',
+  instagramUrl: 'https://www.instagram.com/gutvaidya',
 } as const;
 
 export const POLICY_LINKS = [
