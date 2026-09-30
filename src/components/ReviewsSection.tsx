@@ -77,59 +77,9 @@ const reviewsData: Review[] = [
     verified: true,
     isWhatsAppReview: true,
   },
-  {
-    id: 4,
-    name: "Priya R.",
-    location: "Bengaluru",
-    rating: 5,
-    date: "July 2026",
-    text: "I've been using GutVaidya Health Mix for the last 3 months. My chronic acidity and bloating are completely gone. It's incredibly light on the stomach and keeps me energetic all day!",
-    category: "Acidity Relief",
-    verified: true,
-  },
-  {
-    id: 5,
-    name: "Dr. Sandeep K.",
-    location: "Mumbai",
-    rating: 5,
-    date: "June 2026",
-    text: "As an Ayurvedic practitioner, I highly recommend GutVaidya. The sprouted grains and traditional herbs like Licorice and Shatavari are formulated in the perfect ratio. It's excellent for daily digestion.",
-    category: "Clinical & Digestion",
-    verified: true,
-  },
-  {
-    id: 6,
-    name: "Rajesh V.",
-    location: "Hyderabad",
-    rating: 5,
-    date: "May 2026",
-    text: "Exceptional quality. You can tell it's made in small batches. The roasted aroma of cardamom and traditional grains is wonderful. Zero added sugar and pure nutrition.",
-    category: "Daily Energy",
-    verified: true,
-  },
-  {
-    id: 7,
-    name: "Kavitha Nair",
-    location: "Kochi",
-    rating: 5,
-    date: "June 2026",
-    text: "After trying multiple health drinks for my daughter, I shifted to GutVaidya. It's natural, full of sprouted millets and nuts. Her bowel movements are regular and she feels much more active.",
-    category: "Baby & Kids",
-    verified: true,
-  },
-  {
-    id: 8,
-    name: "Amit S.",
-    location: "Delhi",
-    rating: 5,
-    date: "July 2026",
-    text: "GutVaidya has been a game changer for my morning acid reflux. I drink it warm every morning, and it works better than any antacid. Highly recommend this natural formula.",
-    category: "Acidity Relief",
-    verified: true,
-  },
 ];
 
-const categories = ["All", "Baby & Kids", "Clinical & Digestion", "Acidity Relief", "Daily Energy"];
+const categories = ["All", ...Array.from(new Set(reviewsData.map((r) => r.category)))];
 
 export default function ReviewsSection() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -165,7 +115,7 @@ export default function ReviewsSection() {
             Verified Customer Stories
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight">
-            Loved by 1,00,000+ Happy Families
+            Loved by 10,000+ Happy Families
           </h2>
           <p className="text-base sm:text-lg text-foreground/75 leading-relaxed max-w-2xl mx-auto">
             Authentic customer messages, practitioner evaluations, and real wellness experiences from across India.
@@ -178,43 +128,14 @@ export default function ReviewsSection() {
           {/* Left: Overall Rating Card & WhatsApp Screenshot Showcase */}
           <div className="lg:col-span-4 space-y-6">
             
-            {/* Overall Rating Box */}
-            <div className="bg-white border border-primary-100/60 p-7 rounded-3xl shadow-sm text-center space-y-4">
-              <h3 className="font-serif font-bold text-primary-900 text-base">Overall Satisfaction Rating</h3>
-
-              <div className="flex flex-col items-center justify-center space-y-1.5">
-                <span className="text-5xl font-serif font-bold text-primary-800">4.9</span>
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-accent-gold text-accent-gold" />
-                  ))}
-                </div>
-                <span className="text-xs text-foreground/60">Based on 10,480 verified reviews</span>
-              </div>
-
-              <div className="space-y-2 pt-3 border-t border-primary-100/60 text-xs">
-                <div className="flex items-center gap-3">
-                  <span className="w-12 text-left font-medium text-foreground/70">5 Star</span>
-                  <div className="flex-1 h-2 bg-primary-50 rounded-full overflow-hidden">
-                    <div className="h-full bg-accent-gold rounded-full w-[94%]" />
-                  </div>
-                  <span className="w-8 text-right font-semibold text-foreground/80">94%</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="w-12 text-left font-medium text-foreground/70">4 Star</span>
-                  <div className="flex-1 h-2 bg-primary-50 rounded-full overflow-hidden">
-                    <div className="h-full bg-accent-gold rounded-full w-[5%]" />
-                  </div>
-                  <span className="w-8 text-right font-semibold text-foreground/80">5%</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="w-12 text-left font-medium text-foreground/70">3 Star</span>
-                  <div className="flex-1 h-2 bg-primary-50 rounded-full overflow-hidden">
-                    <div className="h-full bg-accent-gold rounded-full w-[1%]" />
-                  </div>
-                  <span className="w-8 text-right font-semibold text-foreground/80">1%</span>
-                </div>
-              </div>
+            {/* Families Served */}
+            <div className="bg-white border border-primary-100/60 p-7 rounded-3xl shadow-sm text-center space-y-3">
+              <h3 className="font-serif font-bold text-primary-900 text-base">Trusted Across India</h3>
+              <span className="block text-5xl font-serif font-bold text-primary-800">10,000+</span>
+              <span className="block text-xs text-foreground/60">Happy families nourished by GutVaidya</span>
+              <p className="pt-3 border-t border-primary-100/60 text-[11px] text-foreground/55 leading-relaxed">
+                Every review on this page is a real message from a customer or practitioner.
+              </p>
             </div>
 
             {/* WhatsApp Experience Showcase Card */}

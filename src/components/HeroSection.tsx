@@ -206,7 +206,7 @@ export default function HeroSection() {
           >
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="w-5 h-5" style={{ color: "#c39b62" }} />
-              <span>Trusted by 1,00,000+ Happy Families</span>
+              <span>Trusted by 10,000+ Happy Families</span>
             </div>
             <div className="w-px h-4" style={{ background: "rgba(255,255,255,0.22)" }} />
             <div className="flex items-center gap-1.5">
