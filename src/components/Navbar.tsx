@@ -31,6 +31,7 @@ export default function Navbar() {
     { label: "Recipe", href: "/#recipe" },
     { label: "Reviews", href: "/#reviews" },
     { label: "Blogs", href: "/#blogs" },
+    { label: "FAQ", href: "/#faq" },
     { label: "Contact", href: "/#contact" },
   ];
 
@@ -175,7 +176,7 @@ export default function Navbar() {
             >
               {/* Header */}
               <div className="p-6 border-b border-primary-100 flex items-center justify-between">
-                <h2 className="text-xl font-serif font-bold text-primary-800 flex items-center gap-2">
+                <h2 className="text-xl font-sans font-bold text-primary-800 flex items-center gap-2">
                   <ShoppingBag className="h-5 w-5 text-accent-gold" />
                   Your Wholesome Cart
                 </h2>
@@ -212,7 +213,7 @@ export default function Navbar() {
                       <ShoppingBag className="w-8 h-8 text-primary-200" />
                     </div>
                     <div>
-                      <p className="text-lg font-serif font-bold text-primary-800">Your cart is empty</p>
+                      <p className="text-lg font-sans font-bold text-primary-800">Your cart is empty</p>
                       <p className="text-sm text-foreground/60 mt-1">Start adding pure wellness to your daily routine.</p>
                     </div>
                     <Link
@@ -238,7 +239,7 @@ export default function Navbar() {
                         <Link
                           href={`/products/${item.slug}`}
                           onClick={() => setIsCartOpen(false)}
-                          className="font-serif font-bold text-primary-800 truncate block hover:text-accent-gold transition-colors"
+                          className="font-sans font-bold text-primary-800 truncate block hover:text-accent-gold transition-colors"
                         >
                           {item.name}
                         </Link>
@@ -304,7 +305,7 @@ export default function Navbar() {
                       </span>
                     </div>
                     <hr className="border-primary-100" />
-                    <div className="flex justify-between text-base font-serif font-bold text-primary-800">
+                    <div className="flex justify-between text-base font-sans font-bold text-primary-800">
                       <span>Total Amount</span>
                       <span>₹{finalTotal}</span>
                     </div>

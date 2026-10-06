@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Star, Quote, CheckCircle2, Sparkles, MessageCircle, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { Star, Quote, CheckCircle2, MessageCircle, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 interface Review {
   id: number;
@@ -109,18 +110,12 @@ export default function ReviewsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/80 text-primary-700 text-xs font-semibold uppercase tracking-wider border border-primary-200/50 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
-            Verified Customer Stories
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight">
-            Loved by 10,000+ Happy Families
-          </h2>
-          <p className="text-base sm:text-lg text-foreground/75 leading-relaxed max-w-2xl mx-auto">
-            Authentic customer messages, practitioner evaluations, and real wellness experiences from across India.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"Verified Customer Stories"}
+          title={"Loved by 10,000+ Happy Families"}
+          body={"Authentic customer messages, practitioner evaluations, and real wellness experiences from across India."}
+        />
 
         {/* Rating Summary & Filter Layout */}
         <div className="grid lg:grid-cols-12 gap-8 items-start mb-12">
@@ -130,8 +125,8 @@ export default function ReviewsSection() {
             
             {/* Families Served */}
             <div className="bg-white border border-primary-100/60 p-7 rounded-3xl shadow-sm text-center space-y-3">
-              <h3 className="font-serif font-bold text-primary-900 text-base">Trusted Across India</h3>
-              <span className="block text-5xl font-serif font-bold text-primary-800">10,000+</span>
+              <h3 className="font-sans font-bold text-primary-900 text-base">Trusted Across India</h3>
+              <span className="block text-5xl font-sans font-bold text-primary-800">10,000+</span>
               <span className="block text-xs text-foreground/60">Happy families nourished by GutVaidya</span>
               <p className="pt-3 border-t border-primary-100/60 text-[11px] text-foreground/55 leading-relaxed">
                 Every review on this page is a real message from a customer or practitioner.
@@ -143,7 +138,7 @@ export default function ReviewsSection() {
               <div className="flex items-center justify-between border-b border-primary-100/60 pb-3">
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                  <h3 className="font-serif font-bold text-primary-900 text-sm sm:text-base">Customer WhatsApp Chats</h3>
+                  <h3 className="font-sans font-bold text-primary-900 text-sm sm:text-base">Customer WhatsApp Chats</h3>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[10px] font-sans font-bold text-[#25D366] bg-[#25D366]/10 px-2.5 py-0.5 rounded-full">
                   Direct Feedback
@@ -153,7 +148,7 @@ export default function ReviewsSection() {
               {/* Chat Title & Nav Arrows */}
               <div className="flex items-center justify-between gap-2">
                 <div>
-                  <h4 className="text-xs font-bold text-primary-900 font-serif leading-tight">
+                  <h4 className="text-xs font-bold text-primary-900 font-sans leading-tight">
                     {currentScreenshot.title}
                   </h4>
                   <p className="text-[11px] text-foreground/50">{currentScreenshot.author}</p>
@@ -276,7 +271,7 @@ export default function ReviewsSection() {
                     {/* Reviewer Details */}
                     <div className="mt-5 pt-3.5 border-t border-primary-100/40 flex items-center justify-between">
                       <div>
-                        <h4 className="font-serif font-bold text-primary-900 text-xs sm:text-sm flex items-center gap-1.5">
+                        <h4 className="font-sans font-bold text-primary-900 text-xs sm:text-sm flex items-center gap-1.5">
                           {review.name}
                           {review.verified && (
                             <span className="inline-flex items-center gap-0.5 text-[9px] font-sans font-bold text-primary-700 bg-primary-100/80 px-1.5 py-0.2 rounded-full">

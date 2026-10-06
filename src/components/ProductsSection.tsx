@@ -8,6 +8,7 @@ import { Product } from "@/types/ecommerce";
 import { getProductOverrides, applyProductOverrides, subscribeToProductUpdates } from "@/lib/products-client";
 import { ShoppingCart, Leaf, Shield, Award, Sparkles, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 export default function ProductsSection() {
   const { addToCart } = useCart();
@@ -101,18 +102,12 @@ export default function ProductsSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
-            <Leaf className="w-3.5 h-3.5" />
-            100% Natural Wellness
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900">
-            Our Traditional Products
-          </h2>
-          <p className="text-base text-foreground/75 leading-relaxed">
-            Wholesome, premium wellness blends formulated with traditional ingredients to nourish your daily routine.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"100% Natural Wellness"}
+          title={"Our Traditional Products"}
+          body={"Wholesome, premium wellness blends formulated with traditional ingredients to nourish your daily routine."}
+        />
 
         {/* Slider Container Wrapper */}
         <div className="relative max-w-6xl mx-auto px-4">
@@ -178,7 +173,7 @@ export default function ProductsSection() {
                 <div className="p-6 sm:p-7 flex-grow flex flex-col justify-between">
                   <div className="space-y-4">
                     <Link href={`/products/${product.slug}`} className="block group">
-                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-primary-900 leading-tight group-hover:text-accent-gold transition-colors">
+                      <h3 className="text-xl sm:text-2xl font-sans font-bold text-primary-900 leading-tight group-hover:text-accent-gold transition-colors">
                         {product.name}
                       </h3>
                     </Link>
@@ -265,21 +260,21 @@ export default function ProductsSection() {
             <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center text-primary-700">
               <Leaf className="w-6 h-6 text-primary-700" />
             </div>
-            <h4 className="font-serif font-semibold text-primary-800 text-sm">100% Organic Sources</h4>
+            <h4 className="font-sans font-semibold text-primary-800 text-sm">100% Organic Sources</h4>
             <p className="text-xs text-foreground/60">No synthetics, preservatives, or chemical additives</p>
           </div>
           <div className="flex flex-col items-center space-y-2">
             <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center text-primary-700">
               <Shield className="w-6 h-6 text-primary-700" />
             </div>
-            <h4 className="font-serif font-semibold text-primary-800 text-sm">Quality Checked</h4>
+            <h4 className="font-sans font-semibold text-primary-800 text-sm">Quality Checked</h4>
             <p className="text-xs text-foreground/60">Strict testing and hygienic production standards</p>
           </div>
           <div className="flex flex-col items-center space-y-2 col-span-2 md:col-span-1">
             <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center text-primary-700">
               <Award className="w-6 h-6 text-primary-700" />
             </div>
-            <h4 className="font-serif font-semibold text-primary-800 text-sm">Traditional Recipe</h4>
+            <h4 className="font-sans font-semibold text-primary-800 text-sm">Traditional Recipe</h4>
             <p className="text-xs text-foreground/60">Passed down through generations of wellness care</p>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Wheat, Leaf, Flame, Zap, Sprout, Sparkles, Info, X, ChevronRight, Activity, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 interface IngredientDetail {
   name: string;
@@ -255,18 +256,12 @@ export default function IngredientsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/80 text-primary-700 text-xs font-semibold uppercase tracking-wider border border-primary-200/50 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
-            Nature's Bounty
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight">
-            Our Wholesome Ingredients
-          </h2>
-          <p className="text-base sm:text-lg text-foreground/75 leading-relaxed max-w-2xl mx-auto">
-            Carefully selected from nature, each ingredient in GutVaidya brings its own unique traditional wellness benefits.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"Nature's Bounty"}
+          title={"Our Wholesome Ingredients"}
+          body={"Carefully selected from nature, each ingredient in GutVaidya brings its own unique traditional wellness benefits."}
+        />
 
         {/* Main Explorer Panel */}
         <div className="grid lg:grid-cols-12 gap-8 items-start">
@@ -299,7 +294,7 @@ export default function IngredientsSection() {
                     <TabIcon className="w-5 h-5" />
                   </div>
                   <div className="flex-grow min-w-0">
-                    <h3 className="font-serif font-bold text-base leading-tight">
+                    <h3 className="font-sans font-bold text-base leading-tight">
                       {category.title}
                     </h3>
                     <p className={`text-xs mt-0.5 truncate ${isSelected ? "text-white/70" : "text-foreground/50"
@@ -359,7 +354,7 @@ export default function IngredientsSection() {
                     >
                       <div>
                         <div className="flex items-start justify-between gap-2">
-                          <h4 className="text-lg font-serif font-bold text-primary-900 leading-snug group-hover:text-accent-gold-dark transition-colors">
+                          <h4 className="text-lg font-sans font-bold text-primary-900 leading-snug group-hover:text-accent-gold-dark transition-colors">
                             {ingredient.name}
                           </h4>
                           <span className="p-1.5 rounded-full bg-primary-50 text-primary-75 group-hover:bg-accent-gold/10 group-hover:text-accent-gold-dark transition-colors">

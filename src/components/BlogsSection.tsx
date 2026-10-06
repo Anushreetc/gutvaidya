@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { BookOpen, Calendar, Clock, ArrowRight, X, Sparkles } from "lucide-react";
+import {Calendar, Clock, ArrowRight, X, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 const blogs = [
   {
@@ -45,18 +46,12 @@ export default function BlogsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
-            <BookOpen className="w-3.5 h-3.5" />
-            Wholesome Wisdom
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900">
-            Wellness & Nutrition Blogs
-          </h2>
-          <p className="text-base text-foreground/75 leading-relaxed">
-            Read expert-backed articles on traditional nutrition, gut biome science, and leading a healthy lifestyle.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"Wholesome Wisdom"}
+          title={"Wellness & Nutrition Blogs"}
+          body={"Read expert-backed articles on traditional nutrition, gut biome science, and leading a healthy lifestyle."}
+        />
 
         {/* Blogs Grid */}
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -85,7 +80,7 @@ export default function BlogsSection() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-serif font-bold text-primary-900 line-clamp-2 leading-snug">
+                <h3 className="text-xl font-sans font-bold text-primary-900 line-clamp-2 leading-snug">
                   {blog.title}
                 </h3>
                 
@@ -164,7 +159,7 @@ export default function BlogsSection() {
 
                 {/* Author Info */}
                 <div className="flex items-center gap-2 border-b border-primary-100/50 pb-4">
-                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-800 text-xs font-bold font-serif">
+                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-800 text-xs font-bold font-sans">
                     {selectedBlog.author[0]}
                   </div>
                   <div>
