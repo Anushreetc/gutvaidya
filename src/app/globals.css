@@ -115,3 +115,15 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* The hero copy sits straight on the video with no overlay panel, so each
+   glyph carries its own soft cream halo. It reads as no shape at all, but
+   lifts local contrast past AA on the frames where the footage runs dark. */
+.hero-halo {
+  text-shadow:
+    0 0 3px rgba(248, 245, 236, 0.98),
+    0 0 7px rgba(248, 245, 236, 0.95),
+    0 0 14px rgba(248, 245, 236, 0.9),
+    0 0 28px rgba(248, 245, 236, 0.8),
+    0 1px 3px rgba(248, 245, 236, 0.9);
+}

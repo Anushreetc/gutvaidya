@@ -343,7 +343,6 @@ export default function HeroSection() {
     return (
       <section ref={sectionRef} id="home" className="relative h-[100svh] min-h-[560px]" style={{ background: BG }}>
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
-        <Scrim bandMode={bandMode} />
         <TextLayer bandMode={bandMode}>
           <ChapterSlot visible>
             <ChapterCopy chapter={CHAPTERS[0]} headingLevel={1} />
@@ -372,7 +371,6 @@ export default function HeroSection() {
           className="absolute inset-0 h-full w-full object-cover portrait:top-[8svh] portrait:bottom-auto portrait:h-[48svh] portrait:object-[55%_50%]"
         />
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
-        <Scrim bandMode={bandMode} />
 
         <TextLayer bandMode={bandMode}>
           {CHAPTERS.map((c, i) => (
@@ -413,31 +411,6 @@ export default function HeroSection() {
 }
 
 /* ── Layout & Typography Layers ── */
-
-function Scrim({ bandMode }: { bandMode: boolean }) {
-  if (bandMode) return null;
-  return (
-    <>
-      {/* Below lg the copy covers more of the frame, so the scrim reaches further */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] lg:hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse 92% 60% at 30% 50%, rgba(248,245,236,0.95) 0%, rgba(248,245,236,0.88) 42%, rgba(248,245,236,0.45) 72%, rgba(248,245,236,0) 100%)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] hidden lg:block"
-        style={{
-          background:
-            "radial-gradient(ellipse 56% 52% at 19% 50%, rgba(248,245,236,0.94) 0%, rgba(248,245,236,0.84) 45%, rgba(248,245,236,0.38) 75%, rgba(248,245,236,0) 100%)",
-        }}
-      />
-    </>
-  );
-}
 
 function TextLayer({ bandMode, children }: { bandMode: boolean; children: React.ReactNode }) {
   return bandMode ? (
@@ -508,20 +481,20 @@ function ChapterCopy({ chapter, headingLevel }: { chapter: Chapter; headingLevel
   return (
     <div className="space-y-4 compact:space-y-3 short:space-y-2.5">
       {chapter.badge && (
-        <span className="compact:hidden short:hidden inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/90 text-primary-800 text-xs font-semibold uppercase tracking-wider border border-primary-200 shadow-sm">
+        <span className="hero-halo compact:hidden short:hidden inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/90 text-primary-800 text-xs font-semibold uppercase tracking-wider border border-primary-200 shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
           {chapter.badge}
         </span>
       )}
 
       <Heading
-        className="font-serif font-bold leading-[1.08] text-primary-950 text-[2.2rem] sm:text-5xl lg:text-[3.5rem] compact:text-[2rem] short:text-[2rem] tracking-tight"
+        className="hero-halo font-serif font-bold leading-[1.08] text-primary-950 text-[2.2rem] sm:text-5xl lg:text-[3.5rem] compact:text-[2rem] short:text-[2rem] tracking-tight"
         style={{ textWrap: "balance" } as React.CSSProperties}
       >
         {chapter.title}
       </Heading>
 
-      <p className="max-w-[30rem] text-base leading-relaxed text-foreground sm:text-lg compact:text-[0.95rem] short:text-[0.95rem] font-sans">
+      <p className="hero-halo max-w-[30rem] text-base leading-relaxed text-primary-950 sm:text-lg compact:text-[0.95rem] short:text-[0.95rem] font-sans">
         {chapter.body}
       </p>
 
