@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Hero copy sizing: short portrait phones (copy sits under the video band)
+   and landscape phones (copy shares the screen with the video). */
+@custom-variant compact (@media (orientation: portrait) and (max-height: 760px));
+@custom-variant short (@media (orientation: landscape) and (max-height: 500px));
+
 @theme {
   --color-primary-50: #f4f8f2;
   --color-primary-100: #e6edd9;

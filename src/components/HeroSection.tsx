@@ -11,7 +11,6 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
-import Link from "next/link";
 
 /* ─────────────────────────────────────────────────────────────
    Scroll-driven 3D Hero Motion:
@@ -24,12 +23,15 @@ const HERO_SEQUENCE = {
   mobile: null as null | { path: string; frameCount: number },
   durationSec: 56.586,
   scrollLengthVh: 500, // 500vh provides smooth, natural scroll pacing
+  // The generated pouch loses its label for frames ~45-57 (10.4-13.3s).
+  // pouch-label.png is the labelled pouch cut from frame 44 (x 335, y 102,
+  // 190x290 px of the 848x478 frame) with feathered edges; painted over that stretch.
   pouchOverlay: {
-    src: null as string | null,
-    rect: { x: 0.395, y: 0.215, w: 0.222, h: 0.59 },
-    fromSec: 10.6,
+    src: "/hero/pouch-label.png" as string | null,
+    rect: { x: 335 / 848, y: 102 / 478, w: 190 / 848, h: 290 / 478 },
+    fromSec: 10.2,
     toSec: 13.4,
-    fadeSec: 0.4,
+    fadeSec: 0.25,
   },
 };
 
@@ -182,6 +184,8 @@ export default function HeroSection() {
       dy = (ch - dh) / 2;
     }
 
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
     ctx.fillStyle = BG;
     ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, dx, dy, dw, dh);
@@ -341,12 +345,12 @@ export default function HeroSection() {
       className="relative"
       style={{ height: `${HERO_SEQUENCE.scrollLengthVh}vh`, background: BG }}
     >
-      <div className="sticky top-0 h-[100svh] min-h-[560px] overflow-hidden">
+      <div className="sticky top-0 h-[100svh] overflow-hidden">
         {/* Preloaded initial frame for instant paint */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={frameUrl(HERO_SEQUENCE.desktop.path, 0)}
-          alt="GutVaidya 3D Health Mix"
+          alt=""
           aria-hidden="true"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover portrait:top-[8svh] portrait:bottom-auto portrait:h-[48svh] portrait:object-[55%_50%]"
@@ -397,14 +401,25 @@ export default function HeroSection() {
 function Scrim({ bandMode }: { bandMode: boolean }) {
   if (bandMode) return null;
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-[1]"
-      style={{
-        background:
-          "linear-gradient(to right, rgba(253,253,251,0.96) 0%, rgba(253,253,251,0.85) 28%, rgba(253,253,251,0.4) 42%, rgba(253,253,251,0) 52%)",
-      }}
-    />
+    <>
+      {/* Below lg the copy covers more of the frame, so the scrim reaches further */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[1] lg:hidden"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(253,253,251,0.96) 0%, rgba(253,253,251,0.88) 45%, rgba(253,253,251,0.5) 60%, rgba(253,253,251,0) 72%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[1] hidden lg:block"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(253,253,251,0.96) 0%, rgba(253,253,251,0.85) 28%, rgba(253,253,251,0.4) 42%, rgba(253,253,251,0) 52%)",
+        }}
+      />
+    </>
   );
 }
 
@@ -417,8 +432,8 @@ function TextLayer({ bandMode, children }: { bandMode: boolean; children: React.
       <div className="relative h-full">{children}</div>
     </div>
   ) : (
-    <div className="absolute inset-0 z-10 mx-auto flex max-w-7xl items-center px-6 lg:px-12">
-      <div className="relative h-full w-full max-w-[36rem]">{children}</div>
+    <div className="absolute inset-x-0 bottom-0 top-12 z-10 mx-auto flex max-w-7xl items-center px-6 sm:top-13 lg:px-12">
+      <div className="relative h-full w-full max-w-[36rem] short:max-w-[28rem]">{children}</div>
     </div>
   );
 }
@@ -475,30 +490,30 @@ function ChapterSlot({ visible, children }: { visible: boolean; children: React.
 function ChapterCopy({ chapter, headingLevel }: { chapter: Chapter; headingLevel: 1 | 2 }) {
   const Heading = headingLevel === 1 ? "h1" : "h2";
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 compact:space-y-3 short:space-y-2.5">
       {chapter.badge && (
-        <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/90 text-primary-800 text-xs font-semibold uppercase tracking-wider border border-primary-200 shadow-sm">
+        <span className="compact:hidden short:hidden inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/90 text-primary-800 text-xs font-semibold uppercase tracking-wider border border-primary-200 shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
           {chapter.badge}
         </span>
       )}
 
       <Heading
-        className="font-serif font-bold leading-[1.08] text-primary-950 text-[2.2rem] sm:text-5xl lg:text-[3.5rem] tracking-tight"
+        className="font-serif font-bold leading-[1.08] text-primary-950 text-[2.2rem] sm:text-5xl lg:text-[3.5rem] compact:text-[2rem] short:text-[2rem] tracking-tight"
         style={{ textWrap: "balance" } as React.CSSProperties}
       >
         {chapter.title}
       </Heading>
 
-      <p className="max-w-[30rem] text-base leading-relaxed text-foreground/80 sm:text-lg font-sans">
+      <p className="max-w-[30rem] text-base leading-relaxed text-foreground/80 sm:text-lg compact:text-[0.95rem] short:text-[0.95rem] font-sans">
         {chapter.body}
       </p>
 
       {chapter.cta && (
-        <div className="pt-3 flex flex-wrap items-center gap-3.5">
+        <div className="pt-3 compact:pt-1 short:pt-1 flex flex-wrap items-center gap-3.5">
           <a
             href="#products"
-            className="inline-flex items-center gap-2 rounded-full bg-primary-700 px-7 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-primary-800 hover:scale-105 active:scale-95"
+            className="inline-flex items-center gap-2 rounded-full bg-primary-700 px-7 py-3.5 compact:px-5 compact:py-3 short:px-5 short:py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-primary-800 hover:scale-105 active:scale-95"
           >
             Shop GutVaidya
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -506,7 +521,7 @@ function ChapterCopy({ chapter, headingLevel }: { chapter: Chapter; headingLevel
           {!chapter.isFinal && (
             <a
               href="#ingredients"
-              className="inline-flex items-center rounded-full border border-primary-700/25 bg-white/80 px-7 py-3.5 text-sm font-bold text-primary-800 backdrop-blur-sm transition-all hover:bg-white hover:scale-105 active:scale-95 shadow-sm"
+              className="inline-flex items-center rounded-full border border-primary-700/25 bg-white/80 px-7 py-3.5 compact:px-5 compact:py-3 short:px-5 short:py-3 max-[399px]:portrait:hidden text-sm font-bold text-primary-800 backdrop-blur-sm transition-all hover:bg-white hover:scale-105 active:scale-95 shadow-sm"
             >
               See what’s inside
             </a>
