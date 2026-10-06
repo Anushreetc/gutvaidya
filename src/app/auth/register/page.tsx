@@ -64,11 +64,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
 
       <main className="flex-grow flex items-center justify-center py-16 px-4">
-        <div className="w-full max-w-md bg-white rounded-3xl border border-primary-100 p-8 shadow-sm space-y-6">
+        <div className="w-full max-w-md bg-base-50 rounded-3xl border border-primary-100 p-8 shadow-sm space-y-6">
           <div className="text-center space-y-2">
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary-900">
               Create an Account
@@ -107,7 +107,7 @@ export default function RegisterPage() {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="e.g. Ananya Rao"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-base-50 focus:outline-none focus:ring-2 focus:ring-primary-600"
                 />
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function RegisterPage() {
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="name@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-base-50 focus:outline-none focus:ring-2 focus:ring-primary-600"
                 />
               </div>
             </div>
@@ -141,7 +141,7 @@ export default function RegisterPage() {
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   placeholder="+91 98765 43210"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-base-50 focus:outline-none focus:ring-2 focus:ring-primary-600"
                 />
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function RegisterPage() {
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="At least 8 characters"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-base-50 focus:outline-none focus:ring-2 focus:ring-primary-600"
                 />
               </div>
             </div>

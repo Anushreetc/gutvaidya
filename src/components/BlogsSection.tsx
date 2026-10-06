@@ -42,7 +42,7 @@ export default function BlogsSection() {
   const [selectedBlog, setSelectedBlog] = useState<typeof blogs[0] | null>(null);
 
   return (
-    <section id="blogs" className="py-24 bg-[#fdfdfb] relative">
+    <section id="blogs" className="py-24 bg-base-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
@@ -127,7 +127,7 @@ export default function BlogsSection() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                className="relative bg-[#fdfdfb] max-w-2xl w-full rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-primary-100/60 max-h-[85vh] overflow-y-auto space-y-6"
+                className="relative bg-base-100 max-w-2xl w-full rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-primary-100/60 max-h-[85vh] overflow-y-auto space-y-6"
               >
                 {/* Close Button */}
                 <button

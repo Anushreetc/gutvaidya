@@ -107,7 +107,7 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
 
 export default function FAQSection() {
   return (
-    <section id="faq" aria-label="Frequently asked questions" className="bg-white py-20 sm:py-28">
+    <section id="faq" aria-label="Frequently asked questions" className="bg-base-200 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Questions"

@@ -83,7 +83,7 @@ export default function AdminCustomersPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search customers by name, email, or phone..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-primary-100 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 shadow-sm"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-primary-100 bg-base-50 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 shadow-sm"
           />
         </div>
 
@@ -92,7 +92,7 @@ export default function AdminCustomersPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>

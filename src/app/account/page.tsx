@@ -118,11 +118,11 @@ export default function AccountProfilePage() {
   };
 
   const inputClass =
-    "w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white";
+    "w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50";
   const labelClass = "text-xs font-bold uppercase text-primary-900 block mb-1";
 
   return (
-    <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-6">
+    <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-6">
       <div>
         <h1 className="text-2xl font-serif font-bold text-primary-900">Personal Profile</h1>
         <p className="text-xs text-foreground/60 mt-0.5">

@@ -19,7 +19,7 @@ function emailWrapper(content: string, previewText: string) {
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #f7f9f4; color: #1c241b; }
     .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e6edd9; box-shadow: 0 4px 20px rgba(31,79,22,0.05); }
     .header { background-color: #163c0f; padding: 32px 24px; text-align: center; }
-    .header h1 { color: #fdfdfb; margin: 0; font-size: 26px; font-family: Georgia, serif; letter-spacing: 0.5px; }
+    .header h1 { color: #f8f5ec; margin: 0; font-size: 26px; font-family: Georgia, serif; letter-spacing: 0.5px; }
     .header p { color: #c39b62; margin: 6px 0 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
     .body { padding: 32px 24px; }
     .footer { background: #0f280a; padding: 24px; text-align: center; color: rgba(255,255,255,0.7); font-size: 12px; }

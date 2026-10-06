@@ -58,7 +58,7 @@ export default function ContactSection() {
   ];
 
   return (
-    <section id="contact" className="py-24 bg-primary-50/20 relative overflow-hidden">
+    <section id="contact" className="py-24 bg-base-200 relative overflow-hidden">
       {/* Background radial details */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-accent-gold/5 filter blur-3xl" />
 
@@ -150,7 +150,7 @@ export default function ContactSection() {
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder="Enter your name"
-                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-white/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-base-50/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
                     />
                   </div>
 
@@ -166,7 +166,7 @@ export default function ContactSection() {
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       placeholder="Enter your email"
-                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-white/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-base-50/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
                     />
                   </div>
 
@@ -182,7 +182,7 @@ export default function ContactSection() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder="Write your query here..."
-                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-white/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-base-50/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all resize-none"
                     />
                   </div>
                 </div>

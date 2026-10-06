@@ -36,7 +36,7 @@ export default async function AccountOrdersPage() {
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-6">
+    <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-6">
       <div>
         <h1 className="text-2xl font-serif font-bold text-primary-900">Order History</h1>
         <p className="text-xs text-foreground/60 mt-0.5">
@@ -63,7 +63,7 @@ export default async function AccountOrdersPage() {
           {orders.map((order) => (
             <div
               key={order.id}
-              className="p-5 rounded-2xl border border-primary-100 hover:border-primary-300 transition-all hover:shadow-md bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+              className="p-5 rounded-2xl border border-primary-100 hover:border-primary-300 transition-all hover:shadow-md bg-base-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
             >
               <div className="space-y-2">
                 <div className="flex items-center gap-3">

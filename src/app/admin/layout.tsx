@@ -51,7 +51,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-[#f7f9f4] flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white rounded-3xl border border-primary-100 p-8 shadow-md text-center space-y-5">
+        <div className="w-full max-w-md bg-base-50 rounded-3xl border border-primary-100 p-8 shadow-md text-center space-y-5">
           <div className="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto">
             <Lock className="w-8 h-8" />
           </div>
@@ -158,7 +158,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main Admin Content Container */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        <header className="h-16 bg-white border-b border-primary-100 flex items-center justify-between px-6 sm:px-8">
+        <header className="h-16 bg-base-50 border-b border-primary-100 flex items-center justify-between px-6 sm:px-8">
           <h2 className="font-serif font-bold text-lg text-primary-900">
             {navItems.find((i) => i.href === pathname)?.label || "Admin Console"}
           </h2>

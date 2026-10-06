@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
       <main className="flex-grow flex items-center justify-center py-20 px-4">
         <div className="max-w-md text-center space-y-5">

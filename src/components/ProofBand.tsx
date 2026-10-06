@@ -39,7 +39,7 @@ const STATS = [
 
 export default function ProofBand() {
   return (
-    <section aria-label="Why GutVaidya" className="border-y border-primary-100 bg-white">
+    <section aria-label="Why GutVaidya" className="border-y border-base-400/60 bg-base-50">
       {/* Star rating strip */}
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4 py-7 sm:flex-row sm:justify-center sm:gap-6 sm:px-6 lg:px-8">
         <div className="flex items-center gap-1.5" aria-hidden="true">
@@ -57,11 +57,11 @@ export default function ProofBand() {
       </div>
 
       {/* Ingredient icon rail */}
-      <div className="border-t border-primary-100/70 bg-primary-50/40">
+      <div className="border-t border-base-400/50 bg-base-200">
         <ul className="mx-auto grid max-w-7xl grid-cols-4 gap-x-2 gap-y-7 px-4 py-10 sm:px-6 lg:grid-cols-8 lg:px-8">
           {ICONS.map(({ icon: Icon, label }) => (
             <li key={label} className="flex flex-col items-center gap-2.5 text-center">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-primary-200/70 bg-white shadow-sm">
+              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-base-400/70 bg-base-50 shadow-sm">
                 <Icon className="h-6 w-6 text-primary-700" aria-hidden="true" />
               </span>
               <span className="font-sans text-[11px] font-semibold leading-tight text-primary-900 sm:text-xs">
@@ -73,7 +73,7 @@ export default function ProofBand() {
       </div>
 
       {/* Headline numbers */}
-      <div className="border-t border-primary-100/70">
+      <div className="border-t border-base-400/50">
         <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-y-10 px-4 py-12 sm:px-6 lg:grid-cols-4 lg:px-8">
           {STATS.map((s) => (
             <div key={s.value} className="px-2 text-center lg:px-6">

@@ -284,7 +284,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
             <div className="space-y-4 pt-2">
               <div className="flex items-center gap-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary-900">Quantity</span>
-                <div className="flex items-center border border-primary-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                <div className="flex items-center border border-primary-200 rounded-xl overflow-hidden bg-base-50 shadow-sm">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     disabled={quantity <= 1 || isOutOfStock}
@@ -328,17 +328,17 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
 
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-primary-100 text-center">
-              <div className="p-3 rounded-2xl bg-white border border-primary-100/60 shadow-sm flex flex-col items-center">
+              <div className="p-3 rounded-2xl bg-base-50 border border-primary-100/60 shadow-sm flex flex-col items-center">
                 <Truck className="w-5 h-5 text-accent-gold mb-1" />
                 <span className="text-[11px] font-bold text-primary-900 leading-tight">Free Delivery</span>
                 <span className="text-[10px] text-foreground/50">On orders over ₹999</span>
               </div>
-              <div className="p-3 rounded-2xl bg-white border border-primary-100/60 shadow-sm flex flex-col items-center">
+              <div className="p-3 rounded-2xl bg-base-50 border border-primary-100/60 shadow-sm flex flex-col items-center">
                 <ShieldCheck className="w-5 h-5 text-accent-gold mb-1" />
                 <span className="text-[11px] font-bold text-primary-900 leading-tight">FSSAI Certified</span>
                 <span className="text-[10px] text-foreground/50">Lic. No. {BUSINESS.fssaiLicense}</span>
               </div>
-              <div className="p-3 rounded-2xl bg-white border border-primary-100/60 shadow-sm flex flex-col items-center">
+              <div className="p-3 rounded-2xl bg-base-50 border border-primary-100/60 shadow-sm flex flex-col items-center">
                 <Award className="w-5 h-5 text-accent-gold mb-1" />
                 <span className="text-[11px] font-bold text-primary-900 leading-tight">Zero Additives</span>
                 <span className="text-[10px] text-foreground/50">Traditional recipe</span>
@@ -380,7 +380,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                 {product.benefits.map((benefit, i) => (
                   <div
                     key={i}
-                    className="p-5 rounded-2xl bg-white border border-primary-100 shadow-sm flex items-start gap-3.5"
+                    className="p-5 rounded-2xl bg-base-50 border border-primary-100 shadow-sm flex items-start gap-3.5"
                   >
                     <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center text-primary-700 flex-shrink-0 mt-0.5">
                       <CheckCircle2 className="w-4 h-4" />
@@ -408,7 +408,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                     {product.ingredients}
                   </p>
                 </div>
-                <div className="p-5 rounded-2xl bg-white border border-primary-100/60 text-xs text-foreground/70 leading-relaxed">
+                <div className="p-5 rounded-2xl bg-base-50 border border-primary-100/60 text-xs text-foreground/70 leading-relaxed">
                   <strong>Purity Guarantee:</strong> Every batch is roasted under controlled temperatures to activate essential enzymes without damaging heat-sensitive vitamins. Contains NO wheat flour fillers, NO white sugar, NO maltodextrin, NO artificial colors, and NO chemical stabilizers.
                 </div>
               </div>
@@ -417,7 +417,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
             {/* Usage Tab */}
             {activeTab === "usage" && (
               <div className="max-w-3xl space-y-6">
-                <div className="p-6 rounded-3xl bg-white border border-primary-100 shadow-sm">
+                <div className="p-6 rounded-3xl bg-base-50 border border-primary-100 shadow-sm">
                   <div className="flex items-center gap-2 mb-4 text-primary-800">
                     <Clock className="w-5 h-5 text-accent-gold" />
                     <h3 className="font-serif font-bold text-lg">Preparation Instructions</h3>
@@ -461,7 +461,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                       Thank you! Your review has been received and will appear here once our team has checked it.
                     </div>
                   ) : !user ? (
-                    <div className="p-4 rounded-2xl bg-white border border-primary-100 text-sm text-foreground/70">
+                    <div className="p-4 rounded-2xl bg-base-50 border border-primary-100 text-sm text-foreground/70">
                       Please{" "}
                       <Link href={`/auth/login?next=/products/${product.slug}`} className="font-bold text-primary-700 hover:underline">
                         sign in
@@ -479,7 +479,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                             value={reviewForm.name}
                             onChange={(e) => setReviewForm({ ...reviewForm, name: e.target.value })}
                             placeholder="Name to show (optional)"
-                            className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-600"
+                            className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-base-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600"
                           />
                         </div>
                         <div>
@@ -487,7 +487,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                           <select
                             value={reviewForm.rating}
                             onChange={(e) => setReviewForm({ ...reviewForm, rating: Number(e.target.value) })}
-                            className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-600"
+                            className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-base-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600"
                           >
                             <option value={5}>⭐⭐⭐⭐⭐ (5 Stars - Excellent)</option>
                             <option value={4}>⭐⭐⭐⭐ (4 Stars - Very Good)</option>
@@ -507,7 +507,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                           value={reviewForm.comment}
                           onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
                           placeholder="How did this formulation help your digestion and energy levels?"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 resize-none"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 bg-base-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 resize-none"
                         />
                       </div>
                       {reviewError && (
@@ -535,7 +535,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                   {reviews.map((rev) => (
                     <div
                       key={rev.id}
-                      className="p-5 rounded-2xl bg-white border border-primary-100/80 shadow-sm"
+                      className="p-5 rounded-2xl bg-base-50 border border-primary-100/80 shadow-sm"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">

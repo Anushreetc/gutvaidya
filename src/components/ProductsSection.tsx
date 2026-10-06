@@ -95,7 +95,7 @@ export default function ProductsSection() {
   }, []);
 
   return (
-    <section id="products" className="py-24 bg-primary-50/40 relative overflow-hidden">
+    <section id="products" className="py-24 bg-base-200 relative overflow-hidden">
       {/* Visual background details */}
       <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-primary-100/30 filter blur-3xl" />
       <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-accent-gold/5 filter blur-3xl" />
@@ -115,7 +115,7 @@ export default function ProductsSection() {
           <button
             onClick={() => handleScroll("left")}
             disabled={!canScrollLeft}
-            className={`absolute top-1/2 -translate-y-1/2 -left-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${
+            className={`absolute top-1/2 -translate-y-1/2 -left-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-base-50/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-base-50 transition-all duration-300 focus:outline-none hidden md:flex ${
               !canScrollLeft ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
             }`}
             aria-label="Previous Slide"
@@ -126,7 +126,7 @@ export default function ProductsSection() {
           <button
             onClick={() => handleScroll("right")}
             disabled={!canScrollRight}
-            className={`absolute top-1/2 -translate-y-1/2 -right-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${
+            className={`absolute top-1/2 -translate-y-1/2 -right-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-base-50/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-base-50 transition-all duration-300 focus:outline-none hidden md:flex ${
               !canScrollRight ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
             }`}
             aria-label="Next Slide"

@@ -9,7 +9,7 @@ export default function GlobalError({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", background: "#fdfdfb", color: "#1a2e16" }}>
+      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", background: "#f8f5ec", color: "#1f2318" }}>
         <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
           <div style={{ maxWidth: 420, textAlign: "center" }}>
             <h1 style={{ fontSize: 26, marginBottom: 12 }}>GutVaidya is having trouble loading</h1>

@@ -48,14 +48,14 @@ export default function ResetPasswordPage() {
   };
 
   const inputClass =
-    "w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary-600";
+    "w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-primary-100 bg-base-50 focus:outline-none focus:ring-2 focus:ring-primary-600";
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
 
       <main className="flex-grow flex items-center justify-center py-16 px-4">
-        <div className="w-full max-w-md bg-white rounded-3xl border border-primary-100 p-8 shadow-sm space-y-6">
+        <div className="w-full max-w-md bg-base-50 rounded-3xl border border-primary-100 p-8 shadow-sm space-y-6">
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-serif font-bold text-primary-900">Set a New Password</h1>
             <p className="text-xs text-foreground/60">Choose a new password for your GutVaidya account.</p>

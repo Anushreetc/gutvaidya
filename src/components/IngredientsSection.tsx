@@ -248,7 +248,7 @@ export default function IngredientsSection() {
   const ActiveIcon = activeCategory.icon;
 
   return (
-    <section id="ingredients" className="py-24 bg-[#fdfdfb] relative overflow-hidden">
+    <section id="ingredients" className="py-24 bg-base-100 relative overflow-hidden">
       {/* Decorative background shapes */}
       <div className="absolute top-1/4 left-0 w-80 h-80 bg-primary-50/40 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-accent-gold/5 rounded-full blur-3xl -z-10" />
@@ -277,7 +277,7 @@ export default function IngredientsSection() {
                   onClick={() => setActiveTab(category.title)}
                   className={`flex items-center gap-4 px-5 py-4 rounded-2xl text-left border transition-all duration-300 flex-shrink-0 lg:flex-shrink-0 snap-center w-[260px] lg:w-full focus:outline-none relative group overflow-hidden ${isSelected
                     ? "bg-primary-700 border-primary-700 text-white shadow-xl shadow-primary-700/10"
-                    : "bg-white/80 border-primary-100/60 hover:border-primary-200 hover:bg-white text-foreground/80 hover:shadow-md"
+                    : "bg-base-50/80 border-primary-100/60 hover:border-primary-200 hover:bg-base-50 text-foreground/80 hover:shadow-md"
                     }`}
                 >
                   {/* Subtle active background glow decoration */}
@@ -289,7 +289,7 @@ export default function IngredientsSection() {
                     />
                   )}
 
-                  <div className={`p-3 rounded-xl transition-colors ${isSelected ? "bg-white/10 text-white" : "bg-primary-50 text-primary-700 group-hover:bg-primary-100"
+                  <div className={`p-3 rounded-xl transition-colors ${isSelected ? "bg-base-50/10 text-white" : "bg-primary-50 text-primary-700 group-hover:bg-primary-100"
                     }`}>
                     <TabIcon className="w-5 h-5" />
                   </div>
@@ -401,7 +401,7 @@ export default function IngredientsSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.4 }}
-              className="relative bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-primary-100 z-10 overflow-hidden"
+              className="relative bg-base-50 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-primary-100 z-10 overflow-hidden"
             >
               {/* Blur accent glow decorations inside modal */}
               <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary-50/50 blur-2xl -z-10" />

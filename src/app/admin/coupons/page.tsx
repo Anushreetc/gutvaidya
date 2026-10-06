@@ -96,7 +96,7 @@ export default function AdminCouponsPage() {
       </div>
 
       {/* Coupons Table */}
-      <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
@@ -161,7 +161,7 @@ export default function AdminCouponsPage() {
       {/* Create Coupon Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-4">
+          <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-primary-100 pb-3">
               <h3 className="font-serif font-bold text-lg text-primary-900">
                 Create Discount Coupon
@@ -183,7 +183,7 @@ export default function AdminCouponsPage() {
                   value={form.code}
                   onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
                   placeholder="e.g. WELLNESS20"
-                  className="w-full px-3 py-2 rounded-xl border border-primary-100 uppercase font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-primary-100 uppercase font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                 />
               </div>
 
@@ -193,7 +193,7 @@ export default function AdminCouponsPage() {
                   <select
                     value={form.discount_type}
                     onChange={(e) => setForm({ ...form, discount_type: e.target.value as any })}
-                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                   >
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed Flat (₹)</option>
@@ -209,7 +209,7 @@ export default function AdminCouponsPage() {
                     required
                     value={form.discount_value}
                     onChange={(e) => setForm({ ...form, discount_value: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                   />
                 </div>
               </div>
@@ -221,7 +221,7 @@ export default function AdminCouponsPage() {
                     type="number"
                     value={form.minimum_order_value}
                     onChange={(e) => setForm({ ...form, minimum_order_value: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                   />
                 </div>
 
@@ -231,7 +231,7 @@ export default function AdminCouponsPage() {
                     type="number"
                     value={form.maximum_discount}
                     onChange={(e) => setForm({ ...form, maximum_discount: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                   />
                 </div>
               </div>
@@ -242,7 +242,7 @@ export default function AdminCouponsPage() {
                   type="number"
                   value={form.usage_limit}
                   onChange={(e) => setForm({ ...form, usage_limit: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                 />
               </div>
 

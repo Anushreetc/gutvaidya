@@ -107,7 +107,7 @@ export default function RecipesSection() {
   const IconComponent = activeRecipe.icon;
 
   return (
-    <section id="recipe" className="py-24 bg-white relative">
+    <section id="recipe" className="py-24 bg-base-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
@@ -131,10 +131,10 @@ export default function RecipesSection() {
                   onClick={() => setActiveTab(recipe.id)}
                   className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl text-left border transition-all flex-shrink-0 lg:flex-shrink w-auto lg:w-full focus:outline-none ${activeTab === recipe.id
                     ? "bg-primary-700 border-primary-700 text-white shadow-lg shadow-primary-700/10"
-                    : "bg-[#fdfdfb] border-primary-100 hover:border-primary-200 text-foreground/80"
+                    : "bg-base-100 border-primary-100 hover:border-primary-200 text-foreground/80"
                     }`}
                 >
-                  <div className={`p-2.5 rounded-xl ${activeTab === recipe.id ? "bg-white/10 text-white" : "bg-primary-50 text-primary-700"}`}>
+                  <div className={`p-2.5 rounded-xl ${activeTab === recipe.id ? "bg-base-50/10 text-white" : "bg-primary-50 text-primary-700"}`}>
                     <RIcon className="w-5 h-5" />
                   </div>
                   <div>

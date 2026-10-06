@@ -117,7 +117,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-12 sm:top-13 z-40 md:hidden bg-[#fdfdfb]/95 backdrop-blur-md border-b border-primary-100 py-5 px-4 shadow-lg flex flex-col gap-2"
+            className="fixed inset-x-0 top-12 sm:top-13 z-40 md:hidden bg-base-100/95 backdrop-blur-md border-b border-primary-100 py-5 px-4 shadow-lg flex flex-col gap-2"
           >
             {navLinks.map((link) => (
               <Link
@@ -172,7 +172,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 220 }}
-              className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#fdfdfb] shadow-2xl flex flex-col h-full border-l border-primary-100"
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-base-100 shadow-2xl flex flex-col h-full border-l border-primary-100"
             >
               {/* Header */}
               <div className="p-6 border-b border-primary-100 flex items-center justify-between">
@@ -228,7 +228,7 @@ export default function Navbar() {
                   cart.map((item) => (
                     <div
                       key={item.id || item.slug}
-                      className="p-4 rounded-xl border border-primary-100/60 bg-white/70 backdrop-blur-sm flex items-start gap-4 shadow-sm"
+                      className="p-4 rounded-xl border border-primary-100/60 bg-base-50/70 backdrop-blur-sm flex items-start gap-4 shadow-sm"
                     >
                       {item.image && (
                         <div className="w-16 h-16 rounded-lg overflow-hidden border border-primary-100 bg-primary-50/50 flex-shrink-0">

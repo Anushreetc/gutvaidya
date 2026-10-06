@@ -44,7 +44,7 @@ export default function AdminMessagesPage() {
       </div>
 
       {/* Messages List */}
-      <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-xs text-foreground/40">
             Loading messages...

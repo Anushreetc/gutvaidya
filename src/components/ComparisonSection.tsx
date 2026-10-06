@@ -31,7 +31,7 @@ export default function ComparisonSection() {
   return (
     <section
       aria-label="What goes into GutVaidya"
-      className="bg-primary-50/50 py-20 sm:py-28"
+      className="bg-base-100 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -42,7 +42,7 @@ export default function ComparisonSection() {
 
         <div className="mt-14 grid gap-6 lg:mt-16 lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-8">
           {/* Doing it yourself */}
-          <div className="rounded-3xl border border-primary-200/60 bg-white/70 p-7 sm:p-9">
+          <div className="rounded-3xl border border-primary-200/60 bg-base-50/70 p-7 sm:p-9">
             <h3 className="font-sans text-sm font-bold uppercase tracking-[0.14em] text-foreground/50">
               On your own
             </h3>
@@ -62,7 +62,7 @@ export default function ComparisonSection() {
             className="flex items-center justify-center lg:px-2"
             aria-hidden="true"
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-primary-200 bg-white shadow-sm">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-primary-200 bg-base-50 shadow-sm">
               <ArrowRight className="h-5 w-5 rotate-90 text-primary-700 lg:rotate-0" />
             </span>
           </div>
@@ -96,7 +96,7 @@ export default function ComparisonSection() {
             </ul>
             <a
               href="#products"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 font-sans text-sm font-bold text-primary-800 transition-all hover:scale-105 active:scale-95"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-base-50 px-7 py-3.5 font-sans text-sm font-bold text-primary-800 transition-all hover:scale-105 active:scale-95"
             >
               Shop GutVaidya
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -109,7 +109,7 @@ export default function ComparisonSection() {
           {BADGES.map((b) => (
             <li
               key={b}
-              className="rounded-full border border-primary-200/70 bg-white px-4 py-2 font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-primary-800 sm:text-xs"
+              className="rounded-full border border-primary-200/70 bg-base-50 px-4 py-2 font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-primary-800 sm:text-xs"
             >
               {b}
             </li>

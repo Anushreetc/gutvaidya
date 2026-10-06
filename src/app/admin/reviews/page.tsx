@@ -78,7 +78,7 @@ export default function AdminReviewsPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-primary-100 shadow-sm divide-y divide-primary-100/60">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm divide-y divide-primary-100/60">
         {loading ? (
           <div className="p-12 text-center text-xs text-foreground/40">Loading reviews...</div>
         ) : shown.length === 0 ? (

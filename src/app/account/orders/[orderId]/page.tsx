@@ -75,7 +75,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
   const currentStep = getActiveStepIndex(order.order_status);
 
   return (
-    <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-8">
+    <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-primary-100 pb-6">
         <div>
@@ -123,7 +123,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
                   className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all z-10 ${
                     isCompleted
                       ? "bg-primary-700 text-white shadow-sm ring-4 ring-primary-100"
-                      : "bg-white border border-primary-200 text-foreground/40"
+                      : "bg-base-50 border border-primary-200 text-foreground/40"
                   }`}
                 >
                   {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
@@ -183,7 +183,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
           <h4 className="text-xs uppercase font-bold text-accent-gold-dark tracking-wider">
             Shipping Information
           </h4>
-          <div className="p-4 rounded-2xl bg-white border border-primary-100 text-xs text-foreground/80 leading-relaxed">
+          <div className="p-4 rounded-2xl bg-base-50 border border-primary-100 text-xs text-foreground/80 leading-relaxed">
             <strong className="text-primary-900 block text-sm">{order.shipping_address.name}</strong>
             <p className="mt-1">
               {order.shipping_address.address_line_1}
@@ -201,7 +201,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
           <h4 className="text-xs uppercase font-bold text-accent-gold-dark tracking-wider">
             Payment Summary
           </h4>
-          <div className="p-4 rounded-2xl bg-white border border-primary-100 space-y-2 text-xs">
+          <div className="p-4 rounded-2xl bg-base-50 border border-primary-100 space-y-2 text-xs">
             <div className="flex justify-between text-foreground/70">
               <span>Subtotal</span>
               <span>₹{order.subtotal}</span>

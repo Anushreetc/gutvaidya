@@ -114,7 +114,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
 
       <main className="flex-grow">
@@ -126,7 +126,7 @@ export default function ProductsPage() {
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 text-accent-gold text-xs font-semibold uppercase tracking-wider mb-4 border border-white/10">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-base-50/10 text-accent-gold text-xs font-semibold uppercase tracking-wider mb-4 border border-white/10">
               <Leaf className="w-3.5 h-3.5" />
               100% Pure Ayurvedic Nutrition
             </span>
@@ -140,7 +140,7 @@ export default function ProductsPage() {
         </section>
 
         {/* Filter & Search Bar Section */}
-        <section className="sticky top-20 z-30 bg-[#fdfdfb]/95 backdrop-blur-md border-b border-primary-100/80 shadow-sm py-4">
+        <section className="sticky top-20 z-30 bg-base-100/95 backdrop-blur-md border-b border-primary-100/80 shadow-sm py-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               {/* Search Box */}
@@ -151,7 +151,7 @@ export default function ProductsPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search products or ingredients..."
-                  className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-primary-100 bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all shadow-sm"
+                  className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-primary-100 bg-base-50 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all shadow-sm"
                 />
                 {searchQuery && (
                   <button
@@ -206,7 +206,7 @@ export default function ProductsPage() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="pl-3 pr-8 py-1.5 text-xs font-semibold rounded-xl border border-primary-100 bg-white text-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-600 cursor-pointer shadow-sm"
+                    className="pl-3 pr-8 py-1.5 text-xs font-semibold rounded-xl border border-primary-100 bg-base-50 text-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-600 cursor-pointer shadow-sm"
                   >
                     <option value="featured">Sort by: Featured</option>
                     <option value="price-asc">Price: Low to High</option>
@@ -294,7 +294,7 @@ export default function ProductsPage() {
                         )}
 
                         {/* Weight pill */}
-                        <span className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-foreground/75 font-sans font-medium text-[11px] px-2.5 py-1 rounded-lg shadow-sm z-10">
+                        <span className="absolute bottom-3 left-3 bg-base-50/90 backdrop-blur-sm text-foreground/75 font-sans font-medium text-[11px] px-2.5 py-1 rounded-lg shadow-sm z-10">
                           {product.weight_size}
                         </span>
                       </Link>

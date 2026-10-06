@@ -38,7 +38,7 @@ const HERO_SEQUENCE = {
   },
 };
 
-const BG = "#fdfdfb";
+const BG = "#f8f5ec";
 const PORTRAIT_BAND = { top: 0.08, height: 0.48, focalX: 0.55 };
 
 type Chapter = {
@@ -226,11 +226,11 @@ export default function HeroSection() {
       const fade = dh * 0.18;
       const top = ctx.createLinearGradient(0, dy, 0, dy + fade);
       top.addColorStop(0, BG);
-      top.addColorStop(1, "rgba(253,253,251,0)");
+      top.addColorStop(1, "rgba(248,245,236,0)");
       ctx.fillStyle = top;
       ctx.fillRect(0, dy, cw, fade);
       const bottom = ctx.createLinearGradient(0, dy + dh - fade, 0, dy + dh);
-      bottom.addColorStop(0, "rgba(253,253,251,0)");
+      bottom.addColorStop(0, "rgba(248,245,236,0)");
       bottom.addColorStop(1, BG);
       ctx.fillStyle = bottom;
       ctx.fillRect(0, dy + dh - fade, cw, fade + 1);
@@ -424,7 +424,7 @@ function Scrim({ bandMode }: { bandMode: boolean }) {
         className="pointer-events-none absolute inset-0 z-[1] lg:hidden"
         style={{
           background:
-            "linear-gradient(to right, rgba(253,253,251,0.96) 0%, rgba(253,253,251,0.88) 45%, rgba(253,253,251,0.5) 60%, rgba(253,253,251,0) 72%)",
+            "radial-gradient(ellipse 92% 60% at 30% 50%, rgba(248,245,236,0.95) 0%, rgba(248,245,236,0.88) 42%, rgba(248,245,236,0.45) 72%, rgba(248,245,236,0) 100%)",
         }}
       />
       <div
@@ -432,7 +432,7 @@ function Scrim({ bandMode }: { bandMode: boolean }) {
         className="pointer-events-none absolute inset-0 z-[1] hidden lg:block"
         style={{
           background:
-            "linear-gradient(to right, rgba(253,253,251,0.96) 0%, rgba(253,253,251,0.85) 28%, rgba(253,253,251,0.4) 42%, rgba(253,253,251,0) 52%)",
+            "radial-gradient(ellipse 56% 52% at 19% 50%, rgba(248,245,236,0.94) 0%, rgba(248,245,236,0.84) 45%, rgba(248,245,236,0.38) 75%, rgba(248,245,236,0) 100%)",
         }}
       />
     </>
@@ -521,7 +521,7 @@ function ChapterCopy({ chapter, headingLevel }: { chapter: Chapter; headingLevel
         {chapter.title}
       </Heading>
 
-      <p className="max-w-[30rem] text-base leading-relaxed text-foreground/80 sm:text-lg compact:text-[0.95rem] short:text-[0.95rem] font-sans">
+      <p className="max-w-[30rem] text-base leading-relaxed text-foreground sm:text-lg compact:text-[0.95rem] short:text-[0.95rem] font-sans">
         {chapter.body}
       </p>
 
@@ -537,7 +537,7 @@ function ChapterCopy({ chapter, headingLevel }: { chapter: Chapter; headingLevel
           {!chapter.isFinal && (
             <a
               href="#ingredients"
-              className="inline-flex items-center rounded-full border border-primary-700/25 bg-white/80 px-7 py-3.5 compact:px-5 compact:py-3 short:px-5 short:py-3 max-[399px]:portrait:hidden text-sm font-bold text-primary-800 backdrop-blur-sm transition-all hover:bg-white hover:scale-105 active:scale-95 shadow-sm"
+              className="inline-flex items-center rounded-full border border-primary-700/25 bg-base-50/80 px-7 py-3.5 compact:px-5 compact:py-3 short:px-5 short:py-3 max-[399px]:portrait:hidden text-sm font-bold text-primary-800 backdrop-blur-sm transition-all hover:bg-base-50 hover:scale-105 active:scale-95 shadow-sm"
             >
               See what’s inside
             </a>
