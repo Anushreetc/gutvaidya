@@ -19,15 +19,18 @@ import { ArrowRight, Sparkles } from "lucide-react";
    ───────────────────────────────────────────────────────────── */
 
 const HERO_SEQUENCE = {
+  // 1920px frames, AI-upscaled (Real-ESRGAN x4plus) from the 848px originals.
   desktop: { path: "/hero/desktop/f_", frameCount: 240 },
+  // The 848px originals: used when the visitor has Data Saver on or a slow connection.
+  lite: { path: "/hero/desktop-sd/f_", frameCount: 240 },
   mobile: null as null | { path: string; frameCount: number },
   durationSec: 56.586,
   scrollLengthVh: 500, // 500vh provides smooth, natural scroll pacing
   // The generated pouch loses its label for frames ~45-57 (10.4-13.3s).
-  // pouch-label.png is the labelled pouch cut from frame 44 (x 335, y 102,
-  // 190x290 px of the 848x478 frame) with feathered edges; painted over that stretch.
+  // pouch-label.webp is the labelled pouch cut from HD frame 44 (x 335, y 102,
+  // 190x290 px in 848x478 frame units) with feathered edges; painted over that stretch.
   pouchOverlay: {
-    src: "/hero/pouch-label.png" as string | null,
+    src: "/hero/pouch-label.webp" as string | null,
     rect: { x: 335 / 848, y: 102 / 478, w: 190 / 848, h: 290 / 478 },
     fromSec: 10.2,
     toSec: 13.4,
@@ -132,9 +135,14 @@ export default function HeroSection() {
   const rafRef = useRef<number | null>(null);
   const [isPortrait, setIsPortrait] = useState(false);
   const [activeChapter, setActiveChapter] = useState(0);
+  const [lite, setLite] = useState(false);
 
   const seq =
-    isPortrait && HERO_SEQUENCE.mobile ? HERO_SEQUENCE.mobile : HERO_SEQUENCE.desktop;
+    isPortrait && HERO_SEQUENCE.mobile
+      ? HERO_SEQUENCE.mobile
+      : lite
+        ? HERO_SEQUENCE.lite
+        : HERO_SEQUENCE.desktop;
   const bandMode = isPortrait && !HERO_SEQUENCE.mobile;
 
   const { scrollYProgress } = useScroll({
@@ -240,6 +248,14 @@ export default function HeroSection() {
     update();
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
+  }, []);
+
+  /* ── Data Saver / slow connection → lighter frame set ── */
+  useEffect(() => {
+    const conn = (
+      navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
+    ).connection;
+    if (conn?.saveData || /(^|-)(2g|3g)$/.test(conn?.effectiveType ?? "")) setLite(true);
   }, []);
 
   /* ── Canvas Auto-Resize with High-DPI Support ── */
