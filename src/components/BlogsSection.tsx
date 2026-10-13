@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {Calendar, Clock, ArrowRight, X, Sparkles } from "lucide-react";
+import {Calendar, Clock, ArrowRight, X, Tag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
@@ -68,7 +68,7 @@ export default function BlogsSection() {
                 {/* Meta details */}
                 <div className="flex items-center justify-between text-xs text-foreground/50">
                   <span className="flex items-center gap-1.5 font-medium text-accent-gold-dark">
-                    <Sparkles className="w-3 h-3" />
+                    <Tag className="w-3 h-3" />
                     {blog.tag}
                   </span>
                   <div className="flex items-center gap-3">

@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { SEED_PRODUCTS } from '@/lib/products';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thegutvaidya.com';
 
   // Static routes
   const staticRoutes = [

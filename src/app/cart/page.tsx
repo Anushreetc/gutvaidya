@@ -12,7 +12,7 @@ import {
   Minus,
   Tag,
   ArrowRight,
-  Sparkles,
+  Truck,
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
@@ -99,7 +99,7 @@ export default function CartPage() {
                 <div className="p-4 rounded-2xl bg-primary-50/70 border border-primary-100 flex items-center justify-between text-xs sm:text-sm">
                   {freeShippingRemaining === 0 ? (
                     <div className="flex items-center gap-2 text-primary-800 font-semibold">
-                      <Sparkles className="w-4 h-4 text-accent-gold" />
+                      <Truck className="w-4 h-4 text-accent-gold" />
                       <span>You've unlocked <strong>FREE Standard Shipping</strong>!</span>
                     </div>
                   ) : (

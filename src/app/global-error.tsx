@@ -14,7 +14,7 @@ export default function GlobalError({
           <div style={{ maxWidth: 420, textAlign: "center" }}>
             <h1 style={{ fontSize: 26, marginBottom: 12 }}>GutVaidya is having trouble loading</h1>
             <p style={{ fontSize: 14, lineHeight: 1.6, opacity: 0.7 }}>
-              Please try again in a moment. If this keeps happening, email support@gutvaidya.in or call +91 78928 91239.
+              Please try again in a moment. If this keeps happening, email support@thegutvaidya.com or call +91 78928 91239.
             </p>
             <button
               onClick={() => retry()}

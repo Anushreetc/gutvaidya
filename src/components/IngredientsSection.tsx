@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Wheat, Leaf, Flame, Zap, Sprout, Sparkles, Info, X, ChevronRight, Activity, Heart } from "lucide-react";
+import { Wheat, Leaf, Flame, Zap, Sprout, Flower2, Info, X, ChevronRight, Activity, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
@@ -182,7 +182,7 @@ export default function IngredientsSection() {
     {
       title: "Natural Herbs",
       tagline: "Ayurvedic Adaptogens for Gut-Brain Axis",
-      icon: Sparkles,
+      icon: Flower2,
       imagePath: "/images/ingredients/herbs.png",
       summary: "A legendary collection of therapeutic herbs that heal the mucosal lining, reduce stress-induced gut issues, and balance the microbiome.",
       items: [

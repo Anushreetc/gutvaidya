@@ -10,7 +10,7 @@ import {
   transform as interpolate,
   type MotionValue,
 } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Leaf } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────
    Scroll-driven 3D Hero Motion:
@@ -482,7 +482,7 @@ function ChapterCopy({ chapter, headingLevel }: { chapter: Chapter; headingLevel
     <div className="space-y-4 compact:space-y-3 short:space-y-2.5">
       {chapter.badge && (
         <span className="hero-halo compact:hidden short:hidden inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/90 text-primary-800 text-xs font-semibold uppercase tracking-wider border border-primary-200 shadow-sm">
-          <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
+          <Leaf className="w-3.5 h-3.5 text-accent-gold" />
           {chapter.badge}
         </span>
       )}

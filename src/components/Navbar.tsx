@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { ShoppingBag, X, Menu, Trash2, Plus, Minus, User, ArrowRight, Sparkles } from "lucide-react";
+import { ShoppingBag, X, Menu, Trash2, Plus, Minus, User, ArrowRight, Truck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -193,7 +193,7 @@ export default function Navbar() {
                 <div className="px-6 py-3 bg-primary-50/70 border-b border-primary-100/60 text-xs">
                   {freeShippingRemaining === 0 ? (
                     <div className="flex items-center gap-1.5 text-primary-800 font-semibold">
-                      <Sparkles className="w-4 h-4 text-accent-gold" />
+                      <Truck className="w-4 h-4 text-accent-gold" />
                       <span>Congratulations! You qualified for <strong>FREE Delivery</strong>!</span>
                     </div>
                   ) : (

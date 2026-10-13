@@ -11,7 +11,6 @@ import {
   AlertTriangle,
   TrendingUp,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 
 // Per-request: shows private order data for the signed-in user

@@ -6,7 +6,7 @@ import { useCart } from "../context/CartContext";
 import { SEED_PRODUCTS } from "@/lib/products";
 import { Product } from "@/types/ecommerce";
 import { getProductOverrides, applyProductOverrides, subscribeToProductUpdates } from "@/lib/products-client";
-import { ShoppingCart, Leaf, Shield, Award, Sparkles, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ShoppingCart, Leaf, Shield, Award, BadgeCheck, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
@@ -159,7 +159,7 @@ export default function ProductsSection() {
 
                   {/* Badge Overlay */}
                   <span className="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md z-10">
-                    <Sparkles className="w-3 h-3" />
+                    <BadgeCheck className="w-3 h-3" />
                     {product.badge || 'Bestseller'}
                   </span>
 

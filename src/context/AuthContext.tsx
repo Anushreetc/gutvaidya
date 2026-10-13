@@ -116,7 +116,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const demoProfile: UserProfile = {
       id: role === "admin" ? "demo-admin-id" : "demo-customer-id",
       name: role === "admin" ? "Vaidya Admin" : "Demo Customer",
-      email: role === "admin" ? "admin@gutvaidya.in" : "customer@example.com",
+      email: role === "admin" ? "admin@thegutvaidya.com" : "customer@example.com",
       role: role,
       created_at: new Date().toISOString(),
     };

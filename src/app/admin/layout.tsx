@@ -16,7 +16,6 @@ import {
   ArrowLeft,
   ShieldCheck,
   Lock,
-  Sparkles,
   ExternalLink,
 } from "lucide-react";
 
@@ -142,7 +141,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             <div className="min-w-0 flex-1">
               <p className="font-bold text-white truncate">{profile?.name || "Admin"}</p>
-              <p className="text-[10px] text-white/50 truncate">{user?.email || "admin@gutvaidya.in"}</p>
+              <p className="text-[10px] text-white/50 truncate">{user?.email || "admin@thegutvaidya.com"}</p>
             </div>
           </div>
 

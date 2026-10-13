@@ -38,7 +38,7 @@ export default function AdminMessagesPage() {
           </h1>
           <p className="text-xs text-foreground/60 mt-1">
             Incoming messages from the website contact form. Notifications are also dispatched to{" "}
-            <span className="font-semibold text-primary-700">anushreetc678@gmail.com</span>.
+            <span className="font-semibold text-primary-700">gutvaidya@gmail.com</span>.
           </p>
         </div>
       </div>

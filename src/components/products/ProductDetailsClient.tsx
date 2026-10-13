@@ -12,7 +12,7 @@ import {
   ShieldCheck,
   Truck,
   RotateCcw,
-  Sparkles,
+  BadgeCheck,
   ShoppingCart,
   Zap,
   CheckCircle2,
@@ -167,7 +167,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
 
               {product.badge && (
                 <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <BadgeCheck className="w-3.5 h-3.5" />
                   {product.badge}
                 </span>
               )}

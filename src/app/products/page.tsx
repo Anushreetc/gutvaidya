@@ -10,7 +10,7 @@ import { Product } from "@/types/ecommerce";
 import {
   Search,
   SlidersHorizontal,
-  Sparkles,
+  BadgeCheck,
   Star,
   ShoppingCart,
   Check,
@@ -281,7 +281,7 @@ export default function ProductsPage() {
                         {/* Badge Overlay */}
                         {product.badge && (
                           <span className="absolute top-3.5 left-3.5 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent-gold text-white text-[11px] font-bold shadow-md z-10">
-                            <Sparkles className="w-3 h-3" />
+                            <BadgeCheck className="w-3 h-3" />
                             {product.badge}
                           </span>
                         )}

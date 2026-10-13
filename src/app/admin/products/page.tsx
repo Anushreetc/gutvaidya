@@ -9,7 +9,7 @@ import {
   Edit2,
   Check,
   X,
-  Sparkles,
+  Star,
   Package,
   AlertTriangle,
   Save,
@@ -394,7 +394,7 @@ export default function AdminProductsPage() {
                         }`}
                         title="Toggle Featured on Homepage"
                       >
-                        <Sparkles className="w-3.5 h-3.5" />
+                        <Star className="w-3.5 h-3.5" />
                       </button>
                     </td>
 

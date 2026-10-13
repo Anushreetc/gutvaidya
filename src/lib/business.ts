@@ -5,7 +5,7 @@ import { DEFAULT_SHIPPING_CONFIG } from './shipping';
 export const BUSINESS = {
   brandName: 'GutVaidya',
   legalName: 'GutVaidya Health Mix',
-  supportEmail: 'support@gutvaidya.in',
+  supportEmail: 'support@thegutvaidya.com',
   supportPhone: '+91 78928 91239',
   supportPhoneHref: 'tel:+917892891239',
   supportHours: 'Monday to Saturday, 9 AM – 6 PM IST',

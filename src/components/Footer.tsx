@@ -91,8 +91,8 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-accent-gold" />
-                <a href="mailto:support@gutvaidya.in" className="hover:text-accent-gold transition-colors truncate">
-                  support@gutvaidya.in
+                <a href="mailto:support@thegutvaidya.com" className="hover:text-accent-gold transition-colors truncate">
+                  support@thegutvaidya.com
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
