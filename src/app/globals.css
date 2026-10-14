@@ -69,12 +69,77 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smoother defaults for anything interactive */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"] {
+  transition:
+    color 0.2s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease;
+}
+
+/* Images fade in instead of popping */
+img {
+  animation: img-fade-in 0.5s ease-out;
+}
+
+@keyframes img-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Page content fades in on mount */
+main {
+  animation: page-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect user accessibility preference — kill animation for motion-sensitive users */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Nicer focus ring for keyboard users (no outline on mouse clicks) */
+:focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Glassmorphism Classes */

@@ -86,7 +86,7 @@ export default async function OrderConfirmationPage({ searchParams }: PageProps)
                     <div key={idx} className="py-3 first:pt-0 flex items-center justify-between text-xs sm:text-sm">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-xl overflow-hidden bg-primary-50 border border-primary-100 flex-shrink-0">
-                          <img src={item.image || '/product.jpeg'} alt={item.product_name} className="w-full h-full object-cover" />
+                          <img src={item.image || '/product.jpeg'} alt={item.product_name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                         </div>
                         <div>
                           <strong className="font-serif font-bold text-primary-900 block">

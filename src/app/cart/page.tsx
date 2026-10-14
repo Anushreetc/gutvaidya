@@ -119,7 +119,7 @@ export default function CartPage() {
                   {cart.map((item) => (
                     <div key={item.id || item.slug} className="p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
                       <div className="w-20 h-20 rounded-2xl overflow-hidden bg-primary-50 border border-primary-100 flex-shrink-0">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                        <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                       </div>
 
                       <div className="flex-1 min-w-0">

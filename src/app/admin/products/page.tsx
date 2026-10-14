@@ -15,6 +15,7 @@ import {
   Save,
   Camera,
   Loader2,
+  Trash2,
 } from "lucide-react";
 
 import {
@@ -175,6 +176,27 @@ export default function AdminProductsPage() {
     showToast(`Status changed to ${newStatus}`);
 
     await persistProduct("update", updated);
+  };
+
+  const handleDeleteProduct = async (product: Product) => {
+    if (!window.confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+
+    const previous = products;
+    setProducts((prev) => prev.filter((p) => p.id !== product.id));
+
+    try {
+      const res = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", product: { id: product.id, slug: product.slug } }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Delete failed");
+      showToast(`✓ Deleted ${product.name}`);
+    } catch (err: any) {
+      setProducts(previous);
+      showToast(`⚠ Could not delete ${product.name}: ${err.message}`);
+    }
   };
 
   const handleCreateProduct = async (e: React.FormEvent) => {
@@ -418,13 +440,22 @@ export default function AdminProductsPage() {
                           </button>
                         </div>
                       ) : (
-                        <button
-                          onClick={() => startEdit(p)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-primary-200 text-primary-800 hover:bg-primary-50 font-semibold"
-                        >
-                          <Edit2 className="w-3 h-3" />
-                          <span>Edit</span>
-                        </button>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => startEdit(p)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-primary-200 text-primary-800 hover:bg-primary-50 font-semibold"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            onClick={() => handleDeleteProduct(p)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50 font-semibold"
+                            title="Delete product"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
                       )}
                     </td>
                   </tr>

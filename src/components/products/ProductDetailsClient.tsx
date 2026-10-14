@@ -192,7 +192,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                         : "border-primary-100/80 opacity-70 hover:opacity-100"
                     }`}
                   >
-                    <img src={img} alt={`${product.name} thumbnail ${i + 1}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`${product.name} thumbnail ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -583,7 +583,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                   className="glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between"
                 >
                   <Link href={`/products/${rel.slug}`} className="block relative h-52 bg-primary-50">
-                    <img src={rel.main_image} alt={rel.name} className="w-full h-full object-cover" />
+                    <img src={rel.main_image} alt={rel.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                     <span className="absolute bottom-3 right-3 bg-primary-900 text-white font-sans font-bold text-sm px-3 py-1 rounded-xl">
                       ₹{rel.price}
                     </span>

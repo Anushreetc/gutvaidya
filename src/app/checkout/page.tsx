@@ -472,7 +472,7 @@ export default function CheckoutPage() {
                         <div key={item.id || item.slug} className="pt-3 first:pt-0 flex items-center justify-between text-xs">
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-xl overflow-hidden bg-primary-50 border border-primary-100 flex-shrink-0">
-                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                              <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                             </div>
                             <div>
                               <span className="font-serif font-bold text-primary-900 block line-clamp-1">

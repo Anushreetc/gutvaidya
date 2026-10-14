@@ -6,7 +6,7 @@ import { useCart } from "../context/CartContext";
 import { SEED_PRODUCTS } from "@/lib/products";
 import { Product } from "@/types/ecommerce";
 import { getProductOverrides, applyProductOverrides, subscribeToProductUpdates } from "@/lib/products-client";
-import { ShoppingCart, Leaf, Shield, Award, BadgeCheck, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ShoppingCart, Leaf, Shield, Award, BadgeCheck, ChevronLeft, ChevronRight, ArrowRight, Check, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
@@ -109,8 +109,132 @@ export default function ProductsSection() {
           body={"Wholesome, premium wellness blends formulated with traditional ingredients to nourish your daily routine."}
         />
 
-        {/* Slider Container Wrapper */}
-        <div className="relative max-w-6xl mx-auto px-4">
+        {/* Single Product Spotlight — When only one product exists, use a wide hero layout */}
+        {products.length === 1 ? (
+          <div className="max-w-6xl mx-auto px-4">
+            {(() => {
+              const product = products[0];
+              return (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center bg-base-50 rounded-[2.5rem] p-6 sm:p-10 lg:p-14 border border-primary-100 shadow-xl overflow-hidden"
+                >
+                  {/* Decorative corner shapes */}
+                  <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-accent-gold/10 blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-primary-200/40 blur-3xl pointer-events-none" />
+
+                  {/* Left — Product Visual */}
+                  <Link
+                    href={`/products/${product.slug}`}
+                    className="relative aspect-square rounded-3xl overflow-hidden bg-primary-100/40 group shadow-lg block"
+                  >
+                    <img
+                      src={product.main_image || (product as any).image || '/product.jpeg'}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <span className="absolute top-5 left-5 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md">
+                      <BadgeCheck className="w-3.5 h-3.5" />
+                      {product.badge || 'Bestseller'}
+                    </span>
+                    <span className="absolute bottom-5 right-5 inline-flex items-center gap-1 bg-primary-900 text-white font-sans font-bold text-lg px-4 py-2 rounded-xl shadow-lg">
+                      ₹{product.price}
+                      {product.compare_at_price && (
+                        <span className="text-xs text-white/60 line-through ml-1 font-medium">₹{product.compare_at_price}</span>
+                      )}
+                    </span>
+                  </Link>
+
+                  {/* Right — Product Details */}
+                  <div className="relative space-y-6">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-gold/10 text-accent-gold-dark text-[11px] font-bold uppercase tracking-wider">
+                      <Sparkles className="w-3 h-3" />
+                      Signature Formulation
+                    </div>
+
+                    <div>
+                      <Link href={`/products/${product.slug}`} className="group">
+                        <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight group-hover:text-accent-gold-dark transition-colors">
+                          {product.name}
+                        </h3>
+                      </Link>
+                      <p className="text-sm sm:text-base text-foreground/75 leading-relaxed mt-3">
+                        {product.short_description}
+                      </p>
+                    </div>
+
+                    {/* Benefits */}
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 pt-2">
+                      {(product.benefits || []).map((benefit) => (
+                        <li key={benefit} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/85 font-medium">
+                          <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check className="w-3 h-3" strokeWidth={3} />
+                          </span>
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Price band */}
+                    <div className="flex items-baseline gap-3 pt-4 border-t border-primary-100">
+                      <span className="text-[11px] uppercase tracking-wider font-bold text-foreground/50">Price</span>
+                      <span className="text-3xl sm:text-4xl font-sans font-bold text-primary-800">₹{product.price}</span>
+                      {product.compare_at_price && (
+                        <>
+                          <span className="text-sm text-foreground/40 line-through">₹{product.compare_at_price}</span>
+                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                            Save ₹{product.compare_at_price - product.price}
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                      <button
+                        onClick={() =>
+                          addToCart({
+                            id: product.id,
+                            slug: product.slug,
+                            name: product.name,
+                            price: product.price,
+                            compare_at_price: product.compare_at_price,
+                            image: product.main_image || (product as any).image || '/product.jpeg',
+                            stock_quantity: product.stock_quantity,
+                            weight_size: product.weight_size || "500g",
+                          })
+                        }
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-bold text-sm transition-all shadow-md hover:shadow-xl"
+                      >
+                        <ShoppingCart className="w-4 h-4" />
+                        Add to Cart
+                      </button>
+                      <Link
+                        href={`/products/${product.slug}`}
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-primary-700 text-primary-700 hover:bg-primary-50 font-bold text-sm transition-all"
+                      >
+                        View Details
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+
+                    {/* Trust row */}
+                    <div className="flex items-center gap-4 pt-4 text-[11px] text-foreground/60">
+                      <span className="flex items-center gap-1.5"><Leaf className="w-3.5 h-3.5 text-primary-700" /> 100% Natural</span>
+                      <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-primary-700" /> FSSAI Certified</span>
+                      <span className="flex items-center gap-1.5"><Award className="w-3.5 h-3.5 text-primary-700" /> Traditional Recipe</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })()}
+          </div>
+        ) : (
+          /* Slider Container Wrapper */
+          <div className="relative max-w-6xl mx-auto px-4">
           {/* Navigation side buttons */}
           <button
             onClick={() => handleScroll("left")}
@@ -253,6 +377,7 @@ export default function ProductsSection() {
             </Link>
           </div>
         </div>
+        )}
 
         {/* Benefits strip */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-20 pt-10 border-t border-primary-100/40 text-center">
