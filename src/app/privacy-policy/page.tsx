@@ -68,12 +68,20 @@ export default function PrivacyPolicyPage() {
       </section>
 
       <section>
-        <h2>8. Children</h2>
+        <h2>8. Grievance Officer</h2>
+        <p>
+          For any question or complaint about your personal information, please contact our Grievance Officer at <a href={`mailto:${BUSINESS.supportEmail}`}>{BUSINESS.supportEmail}</a>, phone {BUSINESS.supportPhone}.
+          Postal address: {BUSINESS.legalName}, {BUSINESS.registeredAddress}.
+        </p>
+      </section>
+
+      <section>
+        <h2>9. Children</h2>
         <p>Our website is intended for adults. Products for children should be purchased by a parent or guardian.</p>
       </section>
 
       <section>
-        <h2>9. Changes to this policy</h2>
+        <h2>10. Changes to this policy</h2>
         <p>We may update this policy from time to time. The &quot;Last updated&quot; date above shows when it last changed.</p>
       </section>
     </PolicyPage>

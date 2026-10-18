@@ -17,7 +17,15 @@ export default function TermsPage() {
     >
       <section>
         <h2>1. About us</h2>
-        <p>{BUSINESS.legalName} sells Ayurvedic nutrition and health-mix products in India. Our food products are manufactured and sold under FSSAI Licence No. {BUSINESS.fssaiLicense}.</p>
+        <p>
+          {BUSINESS.legalName} sells Ayurvedic nutrition and health-mix products in India.
+          Our food products are manufactured and sold under FSSAI Licence No. {BUSINESS.fssaiLicense}.
+          {BUSINESS.gstin ? ` GSTIN: ${BUSINESS.gstin}.` : ''}
+        </p>
+        <p>
+          <strong>Registered address:</strong> {BUSINESS.registeredAddress}.<br />
+          <strong>Contact:</strong> <a href={`mailto:${BUSINESS.supportEmail}`}>{BUSINESS.supportEmail}</a>, {BUSINESS.supportPhone} ({BUSINESS.supportHours}).
+        </p>
       </section>
 
       <section>

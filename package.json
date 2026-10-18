@@ -9,9 +9,7 @@
     "lint": "eslint",
     "stitch:doctor": "npx @_davideast/stitch-mcp doctor",
     "stitch:serve": "npx @_davideast/stitch-mcp serve",
-    "stitch:site": "npx @_davideast/stitch-mcp site",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d out --dotfiles"
+    "stitch:site": "npx @_davideast/stitch-mcp site"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -33,7 +31,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "^16.3.7",
-    "gh-pages": "^6.3.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
