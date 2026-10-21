@@ -86,8 +86,8 @@ export default async function OrderDetailPage({ params }: PageProps) {
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to All Orders
           </Link>
-          <h1 className="text-2xl font-serif font-bold text-primary-900 flex items-center gap-3">
-            <span>Order #{order.order_number}</span>
+          <h1 className="text-2xl font-serif font-bold text-primary-900 flex items-center gap-2">
+            <span>Order <span className="font-mono font-bold text-xl tracking-tight">#{order.order_number}</span></span>
           </h1>
           <p className="text-xs text-foreground/50 mt-0.5">
             Placed on {new Date(order.created_at).toLocaleDateString("en-IN", {
