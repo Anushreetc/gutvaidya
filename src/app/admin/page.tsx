@@ -74,7 +74,7 @@ export default async function AdminDashboardPage() {
                 <span className="text-xs font-bold uppercase tracking-wider text-foreground/50 block mb-1">
                   {kpi.title}
                 </span>
-                <span className="text-2xl sm:text-3xl font-serif font-bold text-primary-900 block">
+                <span className="text-2xl sm:text-3xl font-sans font-bold text-primary-900 block tabular-nums tracking-tight">
                   {kpi.value}
                 </span>
                 <span className="text-xs text-foreground/50 mt-1 block">{kpi.subtitle}</span>

@@ -335,7 +335,7 @@ export default function AdminOrdersPage() {
                 <span className="text-xs uppercase text-foreground/50 font-bold block">
                   Order Details
                 </span>
-                <h3 className="font-serif font-bold text-xl text-primary-900">
+                <h3 className="font-mono font-bold text-lg sm:text-xl text-primary-900 tracking-tight">
                   #{activeOrder.order_number}
                 </h3>
               </div>
