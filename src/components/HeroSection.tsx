@@ -19,12 +19,12 @@ import { ArrowRight, Leaf } from "lucide-react";
    ───────────────────────────────────────────────────────────── */
 
 const HERO_SEQUENCE = {
-  // 1920px frames, AI-upscaled (Real-ESRGAN x4plus) from the 848px originals.
+  // 1920px native frames from gutvaidya___VIDEO.mp4.
   desktop: { path: "/hero/desktop/f_", frameCount: 240 },
-  // The 848px originals: used when the visitor has Data Saver on or a slow connection.
+  // 848px frames used when visitor has Data Saver on or a slow connection.
   lite: { path: "/hero/desktop-sd/f_", frameCount: 240 },
   mobile: null as null | { path: string; frameCount: number },
-  durationSec: 56.586,
+  durationSec: 56.564,
   scrollLengthVh: 500, // 500vh provides smooth, natural scroll pacing
   // The generated pouch loses its label for frames ~45-57 (10.4-13.3s).
   // pouch-label.webp is the labelled pouch cut from HD frame 44 (x 335, y 102,
