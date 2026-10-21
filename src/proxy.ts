@@ -32,7 +32,14 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
+  const code = searchParams.get('code');
+  if (code && pathname === '/') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/auth/callback';
+    return NextResponse.redirect(url);
+  }
+
   if (!user && (pathname.startsWith('/account') || pathname.startsWith('/admin'))) {
     const url = request.nextUrl.clone();
     url.pathname = '/auth/login';
