@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thegutvaidya.com';
   const canonicalUrl = `${siteUrl}/products/${product.slug}`;
 
   return {
@@ -92,7 +92,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     getApprovedReviews(product.id),
   ]);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thegutvaidya.com';
 
   // Schema.org Product Structured Data
   const jsonLd = {
@@ -131,7 +131,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

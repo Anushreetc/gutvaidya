@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { updateLiveProduct, createLiveProduct } from '@/lib/products-server';
+import { updateLiveProduct, createLiveProduct, deleteLiveProduct } from '@/lib/products-server';
 import { safeDecodeCookie } from '@/lib/products-client';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { requireAdminApi } from '@/lib/supabase/auth';
@@ -65,6 +65,12 @@ export async function POST(req: Request) {
       const created = await createLiveProduct(product);
       revalidateStorefront(created.slug);
       return withDemoCookie(req, NextResponse.json({ success: true, product: created }), created);
+    }
+
+    if (action === 'delete' && product?.id) {
+      await deleteLiveProduct(product.id);
+      revalidateStorefront(product.slug);
+      return NextResponse.json({ success: true });
     }
 
     return NextResponse.json({ error: 'Invalid action or missing product' }, { status: 400 });

@@ -1,28 +1,55 @@
 @import "tailwindcss";
 
+/* Hero copy sizing: short portrait phones (copy sits under the video band)
+   and landscape phones (copy shares the screen with the video). */
+@custom-variant compact (@media (orientation: portrait) and (max-height: 760px));
+@custom-variant short (@media (orientation: landscape) and (max-height: 500px));
+
 @theme {
-  --color-primary-50: #f4f8f2;
-  --color-primary-100: #e6edd9;
-  --color-primary-200: #ccdbb6;
-  --color-primary-300: #aad68a;
-  --color-primary-600: #1f4f16;
-  --color-primary-700: #163c0f;
-  --color-primary-800: #0f280a;
-  --color-primary-900: #0a1b07;
-  
-  --color-accent-gold: #c39b62;
-  --color-accent-gold-light: #e5cca8;
-  --color-accent-gold-dark: #98723c;
-  
+  /* ── Neutrals ───────────────────────────────────────────────────────
+     Warm oat and sand, sampled from the pouch body itself (#f0e0c0 /
+     #e0d0b0). Every neutral carries that warmth: there is no cool grey
+     or blue-white anywhere in the system. */
+  --color-base-50: #fdfbf4; /* raised cards, the lightest surface */
+  --color-base-100: #f8f5ec; /* page background */
+  --color-base-200: #f2ecdd; /* alternating section band */
+  --color-base-300: #e9e1cd; /* sand: chips, rails, nav highlight */
+  --color-base-400: #d8d0b8; /* borders and dividers */
+
+  /* ── Brand green, sampled from the pouch artwork (#103010) ── */
+  --color-primary-50: #f4f7ee;
+  --color-primary-100: #e7ecd8;
+  --color-primary-200: #d1dab9;
+  --color-primary-300: #a8bb84;
+  --color-primary-400: #6f9152;
+  --color-primary-500: #3d6b2b;
+  --color-primary-600: #1d4a17;
+  --color-primary-700: #16380f;
+  --color-primary-800: #11300f; /* the pouch green */
+  --color-primary-900: #0c2209;
+  --color-primary-950: #061405;
+
+  /* ── Clay and gold: the pouch tan plus the terracotta bowls ── */
+  --color-accent-gold: #c08a4a;
+  --color-accent-gold-light: #e2c69c;
+  --color-accent-gold-dark: #8c5c26;
+  --color-accent-clay: #c2703a;
+
+  /* Named so `bg-background` and `text-foreground/70` resolve — both were
+     used across the site before but never defined, so they rendered as
+     plain inherited colour. */
+  --color-background: #f8f5ec;
+  --color-foreground: #1f2318;
+
   --font-serif: var(--font-playfair);
   --font-sans: var(--font-outfit);
 }
 
 :root {
-  --background: #fdfdfb;
-  --foreground: #1c241b;
-  --primary: #1f4f16;
-  --accent: #c39b62;
+  --background: #f8f5ec;
+  --foreground: #1f2318;
+  --primary: #1d4a17;
+  --accent: #c08a4a;
 }
 
 /* Custom Scrollbar */
@@ -30,39 +57,78 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f7f9f4;
+  background: #f2ecdd;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ccdbb6;
+  background: #d8d0b8;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #aad68a;
+  background: #a8bb84;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smoother defaults for anything interactive */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"] {
+  transition:
+    color 0.2s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease;
+}
+
+/* Respect user accessibility preference — kill animation for motion-sensitive users */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Nicer focus ring for keyboard users (no outline on mouse clicks) */
+:focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Glassmorphism Classes */
 .glass-nav {
-  background: rgba(253, 253, 251, 0.75);
+  background: rgba(248, 245, 236, 0.78);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(31, 79, 22, 0.08);
+  border-bottom: 1px solid rgba(17, 48, 15, 0.1);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(253, 251, 244, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(31, 79, 22, 0.06);
+  border: 1px solid rgba(17, 48, 15, 0.08);
 }
 
 .glass-card-hover {
@@ -71,20 +137,32 @@ body {
 
 .glass-card-hover:hover {
   transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 12px 30px rgba(31, 79, 22, 0.06);
-  border-color: rgba(31, 79, 22, 0.12);
+  background: rgba(253, 251, 244, 0.9);
+  box-shadow: 0 12px 30px rgba(17, 48, 15, 0.08);
+  border-color: rgba(17, 48, 15, 0.14);
 }
 
 /* Gradient text */
 .gradient-text-primary {
-  background: linear-gradient(135deg, #1f4f16 0%, #163c0f 100%);
+  background: linear-gradient(135deg, #1d4a17 0%, #16380f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #c39b62 0%, #98723c 100%);
+  background: linear-gradient(135deg, #c08a4a 0%, #8c5c26 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* The hero copy sits straight on the video with no overlay panel, so each
+   glyph carries its own soft cream halo. It reads as no shape at all, but
+   lifts local contrast past AA on the frames where the footage runs dark. */
+.hero-halo {
+  text-shadow:
+    0 0 3px rgba(248, 245, 236, 0.98),
+    0 0 7px rgba(248, 245, 236, 0.95),
+    0 0 14px rgba(248, 245, 236, 0.9),
+    0 0 28px rgba(248, 245, 236, 0.8),
+    0 1px 3px rgba(248, 245, 236, 0.9);
 }

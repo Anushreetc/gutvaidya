@@ -238,7 +238,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       {/* Razorpay Standard Checkout SDK script */}
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
           </div>
 
           {cart.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-3xl border border-primary-100 max-w-md mx-auto p-8 shadow-sm">
+            <div className="text-center py-16 bg-base-50 rounded-3xl border border-primary-100 max-w-md mx-auto p-8 shadow-sm">
               <ShoppingBag className="w-12 h-12 text-primary-300 mx-auto mb-4" />
               <h2 className="font-serif font-bold text-xl text-primary-900 mb-2">Your Cart is Empty</h2>
               <p className="text-xs text-foreground/60 mb-6">
@@ -284,7 +284,7 @@ export default function CheckoutPage() {
                   )}
 
                   {/* Customer Information */}
-                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-primary-100 shadow-sm space-y-4">
+                  <div className="p-6 sm:p-8 rounded-3xl bg-base-50 border border-primary-100 shadow-sm space-y-4">
                     <h2 className="font-serif font-bold text-lg text-primary-900 flex items-center gap-2">
                       <span className="w-6 h-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs">
                         1
@@ -306,7 +306,7 @@ export default function CheckoutPage() {
                             setAddress({ ...address, name: e.target.value });
                           }}
                           placeholder="e.g. Ramesh Kumar"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
 
@@ -320,7 +320,7 @@ export default function CheckoutPage() {
                           value={customerInfo.email}
                           onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
                           placeholder="name@example.com"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
 
@@ -337,14 +337,14 @@ export default function CheckoutPage() {
                             setAddress({ ...address, phone: e.target.value });
                           }}
                           placeholder="+91 98765 43210"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* Delivery Address */}
-                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-primary-100 shadow-sm space-y-4">
+                  <div className="p-6 sm:p-8 rounded-3xl bg-base-50 border border-primary-100 shadow-sm space-y-4">
                     <h2 className="font-serif font-bold text-lg text-primary-900 flex items-center gap-2">
                       <span className="w-6 h-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs">
                         2
@@ -363,7 +363,7 @@ export default function CheckoutPage() {
                           value={address.address_line_1}
                           onChange={(e) => setAddress({ ...address, address_line_1: e.target.value })}
                           placeholder="e.g. Flat 302, Ashoka Enclave"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
 
@@ -376,7 +376,7 @@ export default function CheckoutPage() {
                           value={address.address_line_2 || ""}
                           onChange={(e) => setAddress({ ...address, address_line_2: e.target.value })}
                           placeholder="e.g. Near Indiranagar Metro Station"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
 
@@ -390,7 +390,7 @@ export default function CheckoutPage() {
                           value={address.city}
                           onChange={(e) => setAddress({ ...address, city: e.target.value })}
                           placeholder="e.g. Bengaluru"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
 
@@ -402,7 +402,7 @@ export default function CheckoutPage() {
                           required
                           value={address.state}
                           onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         >
                           <option value="" disabled>
                             Select state
@@ -427,7 +427,7 @@ export default function CheckoutPage() {
                           value={address.postal_code}
                           onChange={(e) => setAddress({ ...address, postal_code: e.target.value })}
                           placeholder="560038"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
 
@@ -452,7 +452,7 @@ export default function CheckoutPage() {
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
                           placeholder="e.g. Leave package with building security"
-                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                          className="w-full px-4 py-2.5 rounded-xl border border-primary-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                         />
                       </div>
                     </div>
@@ -461,7 +461,7 @@ export default function CheckoutPage() {
 
                 {/* Right: Order Breakdown & Payment Button */}
                 <div className="lg:col-span-5 space-y-6">
-                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-primary-100 shadow-sm space-y-6 sticky top-28">
+                  <div className="p-6 sm:p-8 rounded-3xl bg-base-50 border border-primary-100 shadow-sm space-y-6 sticky top-28">
                     <h2 className="font-serif font-bold text-lg text-primary-900 border-b border-primary-100 pb-3">
                       Order Summary
                     </h2>
@@ -472,7 +472,7 @@ export default function CheckoutPage() {
                         <div key={item.id || item.slug} className="pt-3 first:pt-0 flex items-center justify-between text-xs">
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-xl overflow-hidden bg-primary-50 border border-primary-100 flex-shrink-0">
-                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                              <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                             </div>
                             <div>
                               <span className="font-serif font-bold text-primary-900 block line-clamp-1">

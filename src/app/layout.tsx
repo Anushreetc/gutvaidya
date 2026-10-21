@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
   weight: ["400", "500", "600", "700"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.gutvaidya.in";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.thegutvaidya.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -75,7 +75,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${outfit.variable} ${playfair.variable} h-full scroll-smooth antialiased`}>
-      <body className="min-h-full flex flex-col font-sans bg-[#fdfdfb] text-[#1c241b]">
+      <body className="min-h-full flex flex-col font-sans bg-base-100 text-foreground">
         <AuthProvider>
           <CartProvider>
             {children}

@@ -62,7 +62,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="font-serif font-bold text-sm text-white uppercase tracking-wider">Quick Navigation</h4>
+            <h4 className="font-sans font-bold text-sm text-white uppercase tracking-wider">Quick Navigation</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="/#home" className="hover:text-accent-gold transition-colors">Home</a>
@@ -87,12 +87,12 @@ export default function Footer() {
 
           {/* Support / Contact details */}
           <div className="space-y-4">
-            <h4 className="font-serif font-bold text-sm text-white uppercase tracking-wider">Customer Support</h4>
+            <h4 className="font-sans font-bold text-sm text-white uppercase tracking-wider">Customer Support</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-accent-gold" />
-                <a href="mailto:support@gutvaidya.in" className="hover:text-accent-gold transition-colors truncate">
-                  support@gutvaidya.in
+                <a href="mailto:support@thegutvaidya.com" className="hover:text-accent-gold transition-colors truncate">
+                  support@thegutvaidya.com
                 </a>
               </li>
               <li className="flex items-center gap-2.5">

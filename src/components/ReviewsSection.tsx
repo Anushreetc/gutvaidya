@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Star, Quote, CheckCircle2, Sparkles, MessageCircle, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { Star, Quote, CheckCircle2, MessageCircle, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 interface Review {
   id: number;
@@ -101,7 +102,7 @@ export default function ReviewsSection() {
   };
 
   return (
-    <section id="reviews" className="py-24 bg-primary-50/20 relative overflow-hidden">
+    <section id="reviews" className="py-24 bg-base-200 relative overflow-hidden">
       {/* Decorative background shapes */}
       <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-primary-100/30 filter blur-3xl -z-10" />
       <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-accent-gold/5 filter blur-3xl -z-10" />
@@ -109,18 +110,12 @@ export default function ReviewsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/80 text-primary-700 text-xs font-semibold uppercase tracking-wider border border-primary-200/50 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
-            Verified Customer Stories
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight">
-            Loved by 10,000+ Happy Families
-          </h2>
-          <p className="text-base sm:text-lg text-foreground/75 leading-relaxed max-w-2xl mx-auto">
-            Authentic customer messages, practitioner evaluations, and real wellness experiences from across India.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"Verified Customer Stories"}
+          title={"Loved by 10,000+ Happy Families"}
+          body={"Authentic customer messages, practitioner evaluations, and real wellness experiences from across India."}
+        />
 
         {/* Rating Summary & Filter Layout */}
         <div className="grid lg:grid-cols-12 gap-8 items-start mb-12">
@@ -129,9 +124,9 @@ export default function ReviewsSection() {
           <div className="lg:col-span-4 space-y-6">
             
             {/* Families Served */}
-            <div className="bg-white border border-primary-100/60 p-7 rounded-3xl shadow-sm text-center space-y-3">
-              <h3 className="font-serif font-bold text-primary-900 text-base">Trusted Across India</h3>
-              <span className="block text-5xl font-serif font-bold text-primary-800">10,000+</span>
+            <div className="bg-base-50 border border-primary-100/60 p-7 rounded-3xl shadow-sm text-center space-y-3">
+              <h3 className="font-sans font-bold text-primary-900 text-base">Trusted Across India</h3>
+              <span className="block text-5xl font-sans font-bold text-primary-800">10,000+</span>
               <span className="block text-xs text-foreground/60">Happy families nourished by GutVaidya</span>
               <p className="pt-3 border-t border-primary-100/60 text-[11px] text-foreground/55 leading-relaxed">
                 Every review on this page is a real message from a customer or practitioner.
@@ -139,11 +134,11 @@ export default function ReviewsSection() {
             </div>
 
             {/* WhatsApp Experience Showcase Card */}
-            <div className="bg-white border border-primary-100/60 p-6 rounded-3xl shadow-sm space-y-4">
+            <div className="bg-base-50 border border-primary-100/60 p-6 rounded-3xl shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b border-primary-100/60 pb-3">
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                  <h3 className="font-serif font-bold text-primary-900 text-sm sm:text-base">Customer WhatsApp Chats</h3>
+                  <h3 className="font-sans font-bold text-primary-900 text-sm sm:text-base">Customer WhatsApp Chats</h3>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[10px] font-sans font-bold text-[#25D366] bg-[#25D366]/10 px-2.5 py-0.5 rounded-full">
                   Direct Feedback
@@ -153,7 +148,7 @@ export default function ReviewsSection() {
               {/* Chat Title & Nav Arrows */}
               <div className="flex items-center justify-between gap-2">
                 <div>
-                  <h4 className="text-xs font-bold text-primary-900 font-serif leading-tight">
+                  <h4 className="text-xs font-bold text-primary-900 font-sans leading-tight">
                     {currentScreenshot.title}
                   </h4>
                   <p className="text-[11px] text-foreground/50">{currentScreenshot.author}</p>
@@ -187,7 +182,7 @@ export default function ReviewsSection() {
                   className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-primary-950/0 group-hover:bg-primary-950/20 transition-colors flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 text-primary-900 text-xs font-bold px-3 py-1.5 rounded-full shadow flex items-center gap-1.5">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-base-50/90 text-primary-900 text-xs font-bold px-3 py-1.5 rounded-full shadow flex items-center gap-1.5">
                     <Eye className="w-3.5 h-3.5 text-primary-700" /> Click to view full image
                   </span>
                 </div>
@@ -226,7 +221,7 @@ export default function ReviewsSection() {
                   onClick={() => setActiveCategory(cat)}
                   className={`px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 focus:outline-none ${activeCategory === cat
                       ? "bg-primary-700 border-primary-700 text-white shadow-md shadow-primary-700/10"
-                      : "bg-white border-primary-100 text-foreground/75 hover:border-primary-200 hover:bg-primary-50/50"
+                      : "bg-base-50 border-primary-100 text-foreground/75 hover:border-primary-200 hover:bg-primary-50/50"
                     }`}
                 >
                   {cat}
@@ -247,7 +242,7 @@ export default function ReviewsSection() {
                     transition={{ duration: 0.3 }}
                     className={`glass-card rounded-2xl p-6 border transition-all duration-300 hover:shadow-lg flex flex-col justify-between ${review.isWhatsAppReview
                         ? "border-[#25D366]/40 bg-gradient-to-br from-white to-[#25D366]/5"
-                        : "border-primary-100/60 bg-white hover:border-accent-gold/40"
+                        : "border-primary-100/60 bg-base-50 hover:border-accent-gold/40"
                       }`}
                   >
                     <div className="space-y-3.5">
@@ -276,7 +271,7 @@ export default function ReviewsSection() {
                     {/* Reviewer Details */}
                     <div className="mt-5 pt-3.5 border-t border-primary-100/40 flex items-center justify-between">
                       <div>
-                        <h4 className="font-serif font-bold text-primary-900 text-xs sm:text-sm flex items-center gap-1.5">
+                        <h4 className="font-sans font-bold text-primary-900 text-xs sm:text-sm flex items-center gap-1.5">
                           {review.name}
                           {review.verified && (
                             <span className="inline-flex items-center gap-0.5 text-[9px] font-sans font-bold text-primary-700 bg-primary-100/80 px-1.5 py-0.2 rounded-full">
@@ -310,7 +305,7 @@ export default function ReviewsSection() {
           onClick={() => setPreviewModalImg(null)}
           className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer animate-in fade-in"
         >
-          <div className="relative max-w-lg max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl p-2" onClick={(e) => e.stopPropagation()}>
+          <div className="relative max-w-lg max-h-[90vh] bg-base-50 rounded-3xl overflow-hidden shadow-2xl p-2" onClick={(e) => e.stopPropagation()}>
             <img
               src={previewModalImg}
               alt="Customer Feedback Preview"

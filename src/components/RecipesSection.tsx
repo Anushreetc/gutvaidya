@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Coffee, Flame, Soup, Clock, ChefHat, Sparkles, CheckCircle2 } from "lucide-react";
+import { Coffee, Flame, Soup, Clock, ChefHat, CheckCircle2 } from "lucide-react";
+import SectionHeading from "./SectionHeading";
 
 const recipes = [
   {
@@ -106,22 +107,16 @@ export default function RecipesSection() {
   const IconComponent = activeRecipe.icon;
 
   return (
-    <section id="recipe" className="py-24 bg-white relative">
+    <section id="recipe" className="py-24 bg-base-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            Simple & Nourishing
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900">
-            Everyday Wellness Recipes
-          </h2>
-          <p className="text-base text-foreground/75 leading-relaxed">
-            Quick, delicious, and easy methods to incorporate the goodness of GutVaidya into your family’s meals.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"Simple & Nourishing"}
+          title={"Everyday Wellness Recipes"}
+          body={"Quick, delicious, and easy methods to incorporate the goodness of GutVaidya into your family\u2019s meals."}
+        />
 
         {/* Recipe Interface Layout */}
         <div className="max-w-5xl mx-auto grid lg:grid-cols-12 gap-8 items-start">
@@ -136,14 +131,14 @@ export default function RecipesSection() {
                   onClick={() => setActiveTab(recipe.id)}
                   className={`flex items-center gap-4 px-6 py-4.5 rounded-2xl text-left border transition-all flex-shrink-0 lg:flex-shrink w-auto lg:w-full focus:outline-none ${activeTab === recipe.id
                     ? "bg-primary-700 border-primary-700 text-white shadow-lg shadow-primary-700/10"
-                    : "bg-[#fdfdfb] border-primary-100 hover:border-primary-200 text-foreground/80"
+                    : "bg-base-100 border-primary-100 hover:border-primary-200 text-foreground/80"
                     }`}
                 >
-                  <div className={`p-2.5 rounded-xl ${activeTab === recipe.id ? "bg-white/10 text-white" : "bg-primary-50 text-primary-700"}`}>
+                  <div className={`p-2.5 rounded-xl ${activeTab === recipe.id ? "bg-base-50/10 text-white" : "bg-primary-50 text-primary-700"}`}>
                     <RIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-base leading-tight">{recipe.title}</h3>
+                    <h3 className="font-sans font-bold text-base leading-tight">{recipe.title}</h3>
                     <p className={`text-xs mt-0.5 ${activeTab === recipe.id ? "text-white/60" : "text-foreground/50"}`}>
                       {recipe.time} • {recipe.difficulty}
                     </p>
@@ -194,7 +189,7 @@ export default function RecipesSection() {
 
                   {/* Ingredients */}
                   <div className="md:col-span-5 space-y-4">
-                    <h4 className="font-serif font-bold text-lg text-primary-800 border-l-4 border-accent-gold pl-3">
+                    <h4 className="font-sans font-bold text-lg text-primary-800 border-l-4 border-accent-gold pl-3">
                       Ingredients
                     </h4>
                     <ul className="space-y-3">
@@ -209,7 +204,7 @@ export default function RecipesSection() {
 
                   {/* Directions */}
                   <div className="md:col-span-7 space-y-4">
-                    <h4 className="font-serif font-bold text-lg text-primary-800 border-l-4 border-accent-gold pl-3">
+                    <h4 className="font-sans font-bold text-lg text-primary-800 border-l-4 border-accent-gold pl-3">
                       Preparation Steps
                     </h4>
                     <ol className="space-y-4">

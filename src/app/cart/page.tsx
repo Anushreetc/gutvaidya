@@ -12,7 +12,7 @@ import {
   Minus,
   Tag,
   ArrowRight,
-  Sparkles,
+  Truck,
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
@@ -57,7 +57,7 @@ export default function CartPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
 
       <main className="flex-grow py-12 sm:py-16">
@@ -74,7 +74,7 @@ export default function CartPage() {
 
           {cart.length === 0 ? (
             /* Empty Cart View */
-            <div className="text-center py-20 bg-white rounded-3xl border border-primary-100/80 max-w-xl mx-auto p-8 shadow-sm">
+            <div className="text-center py-20 bg-base-50 rounded-3xl border border-primary-100/80 max-w-xl mx-auto p-8 shadow-sm">
               <div className="w-20 h-20 rounded-full bg-primary-50 flex items-center justify-center text-primary-300 mx-auto mb-5">
                 <ShoppingBag className="w-10 h-10" />
               </div>
@@ -99,7 +99,7 @@ export default function CartPage() {
                 <div className="p-4 rounded-2xl bg-primary-50/70 border border-primary-100 flex items-center justify-between text-xs sm:text-sm">
                   {freeShippingRemaining === 0 ? (
                     <div className="flex items-center gap-2 text-primary-800 font-semibold">
-                      <Sparkles className="w-4 h-4 text-accent-gold" />
+                      <Truck className="w-4 h-4 text-accent-gold" />
                       <span>You've unlocked <strong>FREE Standard Shipping</strong>!</span>
                     </div>
                   ) : (
@@ -115,11 +115,11 @@ export default function CartPage() {
                 </div>
 
                 {/* Items Card List */}
-                <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden divide-y divide-primary-100/60">
+                <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm overflow-hidden divide-y divide-primary-100/60">
                   {cart.map((item) => (
                     <div key={item.id || item.slug} className="p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
                       <div className="w-20 h-20 rounded-2xl overflow-hidden bg-primary-50 border border-primary-100 flex-shrink-0">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                        <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                       </div>
 
                       <div className="flex-1 min-w-0">
@@ -193,7 +193,7 @@ export default function CartPage() {
               {/* Right: Order Summary & Coupon Input */}
               <div className="lg:col-span-4 space-y-6">
                 {/* Coupon Box */}
-                <div className="p-6 rounded-3xl bg-white border border-primary-100 shadow-sm space-y-4">
+                <div className="p-6 rounded-3xl bg-base-50 border border-primary-100 shadow-sm space-y-4">
                   <div className="flex items-center gap-2 text-primary-900">
                     <Tag className="w-4 h-4 text-accent-gold" />
                     <h3 className="font-serif font-bold text-sm">Have a Coupon Code?</h3>
@@ -226,7 +226,7 @@ export default function CartPage() {
                           value={couponInput}
                           onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                           placeholder="e.g. GUTHEALTH10"
-                          className="flex-1 px-4 py-2.5 rounded-xl border border-primary-100 text-xs font-mono uppercase bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
+                          className="flex-1 px-4 py-2.5 rounded-xl border border-primary-100 text-xs font-mono uppercase bg-base-50 focus:outline-none focus:ring-2 focus:ring-primary-600"
                         />
                         <button
                           type="submit"
@@ -260,7 +260,7 @@ export default function CartPage() {
                 </div>
 
                 {/* Summary Box */}
-                <div className="p-6 rounded-3xl bg-white border border-primary-100 shadow-sm space-y-4">
+                <div className="p-6 rounded-3xl bg-base-50 border border-primary-100 shadow-sm space-y-4">
                   <h3 className="font-serif font-bold text-lg text-primary-900 border-b border-primary-100 pb-3">
                     Order Summary
                   </h3>

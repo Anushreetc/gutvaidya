@@ -11,7 +11,6 @@ import {
   AlertTriangle,
   TrendingUp,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 
 // Per-request: shows private order data for the signed-in user
@@ -69,7 +68,7 @@ export default async function AdminDashboardPage() {
           return (
             <div
               key={kpi.title}
-              className="p-6 rounded-3xl bg-white border border-primary-100 shadow-sm flex items-start justify-between"
+              className="p-6 rounded-3xl bg-base-50 border border-primary-100 shadow-sm flex items-start justify-between"
             >
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-foreground/50 block mb-1">
@@ -110,7 +109,7 @@ export default async function AdminDashboardPage() {
       )}
 
       {/* Recent Orders Section */}
-      <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-4">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-4">
         <div className="flex items-center justify-between border-b border-primary-100 pb-4">
           <div>
             <h3 className="font-serif font-bold text-lg text-primary-900">Recent Customer Orders</h3>

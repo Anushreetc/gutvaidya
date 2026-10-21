@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Wheat, Leaf, Flame, Zap, Sprout, Sparkles, Info, X, ChevronRight, Activity, Heart } from "lucide-react";
+import { Wheat, Leaf, Flame, Zap, Sprout, Flower2, Info, X, ChevronRight, Activity, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 interface IngredientDetail {
   name: string;
@@ -181,7 +182,7 @@ export default function IngredientsSection() {
     {
       title: "Natural Herbs",
       tagline: "Ayurvedic Adaptogens for Gut-Brain Axis",
-      icon: Sparkles,
+      icon: Flower2,
       imagePath: "/images/ingredients/herbs.png",
       summary: "A legendary collection of therapeutic herbs that heal the mucosal lining, reduce stress-induced gut issues, and balance the microbiome.",
       items: [
@@ -247,7 +248,7 @@ export default function IngredientsSection() {
   const ActiveIcon = activeCategory.icon;
 
   return (
-    <section id="ingredients" className="py-24 bg-[#fdfdfb] relative overflow-hidden">
+    <section id="ingredients" className="py-24 bg-base-100 relative overflow-hidden">
       {/* Decorative background shapes */}
       <div className="absolute top-1/4 left-0 w-80 h-80 bg-primary-50/40 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-accent-gold/5 rounded-full blur-3xl -z-10" />
@@ -255,18 +256,12 @@ export default function IngredientsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary-100/80 text-primary-700 text-xs font-semibold uppercase tracking-wider border border-primary-200/50 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-accent-gold" />
-            Nature's Bounty
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight">
-            Our Wholesome Ingredients
-          </h2>
-          <p className="text-base sm:text-lg text-foreground/75 leading-relaxed max-w-2xl mx-auto">
-            Carefully selected from nature, each ingredient in GutVaidya brings its own unique traditional wellness benefits.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"Nature's Bounty"}
+          title={"Our Wholesome Ingredients"}
+          body={"Carefully selected from nature, each ingredient in GutVaidya brings its own unique traditional wellness benefits."}
+        />
 
         {/* Main Explorer Panel */}
         <div className="grid lg:grid-cols-12 gap-8 items-start">
@@ -282,7 +277,7 @@ export default function IngredientsSection() {
                   onClick={() => setActiveTab(category.title)}
                   className={`flex items-center gap-4 px-5 py-4 rounded-2xl text-left border transition-all duration-300 flex-shrink-0 lg:flex-shrink-0 snap-center w-[260px] lg:w-full focus:outline-none relative group overflow-hidden ${isSelected
                     ? "bg-primary-700 border-primary-700 text-white shadow-xl shadow-primary-700/10"
-                    : "bg-white/80 border-primary-100/60 hover:border-primary-200 hover:bg-white text-foreground/80 hover:shadow-md"
+                    : "bg-base-50/80 border-primary-100/60 hover:border-primary-200 hover:bg-base-50 text-foreground/80 hover:shadow-md"
                     }`}
                 >
                   {/* Subtle active background glow decoration */}
@@ -294,12 +289,12 @@ export default function IngredientsSection() {
                     />
                   )}
 
-                  <div className={`p-3 rounded-xl transition-colors ${isSelected ? "bg-white/10 text-white" : "bg-primary-50 text-primary-700 group-hover:bg-primary-100"
+                  <div className={`p-3 rounded-xl transition-colors ${isSelected ? "bg-base-50/10 text-white" : "bg-primary-50 text-primary-700 group-hover:bg-primary-100"
                     }`}>
                     <TabIcon className="w-5 h-5" />
                   </div>
                   <div className="flex-grow min-w-0">
-                    <h3 className="font-serif font-bold text-base leading-tight">
+                    <h3 className="font-sans font-bold text-base leading-tight">
                       {category.title}
                     </h3>
                     <p className={`text-xs mt-0.5 truncate ${isSelected ? "text-white/70" : "text-foreground/50"
@@ -359,7 +354,7 @@ export default function IngredientsSection() {
                     >
                       <div>
                         <div className="flex items-start justify-between gap-2">
-                          <h4 className="text-lg font-serif font-bold text-primary-900 leading-snug group-hover:text-accent-gold-dark transition-colors">
+                          <h4 className="text-lg font-sans font-bold text-primary-900 leading-snug group-hover:text-accent-gold-dark transition-colors">
                             {ingredient.name}
                           </h4>
                           <span className="p-1.5 rounded-full bg-primary-50 text-primary-75 group-hover:bg-accent-gold/10 group-hover:text-accent-gold-dark transition-colors">
@@ -406,7 +401,7 @@ export default function IngredientsSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.4 }}
-              className="relative bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-primary-100 z-10 overflow-hidden"
+              className="relative bg-base-50 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-primary-100 z-10 overflow-hidden"
             >
               {/* Blur accent glow decorations inside modal */}
               <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary-50/50 blur-2xl -z-10" />

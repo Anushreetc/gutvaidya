@@ -24,14 +24,14 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
 
       <main className="flex-grow py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Sidebar Navigation */}
-            <div className="md:col-span-4 lg:col-span-3 bg-white rounded-3xl border border-primary-100 p-6 shadow-sm space-y-6">
+            <div className="md:col-span-4 lg:col-span-3 bg-base-50 rounded-3xl border border-primary-100 p-6 shadow-sm space-y-6">
               {/* User Avatar Summary */}
               <div className="text-center pb-6 border-b border-primary-100">
                 <div className="w-16 h-16 rounded-full bg-primary-100 text-primary-800 font-serif font-bold text-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">

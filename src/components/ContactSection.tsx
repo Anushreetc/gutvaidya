@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Phone, MapPin, Send, HelpCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { motion } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 export default function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
@@ -57,25 +58,19 @@ export default function ContactSection() {
   ];
 
   return (
-    <section id="contact" className="py-24 bg-primary-50/20 relative overflow-hidden">
+    <section id="contact" className="py-24 bg-base-200 relative overflow-hidden">
       {/* Background radial details */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-accent-gold/5 filter blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
-            <HelpCircle className="w-3.5 h-3.5" />
-            Connect With Us
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900">
-            Have Questions? Get in Touch
-          </h2>
-          <p className="text-base text-foreground/75 leading-relaxed">
-            Need help choosing a wellness mix or looking to place a bulk order? Our team is here to support you.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"Connect With Us"}
+          title={"Have Questions? Get in Touch"}
+          body={"Need help choosing a wellness mix or looking to place a bulk order? Our team is here to support you."}
+        />
 
         {/* Contact layout grid */}
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 max-w-5xl mx-auto items-stretch">
@@ -94,7 +89,7 @@ export default function ContactSection() {
                       <DetailIcon className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="font-serif font-bold text-primary-900 text-sm">{detail.title}</h4>
+                      <h4 className="font-sans font-bold text-primary-900 text-sm">{detail.title}</h4>
                       <a href={detail.href} className="text-base font-bold text-accent-gold-dark hover:underline block mt-1">
                         {detail.value}
                       </a>
@@ -110,7 +105,7 @@ export default function ContactSection() {
               <div className="absolute right-0 bottom-0 opacity-10">
                 <MapPin className="w-40 h-40 transform translate-x-12 translate-y-12" />
               </div>
-              <h4 className="font-serif font-bold text-lg mb-2">Our Quality Commitment</h4>
+              <h4 className="font-sans font-bold text-lg mb-2">Our Quality Commitment</h4>
               <p className="text-xs text-white/80 leading-relaxed">
                 Every batch of GutVaidya Health Mix is processed in clean, state-of-the-art facilities in India, honoring traditional preparation standards. We guarantee pure ingredients and zero chemical additives in every scoop.
               </p>
@@ -134,7 +129,7 @@ export default function ContactSection() {
                   className="absolute -left-[9999px] w-px h-px opacity-0"
                 />
                 <div>
-                  <h3 className="text-xl font-serif font-bold text-primary-900 mb-1">
+                  <h3 className="text-xl font-sans font-bold text-primary-900 mb-1">
                     Send a Message
                   </h3>
                   <p className="text-xs text-foreground/60">
@@ -155,7 +150,7 @@ export default function ContactSection() {
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder="Enter your name"
-                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-white/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-base-50/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
                     />
                   </div>
 
@@ -171,7 +166,7 @@ export default function ContactSection() {
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       placeholder="Enter your email"
-                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-white/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-base-50/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all"
                     />
                   </div>
 
@@ -187,7 +182,7 @@ export default function ContactSection() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder="Write your query here..."
-                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-white/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-primary-100 bg-base-50/60 focus:outline-none focus:ring-2 focus:ring-primary-650 focus:border-transparent text-sm transition-all resize-none"
                     />
                   </div>
                 </div>

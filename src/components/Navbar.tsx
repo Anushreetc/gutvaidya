@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { ShoppingBag, X, Menu, Trash2, Plus, Minus, User, ArrowRight, Sparkles } from "lucide-react";
+import { ShoppingBag, X, Menu, Trash2, Plus, Minus, User, ArrowRight, Truck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -31,6 +31,7 @@ export default function Navbar() {
     { label: "Recipe", href: "/#recipe" },
     { label: "Reviews", href: "/#reviews" },
     { label: "Blogs", href: "/#blogs" },
+    { label: "FAQ", href: "/#faq" },
     { label: "Contact", href: "/#contact" },
   ];
 
@@ -116,7 +117,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-12 sm:top-13 z-40 md:hidden bg-[#fdfdfb]/95 backdrop-blur-md border-b border-primary-100 py-5 px-4 shadow-lg flex flex-col gap-2"
+            className="fixed inset-x-0 top-12 sm:top-13 z-40 md:hidden bg-base-100/95 backdrop-blur-md border-b border-primary-100 py-5 px-4 shadow-lg flex flex-col gap-2"
           >
             {navLinks.map((link) => (
               <Link
@@ -171,11 +172,11 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 220 }}
-              className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#fdfdfb] shadow-2xl flex flex-col h-full border-l border-primary-100"
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-base-100 shadow-2xl flex flex-col h-full border-l border-primary-100"
             >
               {/* Header */}
               <div className="p-6 border-b border-primary-100 flex items-center justify-between">
-                <h2 className="text-xl font-serif font-bold text-primary-800 flex items-center gap-2">
+                <h2 className="text-xl font-sans font-bold text-primary-800 flex items-center gap-2">
                   <ShoppingBag className="h-5 w-5 text-accent-gold" />
                   Your Wholesome Cart
                 </h2>
@@ -192,7 +193,7 @@ export default function Navbar() {
                 <div className="px-6 py-3 bg-primary-50/70 border-b border-primary-100/60 text-xs">
                   {freeShippingRemaining === 0 ? (
                     <div className="flex items-center gap-1.5 text-primary-800 font-semibold">
-                      <Sparkles className="w-4 h-4 text-accent-gold" />
+                      <Truck className="w-4 h-4 text-accent-gold" />
                       <span>Congratulations! You qualified for <strong>FREE Delivery</strong>!</span>
                     </div>
                   ) : (
@@ -212,7 +213,7 @@ export default function Navbar() {
                       <ShoppingBag className="w-8 h-8 text-primary-200" />
                     </div>
                     <div>
-                      <p className="text-lg font-serif font-bold text-primary-800">Your cart is empty</p>
+                      <p className="text-lg font-sans font-bold text-primary-800">Your cart is empty</p>
                       <p className="text-sm text-foreground/60 mt-1">Start adding pure wellness to your daily routine.</p>
                     </div>
                     <Link
@@ -227,18 +228,18 @@ export default function Navbar() {
                   cart.map((item) => (
                     <div
                       key={item.id || item.slug}
-                      className="p-4 rounded-xl border border-primary-100/60 bg-white/70 backdrop-blur-sm flex items-start gap-4 shadow-sm"
+                      className="p-4 rounded-xl border border-primary-100/60 bg-base-50/70 backdrop-blur-sm flex items-start gap-4 shadow-sm"
                     >
                       {item.image && (
                         <div className="w-16 h-16 rounded-lg overflow-hidden border border-primary-100 bg-primary-50/50 flex-shrink-0">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
                         <Link
                           href={`/products/${item.slug}`}
                           onClick={() => setIsCartOpen(false)}
-                          className="font-serif font-bold text-primary-800 truncate block hover:text-accent-gold transition-colors"
+                          className="font-sans font-bold text-primary-800 truncate block hover:text-accent-gold transition-colors"
                         >
                           {item.name}
                         </Link>
@@ -304,7 +305,7 @@ export default function Navbar() {
                       </span>
                     </div>
                     <hr className="border-primary-100" />
-                    <div className="flex justify-between text-base font-serif font-bold text-primary-800">
+                    <div className="flex justify-between text-base font-sans font-bold text-primary-800">
                       <span>Total Amount</span>
                       <span>₹{finalTotal}</span>
                     </div>

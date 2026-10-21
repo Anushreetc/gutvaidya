@@ -4,7 +4,7 @@ import { Order } from '@/types/ecommerce';
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 const fromEmail = process.env.RESEND_FROM_EMAIL || 'GutVaidya <onboarding@resend.dev>';
-const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'anushreetc678@gmail.com';
+const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'gutvaidya@gmail.com';
 
 // Base HTML layout for Gut Vaidya branded emails
 function emailWrapper(content: string, previewText: string) {
@@ -19,7 +19,7 @@ function emailWrapper(content: string, previewText: string) {
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #f7f9f4; color: #1c241b; }
     .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e6edd9; box-shadow: 0 4px 20px rgba(31,79,22,0.05); }
     .header { background-color: #163c0f; padding: 32px 24px; text-align: center; }
-    .header h1 { color: #fdfdfb; margin: 0; font-size: 26px; font-family: Georgia, serif; letter-spacing: 0.5px; }
+    .header h1 { color: #f8f5ec; margin: 0; font-size: 26px; font-family: Georgia, serif; letter-spacing: 0.5px; }
     .header p { color: #c39b62; margin: 6px 0 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
     .body { padding: 32px 24px; }
     .footer { background: #0f280a; padding: 24px; text-align: center; color: rgba(255,255,255,0.7); font-size: 12px; }
@@ -43,7 +43,7 @@ function emailWrapper(content: string, previewText: string) {
     </div>
     <div class="footer">
       <p style="margin:0 0 8px 0;"><strong>GutVaidya Health Mix</strong> • Lic. No. 21224172000058 (FSSAI Registered)</p>
-      <p style="margin:0 0 8px 0;">Need support? Email us at <a href="mailto:support@gutvaidya.in">support@gutvaidya.in</a> or call +91 78928 91239</p>
+      <p style="margin:0 0 8px 0;">Need support? Email us at <a href="mailto:support@thegutvaidya.com">support@thegutvaidya.com</a> or call +91 78928 91239</p>
       <p style="margin:0; color: rgba(255,255,255,0.4);">© ${new Date().getFullYear()} GutVaidya. All rights reserved.</p>
     </div>
   </div>
@@ -110,7 +110,7 @@ export async function sendOrderConfirmationEmail(order: Order) {
     </div>
 
     <div style="text-align: center; margin-top: 28px;">
-      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in'}/account/orders" class="btn">
+      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thegutvaidya.com'}/account/orders" class="btn">
         View Order Status
       </a>
     </div>
@@ -143,7 +143,7 @@ export async function sendOrderConfirmationEmail(order: Order) {
       }
     }
 
-    // 2. Also notify Store Administrator (anushreetc678@gmail.com)
+    // 2. Also notify Store Administrator (gutvaidya@gmail.com)
     const adminEmailBody = `
       <div style="background: #163c0f; color: #ffffff; padding: 18px; border-radius: 12px; margin-bottom: 20px;">
         <span style="background: #c39b62; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; font-weight: bold;">Store Alert</span>
@@ -210,7 +210,7 @@ export async function sendOrderStatusUpdateEmail(order: Order, newStatus: string
       <p style="color: #555; font-size: 15px; margin: 16px 0;">
         ${statusDescriptions[newStatus] || `Your order #${order.order_number} is now ${newStatus}.`}
       </p>
-      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.gutvaidya.in'}/account/orders" class="btn">
+      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thegutvaidya.com'}/account/orders" class="btn">
         Track Your Order
       </a>
     </div>

@@ -215,7 +215,7 @@ export default function AdminOrdersPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by order #, name, or email..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-primary-100 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 shadow-sm"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-primary-100 bg-base-50 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 shadow-sm"
           />
         </div>
 
@@ -225,7 +225,7 @@ export default function AdminOrdersPage() {
             className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
               selectedStatus === "all"
                 ? "bg-primary-700 text-white"
-                : "bg-white border border-primary-100 text-foreground/70 hover:bg-primary-50"
+                : "bg-base-50 border border-primary-100 text-foreground/70 hover:bg-primary-50"
             }`}
           >
             All Orders ({orders.length})
@@ -237,7 +237,7 @@ export default function AdminOrdersPage() {
               className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap uppercase tracking-wider transition-colors ${
                 selectedStatus === st
                   ? "bg-primary-700 text-white"
-                  : "bg-white border border-primary-100 text-foreground/70 hover:bg-primary-50"
+                  : "bg-base-50 border border-primary-100 text-foreground/70 hover:bg-primary-50"
               }`}
             >
               {st}
@@ -247,7 +247,7 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
@@ -301,7 +301,7 @@ export default function AdminOrdersPage() {
                       onChange={(e) =>
                         handleStatusChange(order.id, e.target.value as OrderStatus)
                       }
-                      className="px-2.5 py-1 rounded-lg border border-primary-200 bg-white font-bold text-primary-900 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 uppercase tracking-wide cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg border border-primary-200 bg-base-50 font-bold text-primary-900 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 uppercase tracking-wide cursor-pointer"
                     >
                       {statuses.map((st) => (
                         <option key={st} value={st}>
@@ -329,7 +329,7 @@ export default function AdminOrdersPage() {
       {/* Order Details Drawer / Modal */}
       {activeOrder && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 max-w-xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+          <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 max-w-xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-primary-100 pb-4">
               <div>
                 <span className="text-xs uppercase text-foreground/50 font-bold block">

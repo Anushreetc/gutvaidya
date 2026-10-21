@@ -9,12 +9,13 @@ import {
   Edit2,
   Check,
   X,
-  Sparkles,
+  Star,
   Package,
   AlertTriangle,
   Save,
   Camera,
   Loader2,
+  Trash2,
 } from "lucide-react";
 
 import {
@@ -177,6 +178,27 @@ export default function AdminProductsPage() {
     await persistProduct("update", updated);
   };
 
+  const handleDeleteProduct = async (product: Product) => {
+    if (!window.confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+
+    const previous = products;
+    setProducts((prev) => prev.filter((p) => p.id !== product.id));
+
+    try {
+      const res = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", product: { id: product.id, slug: product.slug } }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Delete failed");
+      showToast(`✓ Deleted ${product.name}`);
+    } catch (err: any) {
+      setProducts(previous);
+      showToast(`⚠ Could not delete ${product.name}: ${err.message}`);
+    }
+  };
+
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -233,7 +255,7 @@ export default function AdminProductsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products by title or slug..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-primary-100 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 shadow-sm"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-primary-100 bg-base-50 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 shadow-sm"
           />
         </div>
 
@@ -252,7 +274,7 @@ export default function AdminProductsPage() {
       </p>
 
       {/* Products Table */}
-      <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
@@ -390,11 +412,11 @@ export default function AdminProductsPage() {
                         className={`p-1.5 rounded-lg border transition-colors ${
                           p.featured
                             ? "bg-accent-gold text-white border-accent-gold"
-                            : "bg-white text-foreground/30 border-primary-200"
+                            : "bg-base-50 text-foreground/30 border-primary-200"
                         }`}
                         title="Toggle Featured on Homepage"
                       >
-                        <Sparkles className="w-3.5 h-3.5" />
+                        <Star className="w-3.5 h-3.5" />
                       </button>
                     </td>
 
@@ -418,13 +440,22 @@ export default function AdminProductsPage() {
                           </button>
                         </div>
                       ) : (
-                        <button
-                          onClick={() => startEdit(p)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-primary-200 text-primary-800 hover:bg-primary-50 font-semibold"
-                        >
-                          <Edit2 className="w-3 h-3" />
-                          <span>Edit</span>
-                        </button>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => startEdit(p)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-primary-200 text-primary-800 hover:bg-primary-50 font-semibold"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            onClick={() => handleDeleteProduct(p)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50 font-semibold"
+                            title="Delete product"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
                       )}
                     </td>
                   </tr>
@@ -438,7 +469,7 @@ export default function AdminProductsPage() {
       {/* Add Product Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+          <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-primary-100 pb-3">
               <h3 className="font-serif font-bold text-lg text-primary-900">
                 Add New Traditional Formulation
@@ -466,7 +497,7 @@ export default function AdminProductsPage() {
                     setNewProduct({ ...newProduct, name, slug });
                   }}
                   placeholder="e.g. GutVaidya Ojas Vitality Mix"
-                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                 />
               </div>
 
@@ -480,7 +511,7 @@ export default function AdminProductsPage() {
                   value={newProduct.slug}
                   onChange={(e) => setNewProduct({ ...newProduct, slug: e.target.value })}
                   placeholder="e.g. gutvaidya-ojas-vitality-mix"
-                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                 />
               </div>
 
@@ -494,7 +525,7 @@ export default function AdminProductsPage() {
                     required
                     value={newProduct.price}
                     onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                   />
                 </div>
 
@@ -508,7 +539,7 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       setNewProduct({ ...newProduct, compare_at_price: Number(e.target.value) })
                     }
-                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                   />
                 </div>
 
@@ -523,7 +554,7 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       setNewProduct({ ...newProduct, stock_quantity: Number(e.target.value) })
                     }
-                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                    className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                   />
                 </div>
               </div>
@@ -535,7 +566,7 @@ export default function AdminProductsPage() {
                 <select
                   value={newProduct.category_id}
                   onChange={(e) => setNewProduct({ ...newProduct, category_id: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50"
                 >
                   {SEED_CATEGORIES.map((cat) => (
                     <option key={cat.id} value={cat.id}>
@@ -555,7 +586,7 @@ export default function AdminProductsPage() {
                   value={newProduct.short_description}
                   onChange={(e) => setNewProduct({ ...newProduct, short_description: e.target.value })}
                   placeholder="Key benefits and summary of traditional ingredients..."
-                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-white resize-none"
+                  className="w-full px-3 py-2 rounded-xl border border-primary-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 bg-base-50 resize-none"
                 />
               </div>
 

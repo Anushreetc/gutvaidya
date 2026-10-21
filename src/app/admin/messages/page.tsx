@@ -38,13 +38,13 @@ export default function AdminMessagesPage() {
           </h1>
           <p className="text-xs text-foreground/60 mt-1">
             Incoming messages from the website contact form. Notifications are also dispatched to{" "}
-            <span className="font-semibold text-primary-700">anushreetc678@gmail.com</span>.
+            <span className="font-semibold text-primary-700">gutvaidya@gmail.com</span>.
           </p>
         </div>
       </div>
 
       {/* Messages List */}
-      <div className="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
+      <div className="bg-base-50 rounded-3xl border border-primary-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-xs text-foreground/40">
             Loading messages...

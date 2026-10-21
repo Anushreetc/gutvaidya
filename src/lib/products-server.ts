@@ -140,6 +140,20 @@ export async function updateLiveProduct(updatedProduct: Partial<Product> & { id:
   return result;
 }
 
+export async function deleteLiveProduct(productId: string): Promise<void> {
+  const adminClient = createAdminClient();
+
+  if (adminClient) {
+    const { error } = await adminClient.from('products').delete().eq('id', productId);
+    if (error) throw new Error(`Could not delete product: ${error.message}`);
+    return;
+  }
+
+  const all = getLocalStoredProducts();
+  const remaining = all.filter((p) => p.id !== productId);
+  saveLocalStoredProducts(remaining);
+}
+
 export async function createLiveProduct(product: Product): Promise<Product> {
   const adminClient = createAdminClient();
 

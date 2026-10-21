@@ -30,13 +30,13 @@ export default async function OrderConfirmationPage({ searchParams }: PageProps)
   });
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
 
       <main className="flex-grow py-12 sm:py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Success Banner */}
-          <div className="text-center bg-white rounded-3xl border border-primary-100 p-8 sm:p-12 shadow-sm mb-8">
+          <div className="text-center bg-base-50 rounded-3xl border border-primary-100 p-8 sm:p-12 shadow-sm mb-8">
             <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mx-auto mb-5">
               <CheckCircle2 className="w-10 h-10" />
             </div>
@@ -63,7 +63,7 @@ export default async function OrderConfirmationPage({ searchParams }: PageProps)
 
           {/* Delivery & Summary Details */}
           {order ? (
-            <div className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-6">
               {/* Estimated Delivery Banner */}
               <div className="p-4 rounded-2xl bg-primary-50/60 border border-primary-100 flex items-center gap-3">
                 <Truck className="w-6 h-6 text-accent-gold flex-shrink-0" />
@@ -86,7 +86,7 @@ export default async function OrderConfirmationPage({ searchParams }: PageProps)
                     <div key={idx} className="py-3 first:pt-0 flex items-center justify-between text-xs sm:text-sm">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-xl overflow-hidden bg-primary-50 border border-primary-100 flex-shrink-0">
-                          <img src={item.image || '/product.jpeg'} alt={item.product_name} className="w-full h-full object-cover" />
+                          <img src={item.image || '/product.jpeg'} alt={item.product_name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                         </div>
                         <div>
                           <strong className="font-serif font-bold text-primary-900 block">

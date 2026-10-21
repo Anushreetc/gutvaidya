@@ -14,7 +14,7 @@ interface PolicyPageProps {
 // Shared shell for the legal/policy pages
 export default function PolicyPage({ title, intro, path, children }: PolicyPageProps) {
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdfdfb]">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
 
       <main className="flex-grow py-12 sm:py-16">
@@ -35,7 +35,7 @@ export default function PolicyPage({ title, intro, path, children }: PolicyPageP
             ))}
           </nav>
 
-          <article className="bg-white rounded-3xl border border-primary-100 p-6 sm:p-10 shadow-sm">
+          <article className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-10 shadow-sm">
             <h1 className="text-3xl font-serif font-bold text-primary-900">{title}</h1>
             <p className="text-xs text-foreground/50 mt-2">Last updated: {BUSINESS.policiesLastUpdated}</p>
             <p className="text-sm text-foreground/70 leading-relaxed mt-5">{intro}</p>

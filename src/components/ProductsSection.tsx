@@ -6,8 +6,9 @@ import { useCart } from "../context/CartContext";
 import { SEED_PRODUCTS } from "@/lib/products";
 import { Product } from "@/types/ecommerce";
 import { getProductOverrides, applyProductOverrides, subscribeToProductUpdates } from "@/lib/products-client";
-import { ShoppingCart, Leaf, Shield, Award, Sparkles, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ShoppingCart, Leaf, Shield, Award, BadgeCheck, ChevronLeft, ChevronRight, ArrowRight, Check, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 
 export default function ProductsSection() {
   const { addToCart } = useCart();
@@ -94,33 +95,151 @@ export default function ProductsSection() {
   }, []);
 
   return (
-    <section id="products" className="py-24 bg-primary-50/40 relative overflow-hidden">
+    <section id="products" className="py-24 bg-base-200 relative overflow-hidden">
       {/* Visual background details */}
       <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-primary-100/30 filter blur-3xl" />
       <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-accent-gold/5 filter blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold uppercase tracking-wider">
-            <Leaf className="w-3.5 h-3.5" />
-            100% Natural Wellness
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900">
-            Our Traditional Products
-          </h2>
-          <p className="text-base text-foreground/75 leading-relaxed">
-            Wholesome, premium wellness blends formulated with traditional ingredients to nourish your daily routine.
-          </p>
-        </div>
+        <SectionHeading
+          className="mb-16"
+          eyebrow={"100% Natural Wellness"}
+          title={"Our Traditional Products"}
+          body={"Wholesome, premium wellness blends formulated with traditional ingredients to nourish your daily routine."}
+        />
 
-        {/* Slider Container Wrapper */}
-        <div className="relative max-w-6xl mx-auto px-4">
+        {/* Single Product Spotlight — When only one product exists, use a wide hero layout */}
+        {products.length === 1 ? (
+          <div className="max-w-6xl mx-auto px-4">
+            {(() => {
+              const product = products[0];
+              return (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center bg-base-50 rounded-[2.5rem] p-6 sm:p-10 lg:p-14 border border-primary-100 shadow-xl overflow-hidden"
+                >
+                  {/* Decorative corner shapes */}
+                  <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-accent-gold/10 blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-primary-200/40 blur-3xl pointer-events-none" />
+
+                  {/* Left — Product Visual */}
+                  <Link
+                    href={`/products/${product.slug}`}
+                    className="relative aspect-square rounded-3xl overflow-hidden bg-primary-100/40 group shadow-lg block"
+                  >
+                    <img
+                      src={product.main_image || (product as any).image || '/product.jpeg'}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <span className="absolute top-5 left-5 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md">
+                      <BadgeCheck className="w-3.5 h-3.5" />
+                      {product.badge || 'Bestseller'}
+                    </span>
+                    <span className="absolute bottom-5 right-5 inline-flex items-center gap-1 bg-primary-900 text-white font-sans font-bold text-lg px-4 py-2 rounded-xl shadow-lg">
+                      ₹{product.price}
+                      {product.compare_at_price && (
+                        <span className="text-xs text-white/60 line-through ml-1 font-medium">₹{product.compare_at_price}</span>
+                      )}
+                    </span>
+                  </Link>
+
+                  {/* Right — Product Details */}
+                  <div className="relative space-y-6">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-gold/10 text-accent-gold-dark text-[11px] font-bold uppercase tracking-wider">
+                      <Sparkles className="w-3 h-3" />
+                      Signature Formulation
+                    </div>
+
+                    <div>
+                      <Link href={`/products/${product.slug}`} className="group">
+                        <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-primary-900 leading-tight group-hover:text-accent-gold-dark transition-colors">
+                          {product.name}
+                        </h3>
+                      </Link>
+                      <p className="text-sm sm:text-base text-foreground/75 leading-relaxed mt-3">
+                        {product.short_description}
+                      </p>
+                    </div>
+
+                    {/* Benefits */}
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 pt-2">
+                      {(product.benefits || []).map((benefit) => (
+                        <li key={benefit} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/85 font-medium">
+                          <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check className="w-3 h-3" strokeWidth={3} />
+                          </span>
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Price band */}
+                    <div className="flex items-baseline gap-3 pt-4 border-t border-primary-100">
+                      <span className="text-[11px] uppercase tracking-wider font-bold text-foreground/50">Price</span>
+                      <span className="text-3xl sm:text-4xl font-sans font-bold text-primary-800">₹{product.price}</span>
+                      {product.compare_at_price && (
+                        <>
+                          <span className="text-sm text-foreground/40 line-through">₹{product.compare_at_price}</span>
+                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                            Save ₹{product.compare_at_price - product.price}
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                      <button
+                        onClick={() =>
+                          addToCart({
+                            id: product.id,
+                            slug: product.slug,
+                            name: product.name,
+                            price: product.price,
+                            compare_at_price: product.compare_at_price,
+                            image: product.main_image || (product as any).image || '/product.jpeg',
+                            stock_quantity: product.stock_quantity,
+                            weight_size: product.weight_size || "500g",
+                          })
+                        }
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary-700 hover:bg-primary-800 text-white font-bold text-sm transition-all shadow-md hover:shadow-xl"
+                      >
+                        <ShoppingCart className="w-4 h-4" />
+                        Add to Cart
+                      </button>
+                      <Link
+                        href={`/products/${product.slug}`}
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-primary-700 text-primary-700 hover:bg-primary-50 font-bold text-sm transition-all"
+                      >
+                        View Details
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+
+                    {/* Trust row */}
+                    <div className="flex items-center gap-4 pt-4 text-[11px] text-foreground/60">
+                      <span className="flex items-center gap-1.5"><Leaf className="w-3.5 h-3.5 text-primary-700" /> 100% Natural</span>
+                      <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-primary-700" /> FSSAI Certified</span>
+                      <span className="flex items-center gap-1.5"><Award className="w-3.5 h-3.5 text-primary-700" /> Traditional Recipe</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })()}
+          </div>
+        ) : (
+          /* Slider Container Wrapper */
+          <div className="relative max-w-6xl mx-auto px-4">
           {/* Navigation side buttons */}
           <button
             onClick={() => handleScroll("left")}
             disabled={!canScrollLeft}
-            className={`absolute top-1/2 -translate-y-1/2 -left-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${
+            className={`absolute top-1/2 -translate-y-1/2 -left-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-base-50/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-base-50 transition-all duration-300 focus:outline-none hidden md:flex ${
               !canScrollLeft ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
             }`}
             aria-label="Previous Slide"
@@ -131,7 +250,7 @@ export default function ProductsSection() {
           <button
             onClick={() => handleScroll("right")}
             disabled={!canScrollRight}
-            className={`absolute top-1/2 -translate-y-1/2 -right-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-white/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-white transition-all duration-300 focus:outline-none hidden md:flex ${
+            className={`absolute top-1/2 -translate-y-1/2 -right-6 z-20 w-12 h-12 rounded-full flex items-center justify-center border border-primary-100 bg-base-50/95 text-primary-700 shadow-lg hover:text-accent-gold-dark hover:border-accent-gold hover:bg-base-50 transition-all duration-300 focus:outline-none hidden md:flex ${
               !canScrollRight ? "opacity-30 cursor-not-allowed" : "opacity-90 hover:opacity-100 hover:scale-105 active:scale-95"
             }`}
             aria-label="Next Slide"
@@ -164,7 +283,7 @@ export default function ProductsSection() {
 
                   {/* Badge Overlay */}
                   <span className="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md z-10">
-                    <Sparkles className="w-3 h-3" />
+                    <BadgeCheck className="w-3 h-3" />
                     {product.badge || 'Bestseller'}
                   </span>
 
@@ -178,7 +297,7 @@ export default function ProductsSection() {
                 <div className="p-6 sm:p-7 flex-grow flex flex-col justify-between">
                   <div className="space-y-4">
                     <Link href={`/products/${product.slug}`} className="block group">
-                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-primary-900 leading-tight group-hover:text-accent-gold transition-colors">
+                      <h3 className="text-xl sm:text-2xl font-sans font-bold text-primary-900 leading-tight group-hover:text-accent-gold transition-colors">
                         {product.name}
                       </h3>
                     </Link>
@@ -258,6 +377,7 @@ export default function ProductsSection() {
             </Link>
           </div>
         </div>
+        )}
 
         {/* Benefits strip */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-20 pt-10 border-t border-primary-100/40 text-center">
@@ -265,21 +385,21 @@ export default function ProductsSection() {
             <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center text-primary-700">
               <Leaf className="w-6 h-6 text-primary-700" />
             </div>
-            <h4 className="font-serif font-semibold text-primary-800 text-sm">100% Organic Sources</h4>
+            <h4 className="font-sans font-semibold text-primary-800 text-sm">100% Organic Sources</h4>
             <p className="text-xs text-foreground/60">No synthetics, preservatives, or chemical additives</p>
           </div>
           <div className="flex flex-col items-center space-y-2">
             <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center text-primary-700">
               <Shield className="w-6 h-6 text-primary-700" />
             </div>
-            <h4 className="font-serif font-semibold text-primary-800 text-sm">Quality Checked</h4>
+            <h4 className="font-sans font-semibold text-primary-800 text-sm">Quality Checked</h4>
             <p className="text-xs text-foreground/60">Strict testing and hygienic production standards</p>
           </div>
           <div className="flex flex-col items-center space-y-2 col-span-2 md:col-span-1">
             <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center text-primary-700">
               <Award className="w-6 h-6 text-primary-700" />
             </div>
-            <h4 className="font-serif font-semibold text-primary-800 text-sm">Traditional Recipe</h4>
+            <h4 className="font-sans font-semibold text-primary-800 text-sm">Traditional Recipe</h4>
             <p className="text-xs text-foreground/60">Passed down through generations of wellness care</p>
           </div>
         </div>
