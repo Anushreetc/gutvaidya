@@ -52,6 +52,69 @@ function emailWrapper(content: string, previewText: string) {
   `;
 }
 
+// Helper to send email with automatic fallback if custom domain is not yet verified in Resend
+async function sendEmailSafe({
+  to,
+  subject,
+  html,
+}: {
+  to: string;
+  subject: string;
+  html: string;
+}) {
+  if (!resend) {
+    console.log(`[Email Simulation] Resend API Key not set. Email to: ${to}, subject: ${subject}`);
+    return { success: false, simulated: true };
+  }
+
+  // 1. Try sending with the configured fromEmail (e.g. GutVaidya <orders@thegutvaidya.com>)
+  try {
+    const res = await resend.emails.send({
+      from: fromEmail,
+      to,
+      subject,
+      html,
+    });
+
+    if (res.error) {
+      console.warn(`[Resend Error with ${fromEmail}]: ${res.error.message}`);
+      // If error is related to unverified domain, fallback to Resend's default sender
+      if (!fromEmail.includes('onboarding@resend.dev')) {
+        console.log('[Resend Fallback] Retrying with onboarding@resend.dev');
+        const fallbackRes = await resend.emails.send({
+          from: 'GutVaidya <onboarding@resend.dev>',
+          to,
+          subject,
+          html,
+        });
+        if (fallbackRes.error) {
+          console.warn('[Resend Fallback Error]:', fallbackRes.error.message);
+          return { success: false, error: fallbackRes.error };
+        }
+        return { success: true, result: fallbackRes };
+      }
+      return { success: false, error: res.error };
+    }
+
+    return { success: true, result: res };
+  } catch (err: any) {
+    console.warn(`[Resend Exception with ${fromEmail}]: ${err?.message}`);
+    // Fallback retry
+    try {
+      const fallbackRes = await resend.emails.send({
+        from: 'GutVaidya <onboarding@resend.dev>',
+        to,
+        subject,
+        html,
+      });
+      return { success: !fallbackRes.error, result: fallbackRes };
+    } catch (fallbackErr: any) {
+      console.error('[Resend Fallback Exception]:', fallbackErr?.message);
+      return { success: false, error: fallbackErr };
+    }
+  }
+}
+
 export async function sendOrderConfirmationEmail(order: Order) {
   if (!resend) {
     console.log('[Email Simulation] Resend API Key not set. Simulated order confirmation for:', order.customer_email);
@@ -103,7 +166,7 @@ export async function sendOrderConfirmationEmail(order: Order) {
 
     <div style="margin: 20px 0; font-size: 13px; color: #555; background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 12px;">
       <strong>Delivery Address:</strong><br>
-      ${order.shipping_address.name}<br>
+      ${order.shipping_address.name ? `${order.shipping_address.name}<br>` : ''}
       ${order.shipping_address.address_line_1}, ${order.shipping_address.address_line_2 || ''}<br>
       ${order.shipping_address.city}, ${order.shipping_address.state} - ${order.shipping_address.postal_code}<br>
       Phone: ${order.shipping_address.phone}
@@ -116,77 +179,77 @@ export async function sendOrderConfirmationEmail(order: Order) {
     </div>
   `;
 
-  try {
-    // 1. Send Order Confirmation directly to the Customer's email
-    const customerResult = await resend.emails.send({
-      from: fromEmail,
-      to: order.customer_email,
-      subject: `Your GutVaidya Order Confirmation #${order.order_number}`,
-      html: emailWrapper(bodyContent, `Your GutVaidya order #${order.order_number} has been confirmed!`),
-    });
+  const adminEmailBody = `
+    <div style="background: #163c0f; color: #ffffff; padding: 18px; border-radius: 12px; margin-bottom: 20px;">
+      <span style="background: #c39b62; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; font-weight: bold;">New Order Booked</span>
+      <h2 style="color: #ffffff; margin: 8px 0 4px 0; font-family: Georgia, serif;">Order #${order.order_number} Received!</h2>
+      <p style="margin: 0; color: #e5cca8; font-size: 14px;">Total Value: ₹${order.total} • Status: PAID</p>
+    </div>
 
-    // If Resend free tier blocks external customer email because custom domain is not yet verified at resend.com/domains:
-    if (customerResult.error) {
-      console.warn(`[Resend Notice] Direct delivery to ${order.customer_email} was limited by Resend: ${customerResult.error.message}`);
-      if (order.customer_email.toLowerCase() !== adminEmail.toLowerCase()) {
-        await resend.emails.send({
-          from: fromEmail,
-          to: adminEmail,
-          subject: `[Customer Invoice Copy] Order Confirmation #${order.order_number} for ${order.customer_email}`,
-          html: emailWrapper(
-            `<div style="background: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 14px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; line-height: 1.5;">
-              <strong>Testing Mode Notice:</strong> This is an exact preview of the customer confirmation email intended for <strong>${order.customer_email}</strong>. Once you add and verify your domain at <a href="https://resend.com/domains" target="_blank">resend.com/domains</a>, this email will be delivered directly to the customer's email address worldwide.
-            </div>` + bodyContent,
-            `Customer confirmation copy for ${order.customer_name}`
-          ),
-        });
-      }
-    }
+    <div style="background: #f4f8f2; border: 1px solid #ccdbb6; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+      <h3 style="margin: 0 0 10px 0; color: #163c0f; font-size: 15px;">Customer & Delivery Details</h3>
+      <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Customer Name:</strong> ${order.customer_name}</p>
+      <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Customer Email:</strong> <a href="mailto:${order.customer_email}">${order.customer_email}</a></p>
+      <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Customer Phone:</strong> <a href="tel:${order.customer_phone || order.shipping_address.phone}">${order.customer_phone || order.shipping_address.phone}</a></p>
+      <p style="margin: 6px 0 0 0; font-size: 13px;"><strong>Shipping Address:</strong><br>
+        ${order.shipping_address.name ? `${order.shipping_address.name}<br>` : ''}
+        ${order.shipping_address.address_line_1}, ${order.shipping_address.address_line_2 || ''}<br>
+        ${order.shipping_address.city}, ${order.shipping_address.state} - ${order.shipping_address.postal_code}
+      </p>
+      ${order.notes ? `<p style="margin: 6px 0 0 0; font-size: 13px;"><strong>Customer Notes:</strong> ${order.notes}</p>` : ''}
+    </div>
 
-    // 2. Also notify Store Administrator (gutvaidya@gmail.com)
-    const adminEmailBody = `
-      <div style="background: #163c0f; color: #ffffff; padding: 18px; border-radius: 12px; margin-bottom: 20px;">
-        <span style="background: #c39b62; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; font-weight: bold;">Store Alert</span>
-        <h2 style="color: #ffffff; margin: 8px 0 4px 0; font-family: Georgia, serif;">New Order #${order.order_number} Received!</h2>
-        <p style="margin: 0; color: #e5cca8; font-size: 14px;">Total Value: ₹${order.total} • Status: PAID</p>
+    <div style="background: #ffffff; border: 1px solid #e6edd9; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+      <h3 style="margin: 0 0 10px 0; color: #163c0f; font-size: 15px;">Ordered Formulations</h3>
+      ${itemsHtml}
+      <div style="margin-top: 12px; pt: 10px; border-top: 1px solid #e6edd9; font-size: 14px; font-weight: bold; color: #163c0f; display: flex; justify-content: space-between;">
+        <span>Total Collected:</span>
+        <span>₹${order.total}</span>
       </div>
+    </div>
 
-      <div style="background: #f4f8f2; border: 1px solid #ccdbb6; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
-        <h3 style="margin: 0 0 10px 0; color: #163c0f; font-size: 15px;">Customer & Delivery Details</h3>
-        <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Name:</strong> ${order.customer_name}</p>
-        <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Email:</strong> <a href="mailto:${order.customer_email}">${order.customer_email}</a></p>
-        <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Phone:</strong> <a href="tel:${order.customer_phone || order.shipping_address.phone}">${order.customer_phone || order.shipping_address.phone}</a></p>
-        <p style="margin: 6px 0 0 0; font-size: 13px;"><strong>Shipping Address:</strong><br>
-          ${order.shipping_address.address_line_1}, ${order.shipping_address.address_line_2 || ''}<br>
-          ${order.shipping_address.city}, ${order.shipping_address.state} - ${order.shipping_address.postal_code}
-        </p>
-      </div>
+    <div style="text-align: center;">
+      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thegutvaidya.com'}/admin/orders" class="btn">
+        View & Dispatch in Admin Portal
+      </a>
+    </div>
+  `;
 
-      <div style="background: #ffffff; border: 1px solid #e6edd9; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
-        <h3 style="margin: 0 0 10px 0; color: #163c0f; font-size: 15px;">Ordered Formulations</h3>
-        ${itemsHtml}
-        <div style="margin-top: 12px; pt: 10px; border-top: 1px solid #e6edd9; font-size: 14px; font-weight: bold; color: #163c0f; display: flex; justify-content: space-between;">
-          <span>Total Collected:</span>
-          <span>₹${order.total}</span>
-        </div>
-      </div>
+  // Dispatch both emails in parallel, independently handled
+  await Promise.allSettled([
+    // 1. Send Order Confirmation directly to Customer Email
+    order.customer_email
+      ? sendEmailSafe({
+          to: order.customer_email,
+          subject: `Your GutVaidya Order Confirmation #${order.order_number}`,
+          html: emailWrapper(bodyContent, `Your GutVaidya order #${order.order_number} has been confirmed!`),
+        }).then((res) => {
+          if (res.success) {
+            console.log(`[Email Sent] Confirmation delivered to customer: ${order.customer_email}`);
+          }
+        })
+      : Promise.resolve(),
 
-      <div style="text-align: center;">
-        <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/admin/orders" class="btn">
-          View & Dispatch Order in Admin Portal
-        </a>
-      </div>
-    `;
-
-    await resend.emails.send({
-      from: fromEmail,
-      to: adminEmail,
-      subject: `🚨 New Order #${order.order_number} Received (₹${order.total}) - GutVaidya Store`,
+    // 2. Always send full customer & order details to gutvaidya@gmail.com
+    sendEmailSafe({
+      to: 'gutvaidya@gmail.com',
+      subject: `🚨 New Order #${order.order_number} Received (₹${order.total}) - ${order.customer_name}`,
       html: emailWrapper(adminEmailBody, `New order #${order.order_number} from ${order.customer_name} for ₹${order.total}`),
-    });
-  } catch (err) {
-    console.error('Failed to dispatch transactional email', err);
-  }
+    }).then((res) => {
+      if (res.success) {
+        console.log('[Email Sent] Order details delivered to gutvaidya@gmail.com');
+      }
+    }),
+
+    // 3. If ADMIN_NOTIFICATION_EMAIL is configured and different from gutvaidya@gmail.com, notify that too
+    adminEmail && adminEmail.toLowerCase() !== 'gutvaidya@gmail.com'
+      ? sendEmailSafe({
+          to: adminEmail,
+          subject: `🚨 New Order #${order.order_number} Received (₹${order.total}) - ${order.customer_name}`,
+          html: emailWrapper(adminEmailBody, `New order #${order.order_number} from ${order.customer_name} for ₹${order.total}`),
+        })
+      : Promise.resolve(),
+  ]);
 }
 
 export async function sendOrderStatusUpdateEmail(order: Order, newStatus: string) {

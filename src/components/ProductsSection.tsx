@@ -129,12 +129,12 @@ export default function ProductsSection() {
                   {/* Left — Product Visual */}
                   <Link
                     href={`/products/${product.slug}`}
-                    className="relative aspect-square rounded-3xl overflow-hidden bg-primary-100/40 group shadow-lg block"
+                    className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#14361e] group shadow-lg block"
                   >
                     <img
                       src={product.main_image || (product as any).image || '/product.jpeg'}
                       alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                     />
                     <span className="absolute top-5 left-5 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md">
                       <BadgeCheck className="w-3.5 h-3.5" />

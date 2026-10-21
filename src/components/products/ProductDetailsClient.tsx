@@ -158,22 +158,22 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
           {/* Left: Gallery */}
           <div className="lg:col-span-6 space-y-4">
             {/* Main Featured Image */}
-            <div className="relative aspect-square rounded-3xl overflow-hidden bg-primary-50/60 border border-primary-100 shadow-md">
+            <div className="relative aspect-[4/5] max-h-[600px] rounded-3xl overflow-hidden bg-[#14361e] border border-primary-900/20 shadow-md flex items-center justify-center p-1 sm:p-2">
               <img
                 src={selectedImage}
                 alt={product.name}
-                className="w-full h-full object-cover transition-all duration-300"
+                className="w-full h-full object-contain transition-all duration-300 rounded-2xl"
               />
 
               {product.badge && (
-                <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md">
+                <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-gold text-white text-xs font-bold shadow-md z-10">
                   <BadgeCheck className="w-3.5 h-3.5" />
                   {product.badge}
                 </span>
               )}
 
               {discountPercent > 0 && (
-                <span className="absolute top-4 right-4 bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                <span className="absolute top-3 right-3 bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">
                   {discountPercent}% OFF
                 </span>
               )}
