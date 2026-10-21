@@ -241,8 +241,19 @@ export async function sendOrderConfirmationEmail(order: Order) {
       }
     }),
 
-    // 3. If ADMIN_NOTIFICATION_EMAIL is configured and different from gutvaidya@gmail.com, notify that too
-    adminEmail && adminEmail.toLowerCase() !== 'gutvaidya@gmail.com'
+    // 3. Also notify account owner email anushreetc678@gmail.com
+    sendEmailSafe({
+      to: 'anushreetc678@gmail.com',
+      subject: `🚨 New Order #${order.order_number} Received (₹${order.total}) - ${order.customer_name}`,
+      html: emailWrapper(adminEmailBody, `New order #${order.order_number} from ${order.customer_name} for ₹${order.total}`),
+    }).then((res) => {
+      if (res.success) {
+        console.log('[Email Sent] Order details delivered to anushreetc678@gmail.com');
+      }
+    }),
+
+    // 4. If ADMIN_NOTIFICATION_EMAIL is configured and different, notify that too
+    adminEmail && !['gutvaidya@gmail.com', 'anushreetc678@gmail.com'].includes(adminEmail.toLowerCase())
       ? sendEmailSafe({
           to: adminEmail,
           subject: `🚨 New Order #${order.order_number} Received (₹${order.total}) - ${order.customer_name}`,
