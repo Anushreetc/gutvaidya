@@ -13,6 +13,8 @@ import {
   Phone,
   Mail,
   MapPin,
+  Printer,
+  FileText,
 } from "lucide-react";
 
 export default function AdminOrdersPage() {
@@ -203,6 +205,144 @@ export default function AdminOrdersPage() {
     "delivered",
     "cancelled",
   ];
+
+  const printOrderInvoice = (order: Order) => {
+    const printWindow = window.open("", "_blank", "width=850,height=950");
+    if (!printWindow) {
+      window.print();
+      return;
+    }
+
+    const itemsRows = order.items
+      .map(
+        (item) => `
+        <tr>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #eef2eb;">
+            <strong style="color: #163c0f; font-size: 13px;">${item.product_name}</strong>
+          </td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #eef2eb; text-align: center;">${item.quantity}</td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #eef2eb; text-align: right;">₹${item.unit_price}</td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #eef2eb; text-align: right; font-weight: bold; color: #163c0f;">₹${item.total_price}</td>
+        </tr>
+      `
+      )
+      .join("");
+
+    const invoiceHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>GutVaidya_Invoice_${order.order_number}</title>
+          <meta charset="utf-8">
+          <style>
+            @page { size: A4; margin: 15mm; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: #1e2d1d; margin: 0; padding: 24px; font-size: 13px; line-height: 1.5; background: #fff; }
+            .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #163c0f; padding-bottom: 18px; margin-bottom: 22px; }
+            .brand-name { font-size: 26px; font-weight: bold; color: #163c0f; letter-spacing: -0.5px; }
+            .brand-tag { font-size: 12px; color: #556b4f; margin-top: 3px; }
+            .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: bold; text-transform: uppercase; background: #e8f5e9; color: #1b5e20; }
+            .grid { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+            .card { flex: 1; background: #fafbf9; border: 1px solid #e2ebd9; border-radius: 12px; padding: 14px 16px; }
+            .card-title { font-size: 11px; font-weight: bold; text-transform: uppercase; color: #556b4f; margin-bottom: 6px; letter-spacing: 0.5px; }
+            table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+            th { background: #f0f5ec; padding: 10px 12px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #d4decb; color: #163c0f; letter-spacing: 0.5px; }
+            .totals { margin-left: auto; width: 280px; margin-top: 16px; background: #fafbf9; border: 1px solid #e2ebd9; border-radius: 12px; padding: 14px 16px; }
+            .totals-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; color: #444; }
+            .totals-total { display: flex; justify-content: space-between; padding: 8px 0 0 0; border-top: 2px solid #163c0f; font-size: 16px; font-weight: bold; color: #163c0f; margin-top: 6px; }
+            .footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid #e2ebd9; text-align: center; font-size: 11px; color: #777; line-height: 1.6; }
+            @media print {
+              body { padding: 0; }
+              .no-print { display: none !important; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <div class="brand-name">🌿 GutVaidya</div>
+              <div class="brand-tag">Traditional Health Mix & Wholesome Wellness</div>
+              <div style="font-size: 11px; color: #888; margin-top: 3px;">FSSAI Lic. No. 21224172000058</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge">${order.payment_status === "paid" ? "TAX INVOICE — PAID" : "ORDER RECEIPT"}</span>
+              <div style="font-size: 17px; font-weight: bold; font-family: monospace; margin-top: 8px; color: #163c0f;">#${order.order_number}</div>
+              <div style="font-size: 11px; color: #666; margin-top: 2px;">Date: ${new Date(order.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
+              ${order.razorpay_payment_id ? `<div style="font-size: 10px; color: #888; font-family: monospace; margin-top: 2px;">Payment ID: ${order.razorpay_payment_id}</div>` : ""}
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="card-title">Customer Details</div>
+              <strong style="font-size: 14px; color: #163c0f;">${order.customer_name}</strong><br>
+              <span>Email: ${order.customer_email}</span><br>
+              <span>Phone: ${order.customer_phone || order.shipping_address?.phone || "N/A"}</span>
+            </div>
+            <div class="card">
+              <div class="card-title">Shipping & Delivery Address</div>
+              <strong>${order.shipping_address?.name || order.customer_name}</strong><br>
+              <span>${order.shipping_address?.address_line_1 || ""}</span><br>
+              ${order.shipping_address?.address_line_2 ? `<span>${order.shipping_address.address_line_2}</span><br>` : ""}
+              <span>${order.shipping_address?.city || ""}, ${order.shipping_address?.state || ""} - ${order.shipping_address?.postal_code || ""}</span><br>
+              <span>${order.shipping_address?.country || "India"}</span>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Item Description</th>
+                <th style="text-align: center;">Qty</th>
+                <th style="text-align: right;">Unit Price</th>
+                <th style="text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsRows}
+            </tbody>
+          </table>
+
+          <div class="totals">
+            <div class="totals-row">
+              <span>Subtotal:</span>
+              <span>₹${order.subtotal}</span>
+            </div>
+            ${order.discount > 0 ? `
+              <div class="totals-row" style="color: #1b5e20; font-weight: 600;">
+                <span>Discount (${order.coupon_code || "Promo"}):</span>
+                <span>-₹${order.discount}</span>
+              </div>
+            ` : ""}
+            <div class="totals-row">
+              <span>Shipping Fee:</span>
+              <span>${order.shipping_charge === 0 ? "FREE" : "₹" + order.shipping_charge}</span>
+            </div>
+            <div class="totals-total">
+              <span>Total Paid:</span>
+              <span>₹${order.total}</span>
+            </div>
+          </div>
+
+          <div class="footer">
+            <p><strong>Thank you for choosing GutVaidya for your family's health.</strong></p>
+            <p>Customer Support: support@thegutvaidya.com | +91 78928 91239 | Bengaluru, Karnataka</p>
+          </div>
+
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 300);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(invoiceHtml);
+    printWindow.document.close();
+  };
 
   return (
     <div className="space-y-6">
@@ -417,10 +557,19 @@ export default function AdminOrdersPage() {
               </div>
             </div>
 
-            <div className="pt-2 flex justify-end">
+            <div className="pt-2 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => printOrderInvoice(activeOrder)}
+                className="px-5 py-2.5 rounded-full bg-base-100 hover:bg-primary-50 text-primary-900 border border-primary-200 font-bold text-xs flex items-center gap-2 shadow-sm transition-all"
+              >
+                <Printer className="w-4 h-4 text-primary-700" />
+                Save as PDF / Print
+              </button>
+
               <button
                 onClick={() => setActiveOrder(null)}
-                className="px-6 py-2.5 rounded-full bg-primary-700 text-white font-bold text-xs"
+                className="px-6 py-2.5 rounded-full bg-primary-700 text-white font-bold text-xs hover:bg-primary-800 transition-colors"
               >
                 Done
               </button>
