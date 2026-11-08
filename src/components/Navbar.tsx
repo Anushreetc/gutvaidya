@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { ShoppingBag, X, Menu, Trash2, Plus, Minus, User, ArrowRight, Truck } from "lucide-react";
+import { ShoppingBag, X, Menu, Trash2, Plus, Minus, User, ArrowRight, Truck, Tag, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -20,7 +20,42 @@ export default function Navbar() {
     shippingCharge,
     finalTotal,
     freeShippingRemaining,
+    appliedCoupon,
+    applyCouponCode,
+    removeCoupon,
   } = useCart();
+
+  const [drawerCouponInput, setDrawerCouponInput] = useState("");
+  const [drawerCouponLoading, setDrawerCouponLoading] = useState(false);
+  const [drawerCouponMsg, setDrawerCouponMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const handleApplyDrawerCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!drawerCouponInput.trim()) return;
+    setDrawerCouponLoading(true);
+    setDrawerCouponMsg(null);
+    const result = await applyCouponCode(drawerCouponInput);
+    setDrawerCouponLoading(false);
+    if (result.success) {
+      setDrawerCouponMsg({ type: "success", text: result.message });
+      setDrawerCouponInput("");
+    } else {
+      setDrawerCouponMsg({ type: "error", text: result.message });
+    }
+  };
+
+  const handleApplyQuickDrawerCoupon = async (code: string) => {
+    setDrawerCouponLoading(true);
+    setDrawerCouponMsg(null);
+    const result = await applyCouponCode(code);
+    setDrawerCouponLoading(false);
+    if (result.success) {
+      setDrawerCouponMsg({ type: "success", text: result.message });
+      setDrawerCouponInput("");
+    } else {
+      setDrawerCouponMsg({ type: "error", text: result.message });
+    }
+  };
 
   const { user, profile, isAdmin } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,7 +63,8 @@ export default function Navbar() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/products" },
-    { label: "Recipe", href: "/#recipe" },
+    { label: "Our Blend", href: "/#blend-story" },
+    { label: "Recipes", href: "/#recipe" },
     { label: "Reviews", href: "/#reviews" },
     { label: "Blogs", href: "/#blogs" },
     { label: "FAQ", href: "/#faq" },
@@ -69,6 +105,19 @@ export default function Navbar() {
 
             {/* Right-side actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
+              {/* Admin Dashboard Pill (Visible for Admins) */}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-900 font-sans text-[11px] sm:text-xs font-bold transition-all shadow-sm"
+                  title="Open Admin Dashboard"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5 text-amber-700 flex-shrink-0" />
+                  <span className="hidden xs:inline">Admin</span>
+                  <span className="hidden sm:inline">Dashboard</span>
+                </Link>
+              )}
+
               {/* Account button */}
               <Link
                 href={user ? "/account" : "/auth/login"}
@@ -78,7 +127,7 @@ export default function Navbar() {
               >
                 <User className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                 {user && (
-                  <span className="absolute top-0 right-0 w-2 h-2 bg-emerald-500 rounded-full ring-2 ring-white" />
+                  <span className={`absolute top-0 right-0 w-2 h-2 rounded-full ring-2 ring-white ${isAdmin ? "bg-amber-500" : "bg-emerald-500"}`} />
                 )}
               </Link>
 
@@ -286,15 +335,96 @@ export default function Navbar() {
 
               {/* Footer */}
               {cart.length > 0 && (
-                <div className="p-6 border-t border-primary-100 bg-[#f7f9f4] space-y-4">
-                  <div className="space-y-2 text-sm">
+                <div className="p-5 border-t border-primary-100 bg-base-100 space-y-3.5">
+                  {/* Coupon Option in Drawer */}
+                  <div className="rounded-2xl border border-primary-100/80 bg-base-50 p-3">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between text-xs bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-200">
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <Tag className="w-3.5 h-3.5 text-emerald-700" />
+                            <span className="font-mono font-bold text-emerald-800 text-xs">
+                              {appliedCoupon.code}
+                            </span>
+                            <span className="text-[10px] bg-emerald-600 text-white font-semibold px-1.5 py-0.5 rounded">
+                              Applied
+                            </span>
+                          </div>
+                          <span className="text-[11px] text-emerald-700 block mt-0.5 font-medium">
+                            {appliedCoupon.discount_type === "percentage"
+                              ? `${appliedCoupon.discount_value}% Discount Applied`
+                              : `₹${appliedCoupon.discount_value} OFF Applied`}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={removeCoupon}
+                          className="text-xs text-red-600 hover:underline font-semibold"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-2.5">
+                        {/* 1-Click Welcome Coupon Offer */}
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 shadow-xs">
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-mono font-bold text-[11px] text-emerald-800 bg-white px-1.5 py-0.5 rounded border border-emerald-300">
+                                WELCOME100
+                              </span>
+                              <span className="text-xs font-bold text-emerald-900">Save ₹100</span>
+                            </div>
+                            <span className="text-[10px] text-emerald-700 block mt-0.5">
+                              Flat ₹100 OFF on your order
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleApplyQuickDrawerCoupon("WELCOME100")}
+                            disabled={drawerCouponLoading}
+                            className="px-3 py-1 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-lg transition-colors shadow-sm disabled:opacity-50"
+                          >
+                            {drawerCouponLoading ? "..." : "Apply"}
+                          </button>
+                        </div>
+
+                        {/* Custom Code Input */}
+                        <form onSubmit={handleApplyDrawerCoupon} className="space-y-1.5">
+                          <div className="flex gap-1.5">
+                            <input
+                              type="text"
+                              value={drawerCouponInput}
+                              onChange={(e) => setDrawerCouponInput(e.target.value.toUpperCase())}
+                              placeholder="Or enter coupon code"
+                              className="flex-1 px-3 py-1.5 rounded-lg border border-primary-200 text-xs font-mono uppercase bg-white focus:outline-none focus:ring-1 focus:ring-primary-600"
+                            />
+                            <button
+                              type="submit"
+                              disabled={drawerCouponLoading || !drawerCouponInput.trim()}
+                              className="px-3.5 py-1.5 rounded-lg bg-primary-700 text-white font-semibold text-xs hover:bg-primary-800 transition-colors disabled:opacity-50"
+                            >
+                              {drawerCouponLoading ? "..." : "Apply"}
+                            </button>
+                          </div>
+                          {drawerCouponMsg && (
+                            <p className={`text-[10px] ${drawerCouponMsg.type === "success" ? "text-emerald-700 font-medium" : "text-red-600"}`}>
+                              {drawerCouponMsg.text}
+                            </p>
+                          )}
+                        </form>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-2 text-sm pt-1">
                     <div className="flex justify-between text-foreground/70">
                       <span>Subtotal</span>
                       <span>₹{subtotal}</span>
                     </div>
                     {discountAmount > 0 && (
                       <div className="flex justify-between text-emerald-700 font-medium">
-                        <span>Coupon Discount</span>
+                        <span>Coupon Discount ({appliedCoupon?.code})</span>
                         <span>-₹{discountAmount}</span>
                       </div>
                     )}
@@ -311,7 +441,7 @@ export default function Navbar() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 pt-1">
                     <Link
                       href="/checkout"
                       onClick={() => setIsCartOpen(false)}
@@ -322,9 +452,9 @@ export default function Navbar() {
                     <Link
                       href="/cart"
                       onClick={() => setIsCartOpen(false)}
-                      className="block w-full text-center py-2.5 rounded-full border border-primary-200 text-primary-800 font-semibold text-xs hover:bg-primary-50 transition-colors"
+                      className="block w-full text-center py-2 rounded-full border border-primary-200 text-primary-800 font-semibold text-xs hover:bg-primary-50 transition-colors"
                     >
-                      View Cart & Apply Coupons
+                      View Full Cart
                     </Link>
                   </div>
                 </div>

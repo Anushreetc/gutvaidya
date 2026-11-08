@@ -65,7 +65,7 @@ export default function Footer() {
             <h4 className="font-sans font-bold text-sm text-white uppercase tracking-wider">Quick Navigation</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/#home" className="hover:text-accent-gold transition-colors">Home</a>
+                <a href="/" className="hover:text-accent-gold transition-colors">Home</a>
               </li>
               <li>
                 <a href="/products" className="hover:text-accent-gold transition-colors">All Products</a>
@@ -81,6 +81,9 @@ export default function Footer() {
               </li>
               <li>
                 <a href="/#contact" className="hover:text-accent-gold transition-colors">Contact Support</a>
+              </li>
+              <li>
+                <a href="/admin" className="hover:text-accent-gold transition-colors text-accent-gold/80 font-medium">Admin Portal</a>
               </li>
             </ul>
           </div>

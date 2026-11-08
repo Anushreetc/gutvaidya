@@ -5,51 +5,39 @@
 @custom-variant compact (@media (orientation: portrait) and (max-height: 760px));
 @custom-variant short (@media (orientation: landscape) and (max-height: 500px));
 
+/* Shared ivory, caramel and gold design system for storefront and account pages. */
 @theme {
-  /* ── Neutrals ───────────────────────────────────────────────────────
-     Warm oat and sand, sampled from the pouch body itself (#f0e0c0 /
-     #e0d0b0). Every neutral carries that warmth: there is no cool grey
-     or blue-white anywhere in the system. */
-  --color-base-50: #fdfbf4; /* raised cards, the lightest surface */
-  --color-base-100: #f8f5ec; /* page background */
-  --color-base-200: #f2ecdd; /* alternating section band */
-  --color-base-300: #e9e1cd; /* sand: chips, rails, nav highlight */
-  --color-base-400: #d8d0b8; /* borders and dividers */
-
-  /* ── Brand green, sampled from the pouch artwork (#103010) ── */
-  --color-primary-50: #f4f7ee;
-  --color-primary-100: #e7ecd8;
-  --color-primary-200: #d1dab9;
-  --color-primary-300: #a8bb84;
-  --color-primary-400: #6f9152;
-  --color-primary-500: #3d6b2b;
-  --color-primary-600: #1d4a17;
-  --color-primary-700: #16380f;
-  --color-primary-800: #11300f; /* the pouch green */
-  --color-primary-900: #0c2209;
-  --color-primary-950: #061405;
-
-  /* ── Clay and gold: the pouch tan plus the terracotta bowls ── */
-  --color-accent-gold: #c08a4a;
-  --color-accent-gold-light: #e2c69c;
-  --color-accent-gold-dark: #8c5c26;
-  --color-accent-clay: #c2703a;
-
-  /* Named so `bg-background` and `text-foreground/70` resolve — both were
-     used across the site before but never defined, so they rendered as
-     plain inherited colour. */
-  --color-background: #f8f5ec;
-  --color-foreground: #1f2318;
-
+  --color-base-50: #fffcf5;
+  --color-base-100: #faf7ed;
+  --color-base-200: #f3eddd;
+  --color-base-300: #e9ddc3;
+  --color-base-400: #d6c8aa;
+  --color-primary-50: #fcf7ed;
+  --color-primary-100: #f1e7d3;
+  --color-primary-200: #e3d0ae;
+  --color-primary-300: #cfb184;
+  --color-primary-400: #b88c59;
+  --color-primary-500: #a07543;
+  --color-primary-600: #896137;
+  --color-primary-700: #76512d;
+  --color-primary-800: #604127;
+  --color-primary-900: #493321;
+  --color-primary-950: #302216;
+  --color-accent-gold: #b58d40;
+  --color-accent-gold-light: #e4c77c;
+  --color-accent-gold-dark: #806025;
+  --color-accent-clay: #b88759;
+  --color-background: #faf7ed;
+  --color-foreground: #493923;
   --font-serif: var(--font-playfair);
   --font-sans: var(--font-outfit);
 }
 
 :root {
-  --background: #f8f5ec;
-  --foreground: #1f2318;
-  --primary: #1d4a17;
-  --accent: #c08a4a;
+  --background: #faf7ed;
+  --foreground: #493923;
+  --primary: #76512d;
+  --accent: #b58d40;
 }
 
 /* Custom Scrollbar */
@@ -57,14 +45,14 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f2ecdd;
+  background: #f3eddd;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d8d0b8;
+  background: #d6c8aa;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8bb84;
+  background: #cfb184;
 }
 
 html {
@@ -118,17 +106,17 @@ input[type="button"] {
 
 /* Glassmorphism Classes */
 .glass-nav {
-  background: rgba(248, 245, 236, 0.78);
+  background: rgba(250, 247, 237, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(17, 48, 15, 0.1);
+  border-bottom: 1px solid rgba(96, 65, 39, 0.1);
 }
 
 .glass-card {
-  background: rgba(253, 251, 244, 0.7);
+  background: rgba(255, 252, 245, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(17, 48, 15, 0.08);
+  border: 1px solid rgba(96, 65, 39, 0.08);
 }
 
 .glass-card-hover {
@@ -137,20 +125,20 @@ input[type="button"] {
 
 .glass-card-hover:hover {
   transform: translateY(-4px);
-  background: rgba(253, 251, 244, 0.9);
-  box-shadow: 0 12px 30px rgba(17, 48, 15, 0.08);
-  border-color: rgba(17, 48, 15, 0.14);
+  background: rgba(255, 252, 245, 0.9);
+  box-shadow: 0 12px 30px rgba(96, 65, 39, 0.08);
+  border-color: rgba(96, 65, 39, 0.14);
 }
 
 /* Gradient text */
 .gradient-text-primary {
-  background: linear-gradient(135deg, #1d4a17 0%, #16380f 100%);
+  background: linear-gradient(135deg, #896137 0%, #76512d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #c08a4a 0%, #8c5c26 100%);
+  background: linear-gradient(135deg, #b58d40 0%, #806025 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

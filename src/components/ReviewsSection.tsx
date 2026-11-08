@@ -174,7 +174,7 @@ export default function ReviewsSection() {
               {/* Screenshot Image Frame with Click to Zoom */}
               <div
                 onClick={() => setPreviewModalImg(currentScreenshot.src)}
-                className="relative rounded-2xl overflow-hidden border border-primary-100/40 bg-[#efeae2] group cursor-pointer shadow-inner max-h-[380px] flex items-center justify-center"
+                className="relative rounded-2xl overflow-hidden border border-primary-100/40 bg-[#f3eddd] group cursor-pointer shadow-inner max-h-[380px] flex items-center justify-center"
               >
                 <img
                   src={currentScreenshot.src}

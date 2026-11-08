@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { UserProfile } from "@/types/ecommerce";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { isEmailAdmin } from "@/lib/admin";
 
 interface AuthContextType {
   user: any | null;
@@ -33,17 +34,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq("id", userId)
         .single();
 
+      const shouldBeAdmin = isEmailAdmin(email);
+
       if (!error && data) {
+        if (shouldBeAdmin && data.role !== "admin") {
+          await supabase.from("profiles").update({ role: "admin" }).eq("id", userId);
+          data.role = "admin";
+        }
         setProfile(data as UserProfile);
       } else {
         // Fallback default profile
-        setProfile({
+        const newProfile: UserProfile = {
           id: userId,
           name: email.split("@")[0],
           email: email,
-          role: "customer",
+          role: shouldBeAdmin ? "admin" : "customer",
           created_at: new Date().toISOString(),
-        });
+        };
+        try {
+          await supabase.from("profiles").upsert(newProfile);
+        } catch {}
+        setProfile(newProfile);
       }
     } catch (e) {
       console.error("Error fetching profile", e);
@@ -125,7 +136,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProfile(demoProfile);
   };
 
-  const isAdmin = profile?.role === "admin";
+  const currentEmail = (user?.email || profile?.email || "").toLowerCase().trim();
+  const isAdmin = profile?.role === "admin" || isEmailAdmin(currentEmail);
 
   return (
     <AuthContext.Provider

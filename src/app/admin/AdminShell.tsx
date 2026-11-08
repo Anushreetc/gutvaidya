@@ -37,7 +37,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   // otherwise real admins briefly see the access gate
   if (isLoading || (user && !profile)) {
     return (
-      <div className="min-h-screen bg-[#f7f9f4] flex items-center justify-center">
+      <div className="min-h-screen bg-base-100 flex items-center justify-center">
         <div className="flex items-center gap-3 text-xs text-foreground/50">
           <span className="w-4 h-4 rounded-full border-2 border-primary-200 border-t-primary-700 animate-spin" />
           Checking admin access…
@@ -49,7 +49,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   // If user is not admin, show secure access gate with developer preview switch
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#f7f9f4] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-base-100 flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-base-50 rounded-3xl border border-primary-100 p-8 shadow-md text-center space-y-5">
           <div className="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto">
             <Lock className="w-8 h-8" />
@@ -95,7 +95,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f9f4] flex flex-col md:flex-row">
+    <div className="min-h-screen bg-base-100 flex flex-col md:flex-row">
       {/* Admin Sidebar */}
       <aside className="w-full md:w-64 bg-primary-900 text-white flex-shrink-0 flex flex-col justify-between border-r border-primary-800">
         <div>

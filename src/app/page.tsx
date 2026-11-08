@@ -2,10 +2,8 @@
 
 import React from "react";
 import Navbar from "../components/Navbar";
-import HeroSection from "../components/HeroSection";
+import ReferenceLanding from "../components/ReferenceLanding";
 import ProofBand from "../components/ProofBand";
-import IngredientsSection from "../components/IngredientsSection";
-import ProductsSection from "../components/ProductsSection";
 import ComparisonSection from "../components/ComparisonSection";
 import RecipesSection from "../components/RecipesSection";
 import ReviewsSection from "../components/ReviewsSection";
@@ -22,17 +20,11 @@ export default function Home() {
 
       {/* Core Main content */}
       <main className="flex-grow">
-        {/* Hero Carousel Banner Section */}
-        <HeroSection />
+        {/* Cinematic product and ingredient journey (Hero, Product Spotlight at ₹799, Preparation, Blend, Benefits, Manufacturing) */}
+        <ReferenceLanding />
 
         {/* Rating, ingredient icons and headline numbers */}
         <ProofBand />
-
-        {/* Ingredients Breakdown */}
-        <IngredientsSection />
-
-        {/* Products Catalogue */}
-        <ProductsSection />
 
         {/* A shelf of ingredients vs one pouch, plus trust badges */}
         <ComparisonSection />

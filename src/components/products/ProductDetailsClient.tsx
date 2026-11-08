@@ -158,7 +158,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
           {/* Left: Gallery */}
           <div className="lg:col-span-6 space-y-4">
             {/* Main Featured Image */}
-            <div className="relative aspect-[4/5] max-h-[600px] rounded-3xl overflow-hidden bg-[#14361e] border border-primary-900/20 shadow-md flex items-center justify-center p-1 sm:p-2">
+            <div className="relative aspect-[4/5] max-h-[600px] rounded-3xl overflow-hidden bg-base-200 border border-primary-900/20 shadow-md flex items-center justify-center p-1 sm:p-2">
               <img
                 src={selectedImage}
                 alt={product.name}
@@ -429,15 +429,15 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 pt-6 border-t border-primary-100">
                     <div className="text-center p-3 rounded-xl bg-primary-50/40">
                       <span className="text-xl font-bold font-serif text-primary-800 block">Step 1</span>
-                      <span className="text-xs text-foreground/70">Mix 2 spoons in water or milk</span>
+                      <span className="text-xs text-foreground/70">Mix 1 scoop (25g) with 400ml water or milk in a pan</span>
                     </div>
                     <div className="text-center p-3 rounded-xl bg-primary-50/40">
                       <span className="text-xl font-bold font-serif text-primary-800 block">Step 2</span>
-                      <span className="text-xs text-foreground/70">Simmer on medium for 3-5 mins</span>
+                      <span className="text-xs text-foreground/70">Simmer on low flame for 2 mins while stirring</span>
                     </div>
                     <div className="text-center p-3 rounded-xl bg-primary-50/40">
                       <span className="text-xl font-bold font-serif text-primary-800 block">Step 3</span>
-                      <span className="text-xs text-foreground/70">Add jaggery & enjoy warm</span>
+                      <span className="text-xs text-foreground/70">Add jaggery or salt as per taste; serve warm</span>
                     </div>
                   </div>
                 </div>

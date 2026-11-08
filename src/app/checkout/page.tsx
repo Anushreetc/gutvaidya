@@ -20,12 +20,56 @@ import {
   ShoppingBag,
   ArrowRight,
   Info,
+  Tag,
 } from "lucide-react";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, subtotal, appliedCoupon, discountAmount, shippingCharge, tax, finalTotal, clearCart } = useCart();
+  const {
+    cart,
+    subtotal,
+    appliedCoupon,
+    discountAmount,
+    shippingCharge,
+    tax,
+    finalTotal,
+    clearCart,
+    applyCouponCode,
+    removeCoupon,
+  } = useCart();
   const { user, profile } = useAuth();
+
+  const [couponInput, setCouponInput] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponMessage, setCouponMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const handleApplyCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+    setCouponLoading(true);
+    setCouponMessage(null);
+    const result = await applyCouponCode(couponInput);
+    setCouponLoading(false);
+    if (result.success) {
+      setCouponMessage({ type: "success", text: result.message });
+      setCouponInput("");
+    } else {
+      setCouponMessage({ type: "error", text: result.message });
+    }
+  };
+
+  const handleApplyQuickCoupon = async (code: string) => {
+    setCouponLoading(true);
+    setCouponMessage(null);
+    const result = await applyCouponCode(code);
+    setCouponLoading(false);
+    if (result.success) {
+      setCouponMessage({ type: "success", text: result.message });
+      setCouponInput("");
+    } else {
+      setCouponMessage({ type: "error", text: result.message });
+    }
+  };
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -181,7 +225,7 @@ export default function CheckoutPage() {
           contact: customerInfo.phone,
         },
         theme: {
-          color: "#1f4f16",
+          color: "#76512d",
         },
         handler: async function (response: any) {
           try {
@@ -486,6 +530,99 @@ export default function CheckoutPage() {
                           <span className="font-bold text-primary-900">₹{item.price * item.qty}</span>
                         </div>
                       ))}
+                    </div>
+
+                    {/* Have a Coupon Code */}
+                    <div className="pt-4 border-t border-primary-100/70">
+                      <div className="flex items-center gap-1.5 text-primary-900 mb-2">
+                        <Tag className="w-3.5 h-3.5 text-accent-gold" />
+                        <span className="font-serif font-bold text-xs">Have a Coupon Code?</span>
+                      </div>
+
+                      {appliedCoupon ? (
+                        <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs shadow-xs">
+                          <div className="flex items-center gap-2.5">
+                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs">
+                              ✓
+                            </span>
+                            <div>
+                              <span className="font-mono font-bold text-emerald-900 text-xs block">
+                                {appliedCoupon.code} APPLIED
+                              </span>
+                              <span className="text-[11px] text-emerald-700">
+                                ₹{discountAmount} reduced from your total!
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={removeCoupon}
+                            className="text-xs text-red-600 hover:underline font-semibold ml-2"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {/* 1-Click Welcome Coupon Card */}
+                          <div className="rounded-2xl border border-accent-gold/40 bg-accent-gold/10 p-3 flex items-center justify-between gap-3 shadow-xs">
+                            <div className="flex items-center gap-2.5">
+                              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent-gold/25 text-accent-gold-dark font-mono font-bold text-xs shrink-0">
+                                ₹100
+                              </span>
+                              <div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-mono font-bold text-xs text-primary-950">WELCOME100</span>
+                                  <span className="text-[10px] font-bold uppercase tracking-wider text-accent-gold-dark bg-accent-gold/25 px-1.5 py-0.2 rounded-full">Save ₹100</span>
+                                </div>
+                                <span className="text-[11px] text-foreground/75 block mt-0.5">Flat ₹100 OFF on your order</span>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyQuickCoupon("WELCOME100")}
+                              disabled={couponLoading}
+                              className="px-4 py-1.5 rounded-full bg-primary-800 text-white font-sans text-xs font-bold hover:bg-primary-900 transition-all shadow-xs shrink-0 hover:scale-105 active:scale-95"
+                            >
+                              {couponLoading ? "..." : "Apply"}
+                            </button>
+                          </div>
+
+                          <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                value={couponInput}
+                                onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                                placeholder="Have another code? Enter here"
+                                className="flex-1 px-3.5 py-2 rounded-xl border border-primary-200 text-xs font-mono uppercase bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"
+                              />
+                              <button
+                                type="submit"
+                                disabled={couponLoading || !couponInput.trim()}
+                                className="px-4 py-2 rounded-xl bg-primary-700 text-white font-semibold text-xs hover:bg-primary-800 transition-colors disabled:opacity-50"
+                              >
+                                {couponLoading ? "..." : "Apply"}
+                              </button>
+                            </div>
+
+                            {couponMessage && (
+                              <p
+                                className={`text-[11px] flex items-center gap-1 mt-1 ${
+                                  couponMessage.type === "success" ? "text-emerald-700 font-medium" : "text-red-600"
+                                }`}
+                              >
+                                {couponMessage.type === "success" ? (
+                                  <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                                ) : (
+                                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                                )}
+                                <span>{couponMessage.text}</span>
+                              </p>
+                            )}
+                          </form>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2.5 text-xs sm:text-sm pt-4 border-t border-primary-100">

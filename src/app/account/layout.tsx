@@ -72,10 +72,15 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
                 {isAdmin && (
                   <Link
                     href="/admin"
-                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-accent-gold-dark bg-accent-gold/10 hover:bg-accent-gold/20 transition-colors mt-2"
+                    className="flex items-center justify-between px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-amber-900 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 transition-all mt-3 shadow-xs"
                   >
-                    <Shield className="w-4 h-4" />
-                    <span>Admin Dashboard</span>
+                    <div className="flex items-center gap-2.5">
+                      <Shield className="w-4 h-4 text-amber-700" />
+                      <span>Admin Dashboard</span>
+                    </div>
+                    <span className="text-[10px] bg-amber-600 text-white font-bold px-1.5 py-0.5 rounded">
+                      Admin
+                    </span>
                   </Link>
                 )}
 

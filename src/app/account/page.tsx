@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { createClient } from "@/lib/supabase/client";
 import { INDIAN_STATES } from "@/lib/india-states";
-import { CheckCircle2, Save, AlertTriangle } from "lucide-react";
+import { CheckCircle2, Save, AlertTriangle, ShieldCheck } from "lucide-react";
 
 const EMPTY_FORM = {
   name: "",
@@ -17,7 +18,7 @@ const EMPTY_FORM = {
 };
 
 export default function AccountProfilePage() {
-  const { profile, user, refreshProfile } = useAuth();
+  const { profile, user, isAdmin, refreshProfile } = useAuth();
   const supabase = createClient();
 
   const [formData, setFormData] = useState(EMPTY_FORM);
@@ -123,6 +124,33 @@ export default function AccountProfilePage() {
 
   return (
     <div className="bg-base-50 rounded-3xl border border-primary-100 p-6 sm:p-8 shadow-sm space-y-6">
+      {isAdmin && (
+        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 flex items-center justify-center flex-shrink-0">
+              <ShieldCheck className="w-5 h-5 text-amber-800" />
+            </div>
+            <div>
+              <h3 className="font-bold text-sm text-amber-950 flex items-center gap-2">
+                Administrator Privileges Active
+                <span className="text-[10px] bg-amber-200 text-amber-900 font-semibold px-2 py-0.5 rounded-full uppercase">
+                  Admin
+                </span>
+              </h3>
+              <p className="text-xs text-amber-900/70">
+                You have administrative access to manage products, pricing, stock, coupons, orders, and inquiries.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/admin"
+            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs shadow-sm transition-all whitespace-nowrap"
+          >
+            Open Admin Dashboard &rarr;
+          </Link>
+        </div>
+      )}
+
       <div>
         <h1 className="text-2xl font-serif font-bold text-primary-900">Personal Profile</h1>
         <p className="text-xs text-foreground/60 mt-0.5">

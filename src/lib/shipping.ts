@@ -10,9 +10,9 @@ export interface ShippingConfig {
 }
 
 export const DEFAULT_SHIPPING_CONFIG: ShippingConfig = {
-  freeShippingThreshold: 999, // Orders over ₹999 get free shipping
-  standardShippingFee: 60,    // Standard shipping ₹60
-  expressShippingFee: 120,    // Express shipping ₹120
+  freeShippingThreshold: 499, // Orders over ₹499 get free shipping
+  standardShippingFee: 0,     // Free standard delivery across India
+  expressShippingFee: 99,     // Express shipping optional
   taxRate: 0.0,               // Prices are all-inclusive
 };
 

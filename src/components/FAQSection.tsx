@@ -13,9 +13,9 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
     q: "How do I prepare it?",
     a: (
       <>
-        Two spoons into a glass or bowl, then add hot water or warm milk and stir
-        until smooth. It thickens into a porridge as it sits, so add a little more
-        liquid if you prefer it thinner.
+        Add 1 scoop (25g) into 400ml of water or milk in a pan. Heat and simmer on a
+        low flame for 2 minutes, stirring continuously to avoid lumps. Add jaggery,
+        honey, or salt to taste as desired, and enjoy comfortably warm.
       </>
     ),
   },

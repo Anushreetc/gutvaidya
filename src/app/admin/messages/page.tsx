@@ -64,7 +64,7 @@ export default function AdminMessagesPage() {
         ) : (
           <div className="divide-y divide-primary-50">
             {messages.map((item) => (
-              <div key={item.id} className="p-6 hover:bg-[#fcfdfa] transition-colors space-y-3">
+              <div key={item.id} className="p-6 hover:bg-base-50 transition-colors space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-primary-100 text-primary-800 flex items-center justify-center font-bold text-xs">
@@ -106,7 +106,7 @@ export default function AdminMessagesPage() {
                   </div>
                 </div>
 
-                <div className="bg-[#f7f9f4] p-4 rounded-xl text-xs text-foreground/80 leading-relaxed whitespace-pre-wrap border border-primary-100/50">
+                <div className="bg-base-100 p-4 rounded-xl text-xs text-foreground/80 leading-relaxed whitespace-pre-wrap border border-primary-100/50">
                   {item.message}
                 </div>
               </div>

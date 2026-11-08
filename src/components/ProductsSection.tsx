@@ -129,7 +129,7 @@ export default function ProductsSection() {
                   {/* Left — Product Visual */}
                   <Link
                     href={`/products/${product.slug}`}
-                    className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#14361e] group shadow-lg block"
+                    className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-base-200 group shadow-lg block"
                   >
                     <img
                       src={product.main_image || (product as any).image || '/product.jpeg'}

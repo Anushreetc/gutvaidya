@@ -4,6 +4,7 @@ import type { User } from '@supabase/supabase-js';
 import { createClient } from './server';
 import { createAdminClient } from './admin';
 import { isSupabaseConfigured } from './config';
+import { isEmailAdmin } from '../admin';
 
 // Returns the signed-in Supabase user (verified with the Auth server), or null.
 export async function getCurrentUser(): Promise<User | null> {
@@ -13,11 +14,13 @@ export async function getCurrentUser(): Promise<User | null> {
   return data.user ?? null;
 }
 
-export async function isUserAdmin(userId: string): Promise<boolean> {
+export async function isUserAdmin(userId: string, userEmail?: string | null): Promise<boolean> {
+  if (isEmailAdmin(userEmail)) return true;
+
   const adminClient = createAdminClient();
   if (!adminClient) return false;
-  const { data } = await adminClient.from('profiles').select('role').eq('id', userId).single();
-  return data?.role === 'admin';
+  const { data } = await adminClient.from('profiles').select('role, email').eq('id', userId).single();
+  return data?.role === 'admin' || isEmailAdmin(data?.email);
 }
 
 // For API route handlers. Returns an error response when the caller is not an admin,
@@ -30,7 +33,7 @@ export async function requireAdminApi(): Promise<NextResponse | null> {
   if (!user) {
     return NextResponse.json({ error: 'Please sign in as an administrator.' }, { status: 401 });
   }
-  if (!(await isUserAdmin(user.id))) {
+  if (!(await isUserAdmin(user.id, user.email))) {
     return NextResponse.json({ error: 'Administrator access required.' }, { status: 403 });
   }
   return null;
@@ -42,5 +45,5 @@ export async function requireAdminPage(): Promise<void> {
 
   const user = await getCurrentUser();
   if (!user) redirect('/auth/login?next=/admin');
-  if (!(await isUserAdmin(user.id))) redirect('/');
+  if (!(await isUserAdmin(user.id, user.email))) redirect('/');
 }

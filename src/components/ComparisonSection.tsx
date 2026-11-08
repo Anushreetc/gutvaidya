@@ -36,7 +36,7 @@ export default function ComparisonSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="One Pouch, Not a Shopping List"
-          title="36+ ingredients. Two spoons."
+          title="36+ ingredients. One daily scoop."
           body="Sourcing, sprouting, roasting and milling each of these at home takes a full day. We do it in small batches so your morning takes two minutes."
         />
 
@@ -76,8 +76,8 @@ export default function ComparisonSection() {
               One 500&nbsp;g pouch.
             </p>
             <p className="mt-3 font-sans text-sm leading-relaxed text-white/75">
-              Everything above, already sprouted, roasted and milled together. Two
-              spoons into hot water or warm milk, stirred smooth.
+              Everything above, already sprouted, roasted and milled together. One
+              scoop (25g) into 400ml warm water or milk, simmered for two minutes.
             </p>
             <ul className="mt-7 space-y-3">
               {[
@@ -95,7 +95,7 @@ export default function ComparisonSection() {
               ))}
             </ul>
             <a
-              href="#products"
+              href="#product-spotlight"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-base-50 px-7 py-3.5 font-sans text-sm font-bold text-primary-800 transition-all hover:scale-105 active:scale-95"
             >
               Shop GutVaidya

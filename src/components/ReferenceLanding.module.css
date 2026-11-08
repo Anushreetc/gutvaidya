@@ -1,0 +1,777 @@
+.landing {
+  background: #faf7ed;
+  color: #43331f;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  --gold: #bfa15f;
+  --gold-dark: #987834;
+  --caramel: #9e6434;
+  --warm-bg: #f5eedf;
+  --ivory-card: #fdfaf2;
+  --text-primary: #3d2c19;
+  --text-muted: #816e54;
+}
+
+/* =========================================
+   HERO SECTION
+========================================= */
+.hero {
+  min-height: calc(100vh - 60px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 6% 90px;
+  background: radial-gradient(circle at 50% 45%, #f7edd7 0%, #faf7ed 65%);
+  text-align: center;
+  overflow: hidden;
+}
+
+.heroContent {
+  max-width: 900px;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 25px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #a47a32;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5.5vw, 76px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text-primary);
+  font-family: var(--font-playfair), Georgia, serif;
+  margin: 0 0 18px;
+  letter-spacing: -0.03em;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--caramel);
+}
+
+.heroSubtitle {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin: 0 auto 28px;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #caa14f, #a67c2e);
+  color: #fffef8;
+  padding: 14px 30px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(166, 124, 46, 0.28);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(166, 124, 46, 0.38);
+  background: linear-gradient(135deg, #d4ab59, #b08638);
+}
+
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #6b512c;
+  border: 1px solid #dfd1b8;
+  padding: 13px 26px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background: #ffffff;
+  border-color: #caa14f;
+  color: #4a3417;
+}
+
+/* Bowl Stage */
+.heroBowlContainer {
+  position: relative;
+  width: min(540px, 86vw);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto 0;
+}
+
+.glowRing {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 206, 161, 0.6) 0%, rgba(247, 237, 215, 0) 70%);
+  filter: blur(30px);
+  z-index: 1;
+  animation: pulseGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  100% { transform: scale(1.1); opacity: 0.9; }
+}
+
+.bowlWrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bowlImage {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  filter: drop-shadow(0 25px 45px rgba(97, 68, 32, 0.25));
+  border-radius: 50%;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Floating Badges */
+.badge {
+  position: absolute;
+  z-index: 3;
+  background: rgba(255, 253, 245, 0.92);
+  border: 1px solid #e7dcbf;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5c4424;
+  box-shadow: 0 10px 25px rgba(116, 88, 48, 0.12);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.badgeIcon {
+  font-size: 14px;
+}
+
+.badgeTopLeft { top: 8%; left: 0; }
+.badgeTopRight { top: 12%; right: 2%; }
+.badgeBottomLeft { bottom: 14%; left: -2%; }
+.badgeBottomRight { bottom: 10%; right: 4%; }
+
+.scrollHint {
+  margin-top: 35px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: #9c876b;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s ease;
+}
+
+.scrollHint:hover {
+  transform: translateY(3px);
+  color: var(--caramel);
+}
+
+/* =========================================
+   PRODUCT SPOTLIGHT
+========================================= */
+.spotlight {
+  position: relative;
+  padding: 120px 8% 100px;
+  background: #f4ece0;
+  overflow: hidden;
+}
+
+.watermark {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(60px, 13vw, 190px);
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: rgba(206, 187, 155, 0.25);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  text-transform: uppercase;
+}
+
+.spotlightGrid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  gap: 70px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.spotlightCard {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(90, 65, 30, 0.15);
+  background: #fffdf8;
+  border: 1px solid #eadfc9;
+}
+
+.spotlightImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.spotlightCard:hover .spotlightImage {
+  transform: scale(1.02);
+}
+
+.spotlightCopy h2 {
+  font-size: clamp(34px, 4vw, 54px);
+  font-family: var(--font-playfair), Georgia, serif;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin: 12px 0 18px;
+  font-weight: 400;
+}
+
+.spotlightCopy h2 em {
+  font-style: italic;
+  color: var(--caramel);
+}
+
+.ratingBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #7d6542;
+  margin-bottom: 20px;
+}
+
+.stars {
+  color: #df9e23;
+  letter-spacing: 2px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.currentPrice {
+  font-size: 38px;
+  font-weight: 800;
+  color: #2b1f11;
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  line-height: 1;
+}
+
+.currencySymbol {
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 0.88em;
+}
+
+.originalPrice {
+  font-size: 20px;
+  font-weight: 500;
+  color: #a8947b;
+  text-decoration: line-through;
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.discountBadge {
+  background: #e8d7bb;
+  color: #724f1e;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.spotlightDesc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 26px;
+}
+
+.nutritionPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.nutritionPill {
+  background: #eee4d2;
+  border: 1px solid #dccbb0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #5c4323;
+  font-weight: 500;
+}
+
+/* =========================================
+   3 SIMPLE STEPS
+========================================= */
+.preparation {
+  padding: 110px 6%;
+  background: #faf6ee;
+  text-align: center;
+}
+
+.sectionHeader {
+  max-width: 650px;
+  margin: 0 auto 55px;
+}
+
+.sectionHeader h2 {
+  font-size: clamp(32px, 3.8vw, 52px);
+  font-family: var(--font-playfair), Georgia, serif;
+  color: var(--text-primary);
+  font-weight: 400;
+  margin: 10px 0 15px;
+}
+
+.sectionHeader h2 em {
+  font-style: italic;
+  color: var(--caramel);
+}
+
+.sectionSubtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stepCard {
+  background: #fffefb;
+  border: 1px solid #ebe0cc;
+  border-radius: 24px;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: 0 15px 35px rgba(100, 75, 38, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.stepCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 45px rgba(100, 75, 38, 0.14);
+}
+
+.stepImageContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3.2;
+  overflow: hidden;
+  background: #f2e9d8;
+}
+
+.stepImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.stepCard:hover .stepImage {
+  transform: scale(1.05);
+}
+
+.stepBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(255, 253, 246, 0.94);
+  color: #795627;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stepBody {
+  padding: 24px 24px 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stepBody h3 {
+  font-size: 21px;
+  font-family: var(--font-playfair), Georgia, serif;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+
+.stepBody p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* =========================================
+   MIXTURE OF MILLETS & GRAINS
+========================================= */
+.ingredientSection {
+  padding: 110px 6% 0;
+  background: #f3ece0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 35px 0 25px;
+}
+
+.tabButton {
+  padding: 10px 22px;
+  font-size: 13px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #d8caa9;
+  color: #735a34;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.tabButton:hover {
+  background: #ffffff;
+  color: #4b3617;
+}
+
+.tabButton.selected {
+  background: #b78a3c;
+  color: #fffdf8;
+  border-color: #b78a3c;
+  box-shadow: 0 6px 18px rgba(183, 138, 60, 0.3);
+}
+
+.ingredientDisplay {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.ingredientText {
+  font-size: 15px;
+  color: #7c684c;
+  line-height: 1.7;
+  min-height: 50px;
+}
+
+.ingredientBowlStage {
+  position: relative;
+  width: min(520px, 80vw);
+  aspect-ratio: 1;
+  margin: 40px auto -15%;
+  border-radius: 50%;
+  border: 14px solid #ded0b3;
+  box-shadow: 0 0 0 2px #c9b996, 0 25px 60px rgba(89, 65, 30, 0.2);
+  overflow: hidden;
+  background: #a28956;
+}
+
+.ingredientBowlImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* =========================================
+   BENEFITS THAT NOURISH YOU
+========================================= */
+.benefitsSection {
+  padding: 160px 6% 100px;
+  background: #faf6ee;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1180px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.caramelCard {
+  background: linear-gradient(145deg, #a46d3b, #895224);
+  color: #fff9ed;
+  border-radius: 28px;
+  padding: 55px 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 20px 50px rgba(137, 82, 36, 0.25);
+}
+
+.caramelCard .eyebrow {
+  color: #f1ddbc;
+}
+
+.caramelCard h2 {
+  font-size: clamp(32px, 3.6vw, 48px);
+  font-family: var(--font-playfair), Georgia, serif;
+  line-height: 1.15;
+  margin: 12px 0 20px;
+  font-weight: 400;
+  color: #fffdf8;
+}
+
+.caramelCard p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #f3dfc5;
+  margin-bottom: 28px;
+}
+
+.benefitList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.benefitList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: #f9efe0;
+  line-height: 1.5;
+}
+
+.checkMark {
+  color: #ffdf85;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.lifestyleCard {
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(80, 55, 25, 0.15);
+  position: relative;
+  min-height: 480px;
+}
+
+.lifestyleImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================================
+   MANUFACTURING TIMELINE
+========================================= */
+.timelineSection {
+  padding: 100px 6%;
+  background: #f4ecdf;
+  text-align: center;
+}
+
+.timelineGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px;
+  max-width: 1240px;
+  margin: 50px auto 0;
+}
+
+.timelineCard {
+  background: #fffefb;
+  border: 1px solid #e7dcbf;
+  border-radius: 20px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(90, 68, 35, 0.06);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.timelineCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(90, 68, 35, 0.12);
+  border-color: #d4ab59;
+}
+
+.timelineImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f5eedf;
+  margin-bottom: 14px;
+}
+
+.timelineImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.timelineCard:hover .timelineImage {
+  transform: scale(1.06);
+}
+
+.timelineImageWrapper .stepNum {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  margin-bottom: 0;
+  background: rgba(253, 250, 242, 0.92);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 11px;
+  font-weight: 700;
+  color: #987834;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.timelineBody {
+  padding: 4px 6px 8px;
+}
+
+.timelineCard h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #49361e;
+  margin: 0 0 6px;
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.stepDesc {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #816e54;
+  margin: 0;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+@media (max-width: 992px) {
+  .spotlightGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .stepsGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+  }
+  .timelineGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 45px 5% 70px;
+  }
+  .hero h1 {
+    font-size: 36px;
+  }
+  .badge {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+  .badgeTopLeft { top: 0%; left: 0; }
+  .badgeTopRight { top: 2%; right: 0; }
+  .badgeBottomLeft { bottom: 4%; left: 0; }
+  .badgeBottomRight { bottom: 2%; right: 0; }
+  .timelineGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

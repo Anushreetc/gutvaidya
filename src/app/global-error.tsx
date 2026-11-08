@@ -9,7 +9,7 @@ export default function GlobalError({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", background: "#f8f5ec", color: "#1f2318" }}>
+      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", background: "#faf7ed", color: "#493923" }}>
         <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
           <div style={{ maxWidth: 420, textAlign: "center" }}>
             <h1 style={{ fontSize: 26, marginBottom: 12 }}>GutVaidya is having trouble loading</h1>
@@ -18,7 +18,7 @@ export default function GlobalError({
             </p>
             <button
               onClick={() => retry()}
-              style={{ marginTop: 16, padding: "12px 24px", borderRadius: 999, border: 0, background: "#1f4f16", color: "#fff", fontWeight: 700, cursor: "pointer" }}
+              style={{ marginTop: 16, padding: "12px 24px", borderRadius: 999, border: 0, background: "#76512d", color: "#fff", fontWeight: 700, cursor: "pointer" }}
             >
               Try Again
             </button>

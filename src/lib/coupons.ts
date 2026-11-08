@@ -4,6 +4,28 @@ import { createAdminClient } from './supabase/admin';
 // Fallback seed coupons when database credentials are not yet set
 export const SEED_COUPONS: Coupon[] = [
   {
+    id: 'c0',
+    code: 'WELCOME100',
+    discount_type: 'fixed',
+    discount_value: 100,
+    minimum_order_value: 499,
+    maximum_discount: 100,
+    usage_limit: 1000,
+    used_count: 0,
+    active: true,
+  },
+  {
+    id: 'c0_alt',
+    code: 'WELCOME',
+    discount_type: 'fixed',
+    discount_value: 100,
+    minimum_order_value: 499,
+    maximum_discount: 100,
+    usage_limit: 1000,
+    used_count: 0,
+    active: true,
+  },
+  {
     id: 'c1',
     code: 'GUTHEALTH10',
     discount_type: 'percentage',
