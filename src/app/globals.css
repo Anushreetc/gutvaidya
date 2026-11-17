@@ -5,39 +5,40 @@
 @custom-variant compact (@media (orientation: portrait) and (max-height: 760px));
 @custom-variant short (@media (orientation: landscape) and (max-height: 500px));
 
-/* Shared ivory, caramel and gold design system for storefront and account pages. */
+/* Shared green design system (sage + pouch green), matching the hero and
+   blend sections, for the whole storefront and account pages. */
 @theme {
-  --color-base-50: #fffcf5;
-  --color-base-100: #faf7ed;
-  --color-base-200: #f3eddd;
-  --color-base-300: #e9ddc3;
-  --color-base-400: #d6c8aa;
-  --color-primary-50: #fcf7ed;
-  --color-primary-100: #f1e7d3;
-  --color-primary-200: #e3d0ae;
-  --color-primary-300: #cfb184;
-  --color-primary-400: #b88c59;
-  --color-primary-500: #a07543;
-  --color-primary-600: #896137;
-  --color-primary-700: #76512d;
-  --color-primary-800: #604127;
-  --color-primary-900: #493321;
-  --color-primary-950: #302216;
-  --color-accent-gold: #b58d40;
-  --color-accent-gold-light: #e4c77c;
-  --color-accent-gold-dark: #806025;
-  --color-accent-clay: #b88759;
-  --color-background: #faf7ed;
-  --color-foreground: #493923;
+  --color-base-50: #f8fbf2;
+  --color-base-100: #edf2e2;
+  --color-base-200: #e2ebd3;
+  --color-base-300: #d2e0bd;
+  --color-base-400: #b9cc9f;
+  --color-primary-50: #f1f6e8;
+  --color-primary-100: #e2ecd2;
+  --color-primary-200: #c9dbaf;
+  --color-primary-300: #a8c487;
+  --color-primary-400: #7fa25c;
+  --color-primary-500: #5c8540;
+  --color-primary-600: #3f6a2c;
+  --color-primary-700: #2f5a1f;
+  --color-primary-800: #1d4a17;
+  --color-primary-900: #163a11;
+  --color-primary-950: #0d260a;
+  --color-accent-gold: #6f9a4a;
+  --color-accent-gold-light: #c3d6a8;
+  --color-accent-gold-dark: #2f5a1f;
+  --color-accent-clay: #4f7a2f;
+  --color-background: #edf2e2;
+  --color-foreground: #17300f;
   --font-serif: var(--font-playfair);
   --font-sans: var(--font-outfit);
 }
 
 :root {
-  --background: #faf7ed;
-  --foreground: #493923;
-  --primary: #76512d;
-  --accent: #b58d40;
+  --background: #edf2e2;
+  --foreground: #17300f;
+  --primary: #2f5a1f;
+  --accent: #6f9a4a;
 }
 
 /* Custom Scrollbar */
@@ -45,14 +46,23 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f3eddd;
+  background: #e2ebd3;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6c8aa;
+  background: #b9cc9f;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #cfb184;
+  background: #7fa25c;
+}
+
+/* Fit the browser: on desktop the base size (and with it every rem-based
+   Tailwind size and spacing) eases down on shorter windows, from 16px on
+   tall screens to ~14px on short laptops, so pages never feel oversized. */
+@media (min-width: 1024px) {
+  html {
+    font-size: clamp(13.5px, calc(9.6px + 0.6vh), 16px);
+  }
 }
 
 html {
@@ -97,6 +107,22 @@ input[type="button"] {
   }
 }
 
+/* Home-page entrance animations (added by HomeReveal.tsx): blocks fade and
+   rise in as they scroll into view; --gv-d staggers items in a list. */
+.gv-reveal {
+  opacity: 0;
+  transform: translateY(36px) scale(0.985);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--gv-d, 0ms);
+  will-change: opacity, transform;
+}
+.gv-reveal.gv-in {
+  opacity: 1;
+  transform: none;
+}
+
 /* Nicer focus ring for keyboard users (no outline on mouse clicks) */
 :focus-visible {
   outline: 2px solid var(--color-primary-600);
@@ -106,17 +132,17 @@ input[type="button"] {
 
 /* Glassmorphism Classes */
 .glass-nav {
-  background: rgba(250, 247, 237, 0.94);
+  background: rgba(237, 242, 226, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(96, 65, 39, 0.1);
+  border-bottom: 1px solid rgba(29, 74, 23, 0.1);
 }
 
 .glass-card {
-  background: rgba(255, 252, 245, 0.7);
+  background: rgba(248, 251, 242, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(96, 65, 39, 0.08);
+  border: 1px solid rgba(29, 74, 23, 0.08);
 }
 
 .glass-card-hover {
@@ -125,20 +151,20 @@ input[type="button"] {
 
 .glass-card-hover:hover {
   transform: translateY(-4px);
-  background: rgba(255, 252, 245, 0.9);
-  box-shadow: 0 12px 30px rgba(96, 65, 39, 0.08);
-  border-color: rgba(96, 65, 39, 0.14);
+  background: rgba(248, 251, 242, 0.9);
+  box-shadow: 0 12px 30px rgba(29, 74, 23, 0.08);
+  border-color: rgba(29, 74, 23, 0.14);
 }
 
 /* Gradient text */
 .gradient-text-primary {
-  background: linear-gradient(135deg, #896137 0%, #76512d 100%);
+  background: linear-gradient(135deg, #3f6a2c 0%, #1d4a17 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #b58d40 0%, #806025 100%);
+  background: linear-gradient(135deg, #6f9a4a 0%, #2f5a1f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

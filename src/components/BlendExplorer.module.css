@@ -1,0 +1,237 @@
+/* One screen tall (below the 53px navbar); everything scales with --s,
+   the smaller of 1% of the width and ~1.75% of the height. */
+.section {
+  --green: #1d4a17;
+  --green-2: #2f5a1f;
+  --sage: #c3d6a8;
+  --card: #a9c48c;
+  --s: min(1vw, 1.75vh);
+  position: relative;
+  height: calc(100svh - 53px);
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--s) * 3) 4% calc(var(--s) * 2);
+  background: #edf2e2;
+  color: var(--green);
+  overflow: hidden;
+}
+
+/* ── Heading ── */
+.head { position: relative; text-align: center; flex: none; }
+.kicker {
+  display: inline-block;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: var(--sage);
+  font-size: clamp(10px, calc(var(--s) * 0.72), 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-2);
+}
+.h2 {
+  margin: calc(var(--s) * 0.8) 0 0;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--s) * 4.2);
+  line-height: 1;
+  color: var(--green);
+}
+.h2 span { color: #7fa25c; }
+.headNote {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-caveat), cursive;
+  font-weight: 700;
+  font-size: clamp(16px, calc(var(--s) * 1.4), 24px);
+  color: var(--green-2);
+}
+
+/* ── Stage ── */
+.stage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: calc(var(--s) * 1) auto 0;
+}
+
+.pathSvg {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.pathBase,
+.pathTrail {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.pathBase { stroke: #ffffff; stroke-width: calc(var(--s) * 1.3); filter: drop-shadow(0 6px 10px rgba(29, 74, 23, 0.08)); }
+.pathTrail { stroke: #7fa25c; stroke-width: calc(var(--s) * 0.55); }
+
+/* Card follows the pouch along the top band */
+.cardSlot {
+  position: absolute;
+  top: 0;
+  width: min(calc(var(--s) * 30), 46%);
+  translate: -50% 0;
+  z-index: 4;
+}
+.bigNum {
+  position: absolute;
+  right: -6%;
+  top: -18%;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: calc(var(--s) * 9);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(29, 74, 23, 0.18);
+  z-index: -1;
+  pointer-events: none;
+}
+.card {
+  position: relative;
+  display: flex;
+  gap: calc(var(--s) * 1.1);
+  align-items: flex-start;
+  padding: calc(var(--s) * 1.4) calc(var(--s) * 1.6);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: 0 24px 50px rgba(29, 74, 23, 0.16);
+  text-align: left;
+}
+.cardIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: calc(var(--s) * 3.4);
+  height: calc(var(--s) * 3.4);
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--green);
+  box-shadow: 0 8px 18px rgba(29, 74, 23, 0.16);
+}
+.cardBody { min-width: 0; }
+.cardTitle {
+  margin: 0 0 calc(var(--s) * 0.4);
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--s) * 2.4);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 2px 0 rgba(29, 74, 23, 0.12);
+}
+.cardText {
+  margin: 0;
+  font-size: clamp(12.5px, calc(var(--s) * 0.92), 15px);
+  line-height: 1.5;
+  color: #22401b;
+}
+.aside {
+  display: block;
+  margin-top: calc(var(--s) * 0.5);
+  font-family: var(--font-caveat), cursive;
+  font-weight: 700;
+  font-size: clamp(15px, calc(var(--s) * 1.25), 21px);
+  color: var(--green);
+}
+
+/* Stop markers on the path */
+.stopBtn {
+  position: absolute;
+  z-index: 2;
+  translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--green);
+}
+.stopDot {
+  display: grid;
+  place-items: center;
+  width: calc(var(--s) * 2.4);
+  height: calc(var(--s) * 2.4);
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgba(29, 74, 23, 0.25);
+  transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
+}
+.stopBtn:hover .stopDot { transform: scale(1.12); border-color: var(--green); }
+.stopPassed .stopDot { background: var(--green); color: #ffffff; border-color: var(--green); }
+.stopActive .stopDot { box-shadow: 0 0 0 6px rgba(127, 162, 92, 0.35); animation: pulse 2s ease-out infinite; }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(127, 162, 92, 0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(127, 162, 92, 0); }
+}
+.stopLabel {
+  position: absolute;
+  top: 100%;
+  margin-top: 6px;
+  white-space: nowrap;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: clamp(11px, calc(var(--s) * 0.85), 14px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--green-2);
+}
+
+/* Travelling pouch: its bottom sits on the path point */
+.traveller {
+  position: absolute;
+  z-index: 3;
+  width: calc(var(--s) * 9.5);
+  /* sits just above the stop marker so the marker stays visible */
+  translate: -50% -112%;
+  pointer-events: none;
+}
+.pouch {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 90%;
+  filter: drop-shadow(0 22px 22px rgba(29, 74, 23, 0.3)) drop-shadow(0 4px 6px rgba(29, 74, 23, 0.16));
+}
+.floatChip {
+  position: absolute;
+  white-space: nowrap;
+  padding: calc(var(--s) * 0.3) calc(var(--s) * 0.75);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--green);
+  font-size: clamp(10.5px, calc(var(--s) * 0.78), 13px);
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(29, 74, 23, 0.14);
+  animation: drift 3.5s ease-in-out infinite alternate;
+}
+.floatChip:nth-child(odd) { animation-duration: 4.2s; }
+@keyframes drift { from { translate: 0 0; } to { translate: 0 -6px; } }
+
+/* ── Phone ── */
+@media (max-width: 760px) {
+  .section { --s: 3vw; height: auto; min-height: calc(100svh - 53px); padding: 60px 4% 40px; }
+  .h2 { font-size: 40px; }
+  .stage { height: 560px; flex: none; }
+  .cardSlot { width: 92%; left: 50% !important; }
+  .bigNum { font-size: 64px; right: 0; top: -40px; }
+  .cardTitle { font-size: 24px; }
+  .stopLabel { display: none; }
+  .traveller { width: 84px; }
+  /* no room beside the pouch on a phone; the card already names the group */
+  .floatChip { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stopActive .stopDot, .floatChip { animation: none; }
+}

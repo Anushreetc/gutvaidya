@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit, Playfair_Display } from "next/font/google";
+import { Anton, Caveat, Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
@@ -15,6 +15,20 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+// Heavy condensed display face for the hero / blend headlines
+const anton = Anton({
+  variable: "--font-anton",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
+// Handwritten notes and arrows
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["500", "700"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.thegutvaidya.com";
@@ -74,7 +88,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} ${playfair.variable} h-full scroll-smooth antialiased`}>
+    <html lang="en" className={`${outfit.variable} ${playfair.variable} ${anton.variable} ${caveat.variable} h-full scroll-smooth antialiased`}>
       <body className="min-h-full flex flex-col font-sans bg-base-100 text-foreground">
         <AuthProvider>
           <CartProvider>

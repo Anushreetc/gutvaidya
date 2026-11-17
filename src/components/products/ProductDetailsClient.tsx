@@ -158,7 +158,7 @@ export default function ProductDetailsClient({ product: initialProduct, relatedP
           {/* Left: Gallery */}
           <div className="lg:col-span-6 space-y-4">
             {/* Main Featured Image */}
-            <div className="relative aspect-[4/5] max-h-[600px] rounded-3xl overflow-hidden bg-base-200 border border-primary-900/20 shadow-md flex items-center justify-center p-1 sm:p-2">
+            <div className="relative aspect-[4/5] max-h-[min(600px,72vh)] mx-auto rounded-3xl overflow-hidden bg-base-200 border border-primary-900/20 shadow-md flex items-center justify-center p-1 sm:p-2">
               <img
                 src={selectedImage}
                 alt={product.name}

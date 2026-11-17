@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useCart } from "../context/CartContext";
 import styles from "./ReferenceLanding.module.css";
+import BlendExplorer from "./BlendExplorer";
+import HeroShowcase from "./HeroShowcase";
+import PreparationPouch from "./PreparationPouch";
+import IntroSplash from "./IntroSplash";
 import { Product } from "@/types/ecommerce";
 import { SEED_PRODUCTS } from "@/lib/products";
 import {
@@ -12,34 +15,6 @@ import {
   applyProductOverride,
   subscribeToProductUpdates,
 } from "@/lib/products-client";
-
-const ingredientTabs = [
-  {
-    name: "Millets",
-    image: "millets",
-    description: "Sprouted ancient millets packed with iron, slow-release fiber, and essential minerals to boost digestion and sustain daily morning energy.",
-  },
-  {
-    name: "Pulses",
-    image: "proteins",
-    description: "Sprouted native pulses and lentils delivering 22g clean plant protein per 100g, supporting muscle repair and wholesome meal balance.",
-  },
-  {
-    name: "Herbs & Roots",
-    image: "herbs",
-    description: "Time-tested Ayurvedic herbs that soothe gut lining, relieve bloating, and support natural metabolic balance.",
-  },
-  {
-    name: "Ancient Seeds",
-    image: "seeds",
-    description: "Flax and chia seeds delivering healthy plant omega-3s, soluble fiber, and lasting vitality throughout the day.",
-  },
-  {
-    name: "Aromatic Spices",
-    image: "spices",
-    description: "Ginger, cardamom, and warming botanicals to ignite Agni (digestive fire) and enhance nutrient absorption.",
-  },
-];
 
 const preparationSteps = [
   {
@@ -105,8 +80,6 @@ const manufacturingSteps = [
 ];
 
 export default function ReferenceLanding() {
-  const heroRef = useRef<HTMLElement>(null);
-  const [activeTab, setActiveTab] = useState(0);
   const { cart, addToCart, setIsCartOpen } = useCart();
 
   // Live product state synced with admin panel
@@ -169,106 +142,14 @@ export default function ReferenceLanding() {
     setIsCartOpen(true);
   };
 
-  // Scroll animations for the hero bowl
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const bowlRotate = useTransform(scrollYProgress, [0, 1], [0, 45]);
-  const bowlScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const bowlY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-
   return (
     <div className={styles.landing}>
-      {/* 1. HERO SECTION */}
-      <section ref={heroRef} className={styles.hero}>
-        <motion.div
-          className={styles.heroContent}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <span className={styles.eyebrow}>Everyday Nutrition · A Blend of 36+ Millets & Herbs</span>
-          <h1>
-            A little tradition.<br />
-            A <em>wholesome</em> new beginning.
-          </h1>
-          <p className={styles.heroSubtitle}>
-            Rediscover the power of ancient sprouted millets, native seeds, and Ayurvedic herbs in your daily diet powder ritual.
-          </p>
+      {/* Intro overlay lives at page level (not inside the hero, which is its
+          own stacking context) so it covers the navbar too. */}
+      <IntroSplash />
 
-          <div className={styles.buttonGroup}>
-            <Link className={styles.primaryButton} href="/products/gutvaidya-health-mix">
-              Discover Diet Powder <span>↗</span>
-            </Link>
-            <a className={styles.secondaryButton} href="#preparation">
-              How to Prepare ↓
-            </a>
-          </div>
-        </motion.div>
-
-        {/* Hero Bowl & Floating Badges */}
-        <div className={styles.heroBowlContainer}>
-          <div className={styles.glowRing} />
-
-          <motion.div
-            className={styles.bowlWrapper}
-            style={{ rotate: bowlRotate, scale: bowlScale, y: bowlY }}
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <img
-              src="/cinematic/hero-bowl.jpg"
-              alt="Scalloped glass bowl with GutVaidya diet powder"
-              className={styles.bowlImage}
-              width={500}
-              height={500}
-            />
-          </motion.div>
-
-          {/* Badges floating around bowl */}
-          <motion.div
-            className={`${styles.badge} ${styles.badgeTopLeft}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>🌿</span> 100% Natural & Organic
-          </motion.div>
-
-          <motion.div
-            className={`${styles.badge} ${styles.badgeTopRight}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>💪</span> High Fiber & Protein
-          </motion.div>
-
-          <motion.div
-            className={`${styles.badge} ${styles.badgeBottomLeft}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>🌾</span> Sprouted Ragi & Millets
-          </motion.div>
-
-          <motion.div
-            className={`${styles.badge} ${styles.badgeBottomRight}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>✨</span> Zero Added Sugar
-          </motion.div>
-        </div>
-
-        <a className={styles.scrollHint} href="#product-spotlight">
-          SCROLL TO EXPLORE <span>↓</span>
-        </a>
-      </section>
+      {/* 1. HERO: product-first showcase */}
+      <HeroShowcase product={product} onAddToCart={handleAddToCart} />
 
       {/* 2. PRODUCT SPOTLIGHT */}
       <section id="product-spotlight" className={styles.spotlight}>
@@ -357,7 +238,8 @@ export default function ReferenceLanding() {
       </section>
 
       {/* 3. JUST 3 SIMPLE STEPS */}
-      <section id="preparation" className={styles.preparation}>
+      <section id="preparation" className={styles.preparation} style={{ position: "relative", overflow: "hidden" }}>
+        <PreparationPouch />
         <div className={styles.sectionHeader}>
           <span className={styles.eyebrow}>MAKE TIME FOR YOURSELF</span>
           <h2>
@@ -398,54 +280,8 @@ export default function ReferenceLanding() {
         </div>
       </section>
 
-      {/* 4. MIXTURE OF MILLETS & GRAINS */}
-      <section className={styles.ingredientSection} id="blend-story">
-        <div className={styles.sectionHeader} style={{ marginBottom: 20 }}>
-          <span className={styles.eyebrow}>A PANTRY OF POSSIBILITIES</span>
-          <h2>
-            Goodness in <em>the Blend</em>
-          </h2>
-        </div>
-
-        {/* Interactive Tabs */}
-        <div className={styles.tabs} role="tablist" aria-label="Explore ingredients">
-          {ingredientTabs.map((item, i) => (
-            <button
-              key={item.name}
-              id={`blend-tab-${i}`}
-              role="tab"
-              aria-selected={activeTab === i}
-              aria-controls="blend-panel"
-              tabIndex={activeTab === i ? 0 : -1}
-              className={`${styles.tabButton} ${activeTab === i ? styles.selected : ""}`}
-              onClick={() => setActiveTab(i)}
-            >
-              {item.name}
-            </button>
-          ))}
-        </div>
-
-        <div id="blend-panel" role="tabpanel" aria-labelledby={`blend-tab-${activeTab}`} className={styles.ingredientDisplay}>
-          <p className={styles.ingredientText}>{ingredientTabs[activeTab].description}</p>
-
-          <motion.div
-            key={activeTab}
-            className={styles.ingredientBowlStage}
-            initial={{ opacity: 0.5, scale: 0.94, rotate: -6 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-          >
-            <img
-              src={`/images/ingredients/${ingredientTabs[activeTab].image}.png`}
-              alt={ingredientTabs[activeTab].name}
-              className={styles.ingredientBowlImage}
-              width={520}
-              height={520}
-              loading="lazy"
-            />
-          </motion.div>
-        </div>
-      </section>
+      {/* 4. WHAT'S IN THE BLEND: interactive ingredient wheel */}
+      <BlendExplorer />
 
       {/* 5. BENEFITS THAT NOURISH YOU */}
       <section className={styles.benefitsSection}>

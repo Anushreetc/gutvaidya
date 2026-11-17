@@ -11,6 +11,7 @@ import BlogsSection from "../components/BlogsSection";
 import FAQSection from "../components/FAQSection";
 import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
+import HomeReveal from "../components/HomeReveal";
 
 export default function Home() {
   return (
@@ -47,6 +48,9 @@ export default function Home() {
 
       {/* Global footer */}
       <Footer />
+
+      {/* Scroll-in entrance animations for every section below the hero */}
+      <HomeReveal />
     </div>
   );
 }

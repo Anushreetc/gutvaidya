@@ -225,7 +225,7 @@ export default function CheckoutPage() {
           contact: customerInfo.phone,
         },
         theme: {
-          color: "#76512d",
+          color: "#1d4a17",
         },
         handler: async function (response: any) {
           try {
