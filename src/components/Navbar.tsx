@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { ShoppingBag, X, Menu, Trash2, Plus, Minus, User, ArrowRight, Truck, Tag, ShieldCheck } from "lucide-react";
@@ -59,14 +60,25 @@ export default function Navbar() {
 
   const { user, profile, isAdmin } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // "Home" and the logo: already on the home page → glide back to the top of
+  // the hero (a same-page link would otherwise do nothing).
+  const goHome = (e: React.MouseEvent) => {
+    setIsMobileMenuOpen(false);
+    if (pathname !== "/") return;
+    e.preventDefault();
+    window.history.replaceState(null, "", "/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/products" },
     { label: "Our Blend", href: "/#blend-story" },
-    { label: "Recipes", href: "/#recipe" },
+    { label: "Recipes", href: "/recipes" },
     { label: "Reviews", href: "/#reviews" },
-    { label: "Blogs", href: "/#blogs" },
+    { label: "Blogs", href: "/blogs" },
     { label: "FAQ", href: "/#faq" },
     { label: "Contact", href: "/#contact" },
   ];
@@ -76,26 +88,27 @@ export default function Navbar() {
       {/* Navbar Container */}
       <header className="sticky top-0 z-50 w-full glass-nav transition-all duration-300">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-12 sm:h-13 items-center justify-between">
+          <div className="flex h-[var(--nav-h)] items-center justify-between">
             {/* Logo */}
             <div className="flex items-center">
-              <Link href="/" className="flex items-center gap-2 text-lg sm:text-xl font-serif font-bold text-primary-700 tracking-wide hover:opacity-90 transition-opacity">
+              <Link href="/" onClick={goHome} className="flex items-center gap-2.5 text-[22px] sm:text-[26px] font-serif font-bold text-primary-800 tracking-wide hover:opacity-90 transition-opacity">
                 <img
                   src="/logo_transparent.png"
                   alt="GutVaidya Logo"
-                  className="h-7 sm:h-8 w-auto object-contain drop-shadow-sm"
+                  className="h-9 sm:h-11 w-auto object-contain drop-shadow-sm"
                 />
                 <span className="leading-none">GutVaidya</span>
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-7">
+            <nav className="hidden md:flex items-center gap-6 lg:gap-9">
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="font-sans text-xs sm:text-sm font-medium text-foreground/80 hover:text-primary-700 transition-colors relative group py-1"
+                  onClick={link.href === "/" ? goHome : undefined}
+                  className="font-sans text-[15px] lg:text-[16px] font-semibold text-primary-900/85 hover:text-primary-700 transition-colors relative group py-1.5"
                 >
                   {link.label}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-gold transition-all duration-300 group-hover:w-full" />
@@ -104,7 +117,7 @@ export default function Navbar() {
             </nav>
 
             {/* Right-side actions */}
-            <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="flex items-center gap-2.5 sm:gap-3">
               {/* Admin Dashboard Pill (Visible for Admins) */}
               {isAdmin && (
                 <Link
@@ -121,11 +134,11 @@ export default function Navbar() {
               {/* Account button */}
               <Link
                 href={user ? "/account" : "/auth/login"}
-                className="relative p-1.5 rounded-full bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-primary-800 transition-all focus:outline-none"
+                className="relative p-2.5 rounded-full bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-primary-800 transition-all focus:outline-none"
                 aria-label="My Account"
                 title={user ? `Account (${profile?.name || user.email})` : "Login / Account"}
               >
-                <User className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+                <User className="h-5 w-5" />
                 {user && (
                   <span className={`absolute top-0 right-0 w-2 h-2 rounded-full ring-2 ring-white ${isAdmin ? "bg-amber-500" : "bg-emerald-500"}`} />
                 )}
@@ -134,12 +147,12 @@ export default function Navbar() {
               {/* Cart Button */}
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-1.5 rounded-full bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-primary-800 transition-all focus:outline-none"
+                className="relative p-2.5 rounded-full bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-primary-800 transition-all focus:outline-none"
                 aria-label="Shopping Cart"
               >
-                <ShoppingBag className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+                <ShoppingBag className="h-5 w-5" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 min-w-4 items-center justify-center rounded-full bg-accent-gold text-[9px] font-bold text-white shadow-sm ring-2 ring-white px-0.5">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 min-w-5 items-center justify-center rounded-full bg-accent-gold text-[10px] font-bold text-white shadow-sm ring-2 ring-white px-0.5">
                     {cartCount}
                   </span>
                 )}
@@ -148,10 +161,10 @@ export default function Navbar() {
               {/* Mobile menu button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-1.5 rounded-lg text-foreground hover:bg-primary-50 transition-colors"
+                className="md:hidden p-2 rounded-lg text-foreground hover:bg-primary-50 transition-colors"
                 aria-label="Toggle menu"
               >
-                {isMobileMenuOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
           </div>
@@ -166,13 +179,13 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-12 sm:top-13 z-40 md:hidden bg-base-100/95 backdrop-blur-md border-b border-primary-100 py-5 px-4 shadow-lg flex flex-col gap-2"
+            className="fixed inset-x-0 top-[var(--nav-h)] z-40 md:hidden bg-base-100/95 backdrop-blur-md border-b border-primary-100 py-5 px-4 shadow-lg flex flex-col gap-2"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={link.href === "/" ? goHome : () => setIsMobileMenuOpen(false)}
                 className="text-base font-semibold text-foreground/90 hover:text-primary-700 transition-colors px-4 py-2.5 rounded-lg hover:bg-primary-50/50"
               >
                 {link.label}

@@ -6,38 +6,23 @@ import { ArrowUpRight, Star } from "lucide-react";
 import type { Product } from "@/types/ecommerce";
 import styles from "./HeroShowcase.module.css";
 import { introDone, onIntroDone } from "./IntroSplash";
+import RangoliMandala, { type MandalaPhase } from "./RangoliMandala";
 
 /* ─────────────────────────────────────────────────────────────
    Hero: exactly one screen tall, everything sized to fit.
-   Left: a looping ring scene
-     1. ingredient names pop onto the white ring, clockwise
-     2. they swirl into the centre
-     3. a soft white flash
-     4. the pouch appears with its stat bubbles, floats, then fades
-     … and the loop starts again.
+   Left: a looping rangoli mandala inside the white ring
+     1. 36 petals (6 rings × 6, one ring per ingredient group) draw
+        themselves while a centre counter ticks up to 36
+     2. the mandala folds inward like a lotus closing
+     3. a cream lotus blooms and the pouch rises from it with its bubbles
+     … then everything fades and the drawing starts again.
    Right: headline, copy and buy button (static after their entrance).
    Bottom: the curved marquee band.
    ───────────────────────────────────────────────────────────── */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Ingredient names exactly as listed in the original ingredients section.
-const OUTER = ["Ragi", "Foxtail", "Barnyard", "Kodo", "Browntop", "Green Gram", "Black Gram", "Chana", "Toor", "Soyabean", "Red Rice", "Dalia"];
-const INNER = ["Jeera", "Saunf", "Ajwain", "Flaxseed", "Sesame", "Ashwagandha", "Shatavari", "Mulethi", "Moringa", "Brahmi"];
-const RING_R = 44; // ring radius, % of the stage
-const INNER_R = 29;
-
-type Chip = { name: string; x: number; y: number; delay: number; inner: boolean };
-const CHIPS: Chip[] = [
-  ...OUTER.map((name, i) => {
-    const a = ((-90 + (i * 360) / OUTER.length) * Math.PI) / 180;
-    return { name, x: 50 + RING_R * Math.cos(a), y: 50 + RING_R * Math.sin(a), delay: i * 0.08, inner: false };
-  }),
-  ...INNER.map((name, i) => {
-    const a = ((-72 + (i * 360) / INNER.length) * Math.PI) / 180;
-    return { name, x: 50 + INNER_R * Math.cos(a), y: 50 + INNER_R * Math.sin(a), delay: 1 + i * 0.08, inner: true };
-  }),
-];
+const RING_R = 44; // white ring radius, % of the stage
 
 // Bubbles sit on the ring's left arc while the pouch is shown.
 const BUBBLES = [
@@ -47,12 +32,14 @@ const BUBBLES = [
 ];
 
 // Loop timings (ms)
-type Phase = "fill" | "gather" | "flash" | "pouch" | "out";
+type Phase = MandalaPhase;
+const DRAW_MS = 4200;
 const PHASES: { phase: Phase; ms: number }[] = [
-  { phase: "fill", ms: 2600 },
-  { phase: "gather", ms: 800 },
-  { phase: "flash", ms: 450 },
-  { phase: "pouch", ms: 4600 },
+  { phase: "draw", ms: DRAW_MS },
+  { phase: "hold", ms: 1000 },
+  { phase: "fold", ms: 1100 },
+  { phase: "bloom", ms: 900 },
+  { phase: "pouch", ms: 4300 },
   { phase: "out", ms: 700 },
 ];
 
@@ -88,8 +75,7 @@ export default function HeroShowcase({ product, onAddToCart }: Props) {
     return () => window.clearTimeout(t);
   }, [step, m, show]);
 
-  const chipsVisible = phase === "fill" || phase === "gather";
-  const pouchVisible = phase === "pouch" || !m;
+  const pouchVisible = phase === "bloom" || phase === "pouch" || !m;
 
   /* Pointer: the pouch leans towards the cursor */
   const px = useMotionValue(0);
@@ -138,35 +124,8 @@ export default function HeroShowcase({ product, onAddToCart }: Props) {
             <circle cx="50" cy="50" r={RING_R - 6} className={styles.ringDash} />
           </motion.svg>
 
-          {/* 1–2. Ingredient chips: pop onto the ring, then swirl into the centre */}
-          {m && show && (
-            <AnimatePresence>
-              {chipsVisible &&
-                CHIPS.map((c) => (
-                  <motion.span
-                    key={`${cycle}-${c.name}`}
-                    className={`${styles.chip} ${c.inner ? styles.chipInner : ""}`}
-                    initial={{ left: `${c.x}%`, top: `${c.y}%`, opacity: 0, scale: 0.3 }}
-                    animate={
-                      phase === "gather"
-                        ? { left: "50%", top: "50%", opacity: 0, scale: 0.2, rotate: 160 }
-                        : { left: `${c.x}%`, top: `${c.y}%`, opacity: 1, scale: 1, rotate: 0 }
-                    }
-                    exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                    transition={
-                      phase === "gather"
-                        ? { duration: 0.75, ease: [0.55, 0, 0.75, 0.3], delay: c.delay * 0.12 }
-                        : { type: "spring", stiffness: 320, damping: 18, delay: c.delay }
-                    }
-                  >
-                    {c.name}
-                  </motion.span>
-                ))}
-            </AnimatePresence>
-          )}
-
-          {/* 3. Flash */}
-          <span className={`${styles.flash} ${phase === "flash" ? styles.flashOn : ""}`} />
+          {/* 1–3. Rangoli mandala: draw → fold → lotus bloom */}
+          {show && m && <RangoliMandala phase={phase} cycle={cycle} drawMs={DRAW_MS} />}
 
           {/* 4. Pouch + bubbles */}
           <AnimatePresence>
@@ -175,10 +134,10 @@ export default function HeroShowcase({ product, onAddToCart }: Props) {
                 key={`pouch-${cycle}`}
                 className={styles.pouchWrap}
                 style={m ? { x: leanX, y: leanY, rotate: leanR } : undefined}
-                initial={m ? { opacity: 0, scale: 0.55 } : false}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={m ? { opacity: 0, scale: 0.4, y: 40 } : false}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.6, ease: "easeIn" } }}
-                transition={{ type: "spring", stiffness: 140, damping: 14 }}
+                transition={{ type: "spring", stiffness: 110, damping: 13, delay: 0.25 }}
               >
                 <img
                   src="/cinematic/pouch-studio.webp"
@@ -205,7 +164,7 @@ export default function HeroShowcase({ product, onAddToCart }: Props) {
                     initial={m ? { opacity: 0, scale: 0 } : false}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.6, transition: { duration: 0.35 } }}
-                    transition={{ type: "spring", stiffness: 260, damping: 15, delay: 0.35 + i * 0.15 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 15, delay: 0.9 + i * 0.15 }}
                   >
                     <strong>{b.value}</strong>
                     <span>{b.label}</span>

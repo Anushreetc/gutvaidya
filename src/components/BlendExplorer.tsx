@@ -7,19 +7,22 @@ import {
   motion,
   useInView,
   useMotionValue,
+  useMotionValueEvent,
   useReducedMotion,
+  useScroll,
   useTransform,
 } from "framer-motion";
 import { Bean, Flame, Leaf, Sprout, Wheat } from "lucide-react";
 import styles from "./BlendExplorer.module.css";
 
-/* "Goodness in the Blend": a one-way journey.
+/* "Goodness in the Blend": a scroll-driven journey.
    A white path crosses the section with five stops (one per ingredient
-   group). The pouch always travels forward, left to right, taking 2.5s per
-   move; the path behind it fills green. At each stop the group's card rises
+   group). The section stays pinned; each scroll gesture moves the pouch to
+   the next (or previous) stop in a smooth 2.4s glide; the path behind it
+   fills green. At each stop the group's card rises
    above it and the group's ingredient names float in around the pouch.
-   After the last stop the pouch carries on off the right edge and re-enters
-   from the left. The stop markers on the path are the only controls.
+   The stop markers on the path are the only controls (they scroll to that
+   stop).
    All wording comes from the original ingredients section. */
 
 type Group = {
@@ -81,23 +84,102 @@ const VB_W = 1200;
 const VB_H = 300;
 const STOPS = [0.165, 0.335, 0.5, 0.665, 0.835]; // progress (0–1) along the path
 const PATH_TOP = 44; // the path band starts at 44% of the stage height
-const MOVE_S = 2.5;
-const DWELL_MS = 4000;
-const EASE = [0.65, 0, 0.35, 1] as const;
+// Header height (matches --nav-h in globals.css: 68px, 60px on phones)
+const NAV_H = 68;
+
+/* Scroll is split into five equal steps, one per stop. One wheel/trackpad
+   gesture = one step: the page jumps to that step (invisible, the screen is
+   pinned) and the pouch glides there on its own timed ease, so the move is
+   always smooth no matter how hard the visitor scrolled. Scrollbar drags,
+   keys and phone swipes land in a step the same way. */
+const STEPS = STOPS.length;
+const MOVE_S = 2.4; // seconds per glide between stops
+const GLIDE_EASE = [0.65, 0, 0.35, 1] as const;
+const GESTURE_GAP_MS = 220; // a new gesture needs this much wheel silence
+// Scroll position (0–1) at the middle of each step
+const STOP_SCROLL = STOPS.map((_, i) => (i + 0.5) / STEPS);
+const stepFor = (p: number) => Math.min(STEPS - 1, Math.max(0, Math.floor(p * STEPS)));
 
 export default function BlendExplorer() {
   const reduceMotion = useReducedMotion();
   const m = !reduceMotion;
   const sectionRef = useRef<HTMLElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
-  const inView = useInView(sectionRef, { amount: 0.3 });
+  const inView = useInView(sectionRef, { amount: 0.25 });
 
   const [stop, setStop] = useState(0);
-  const [arrived, setArrived] = useState(true);
+  const [arrived, setArrived] = useState(false);
   const [pathLen, setPathLen] = useState(0);
   const [stopPts, setStopPts] = useState<{ x: number; y: number }[]>([]);
-  const prog = useMotionValue(STOPS[0]);
-  const busy = useRef(false);
+
+  // Pouch position along the path; starts just off the left edge.
+  const prog = useMotionValue(0.02);
+  const target = useRef(-1);
+  const glide = useRef<ReturnType<typeof animate> | null>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: [`start ${NAV_H}px`, "end end"] });
+
+  const moveTo = useCallback(
+    (i: number) => {
+      if (i === target.current) return;
+      target.current = i;
+      setStop(i);
+      setArrived(false);
+      glide.current?.stop();
+      if (!m) {
+        prog.set(STOPS[i]);
+        setArrived(true);
+        return;
+      }
+      glide.current = animate(prog, STOPS[i], { duration: MOVE_S, ease: GLIDE_EASE });
+      glide.current.then(() => {
+        if (target.current === i) setArrived(true);
+      });
+    },
+    [m, prog]
+  );
+
+  // First time the section comes into view the pouch glides in to stop 1.
+  useEffect(() => {
+    if (!inView || target.current !== -1) return;
+    const t = window.setTimeout(() => moveTo(stepFor(scrollYProgress.get())), 0);
+    return () => window.clearTimeout(t);
+  }, [inView, moveTo, scrollYProgress]);
+
+  // Any scroll that lands in a different step glides the pouch there.
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    if (target.current === -1) return;
+    const s = stepFor(p);
+    if (s !== target.current) moveTo(s);
+  });
+
+  // One wheel / trackpad gesture = one stop while the section is pinned.
+  useEffect(() => {
+    if (!m) return;
+    let lockUntil = 0;
+    let lastWheel = 0;
+    const onWheel = (e: WheelEvent) => {
+      const sec = sectionRef.current;
+      if (!sec || Math.abs(e.deltaY) < 2) return;
+      const r = sec.getBoundingClientRect();
+      const pinned = r.top <= NAV_H + 2 && r.bottom >= window.innerHeight - 2;
+      if (!pinned) return;
+      const cur = target.current < 0 ? stepFor(scrollYProgress.get()) : target.current;
+      const next = cur + (e.deltaY > 0 ? 1 : -1);
+      if (next < 0 || next >= STEPS) return; // past the ends: scroll the page normally
+      e.preventDefault();
+      const now = performance.now();
+      const sameGesture = now - lastWheel < GESTURE_GAP_MS;
+      lastWheel = now;
+      if (now < lockUntil || sameGesture) return;
+      lockUntil = now + MOVE_S * 1000 * 0.85;
+      const top = r.top + window.scrollY - NAV_H;
+      const runway = sec.offsetHeight - (window.innerHeight - NAV_H);
+      window.scrollTo({ top: top + runway * STOP_SCROLL[next], behavior: "instant" });
+      moveTo(next);
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, [m, moveTo, scrollYProgress]);
 
   // Measure the path once it is in the DOM (deferred, not a sync setState)
   // and store where each stop sits, so render never reads the DOM.
@@ -131,47 +213,30 @@ export default function BlendExplorer() {
   const pouchLeft = useTransform(prog, (t) => `${pointAt(t).x}%`);
   const pouchTop = useTransform(prog, (t) => `${pointAt(t).y}%`);
   const trail = useTransform(prog, (t) => Math.max(0, Math.min(1, t)));
+  // The card rides along above the pouch, kept on screen at both ends.
+  const cardLeft = useTransform(prog, (t) => `${Math.min(Math.max(pointAt(t).x, 22), 78)}%`);
 
-  /* Move forward to stop i (always left → right; wraps around via the right edge) */
+  /* Clicking a stop scrolls the page to that stop's dwell point */
+  /* Clicking a stop jumps to its step (the screen is pinned, so the jump is
+     invisible) and the pouch glides there. */
   const goTo = useCallback(
-    async (i: number) => {
-      if (busy.current || i === stop) return;
-      busy.current = true;
-      setArrived(false);
-      setStop(i);
-      const target = STOPS[i];
-      const from = prog.get();
-      if (!m) {
-        prog.set(target);
-      } else if (target > from) {
-        await animate(prog, target, { duration: MOVE_S, ease: EASE });
-      } else {
-        // carry on off the right edge, re-enter from the left
-        const first = (1 - from) / (1 - from + target);
-        await animate(prog, 1, { duration: MOVE_S * first, ease: [0.65, 0, 1, 1] });
-        prog.set(0);
-        await animate(prog, target, { duration: MOVE_S * (1 - first), ease: [0, 0, 0.35, 1] });
-      }
-      busy.current = false;
-      setArrived(true);
+    (i: number) => {
+      const sec = sectionRef.current;
+      if (!sec) return;
+      const top = sec.getBoundingClientRect().top + window.scrollY - NAV_H;
+      const scrollable = sec.offsetHeight - (window.innerHeight - NAV_H);
+      window.scrollTo({ top: top + scrollable * STOP_SCROLL[i], behavior: "instant" });
+      moveTo(i);
     },
-    [stop, prog, m]
+    [moveTo]
   );
-
-  // Auto-advance while on screen
-  useEffect(() => {
-    if (!m || !inView || !arrived) return;
-    const t = window.setTimeout(() => goTo((stop + 1) % GROUPS.length), DWELL_MS);
-    return () => window.clearTimeout(t);
-  }, [arrived, inView, m, stop, goTo]);
 
   const g = GROUPS[stop];
   const Icon = g.icon;
-  const here = stopPts[stop] ?? { x: 50, y: 70 };
-  const cardLeft = Math.min(Math.max(here.x, 22), 78); // card centre, kept on screen
 
   return (
     <section ref={sectionRef} className={styles.section} id="blend-story" data-no-reveal>
+      <div className={styles.pin}>
       <header className={styles.head}>
         <span className={styles.kicker}>A pantry of possibilities</span>
         <h2 className={styles.h2}>
@@ -194,12 +259,7 @@ export default function BlendExplorer() {
         </svg>
 
         {/* Card: follows the pouch, rises above the current stop */}
-        <motion.div
-          className={styles.cardSlot}
-          initial={false}
-          animate={{ left: `${cardLeft}%` }}
-          transition={m ? { duration: MOVE_S, ease: EASE } : { duration: 0 }}
-        >
+        <motion.div className={styles.cardSlot} style={{ left: cardLeft }}>
           <span className={styles.bigNum} aria-hidden="true">
             {String(stop + 1).padStart(2, "0")}
           </span>
@@ -290,6 +350,7 @@ export default function BlendExplorer() {
             </AnimatePresence>
           </motion.div>
         )}
+      </div>
       </div>
     </section>
   );

@@ -1,0 +1,103 @@
+/* Fills the hero stage; sits inside the white ring (ring radius 44%,
+   mandala outer radius 167/400 ≈ 42%). */
+.wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.guides circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 0.6;
+  stroke-dasharray: 1.5 4;
+}
+
+/* The whole drawing turns slowly around the centre */
+.spin {
+  transform-box: view-box;
+  transform-origin: 200px 200px;
+  animation: turn 70s linear infinite;
+}
+@keyframes turn { to { transform: rotate(360deg); } }
+
+.petal {
+  fill: rgba(251, 248, 239, 0.8);
+  stroke: #1d4a17;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.petalAlt {
+  fill: rgba(226, 236, 210, 0.85);
+  stroke: #2f5a1f;
+}
+
+.ringLine {
+  fill: none;
+  stroke: #1d4a17;
+  stroke-width: 1.2;
+  opacity: 0.55;
+}
+
+.glyph {
+  fill: none;
+  stroke: #1d4a17;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.dot {
+  fill: #1d4a17;
+}
+
+.lotus {
+  fill: #fbf8ef;
+  stroke: rgba(29, 74, 23, 0.25);
+  stroke-width: 1;
+  filter: drop-shadow(0 6px 10px rgba(29, 74, 23, 0.12));
+}
+
+/* Centre counter: 1 → 36 and the group being drawn */
+.counter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: 17%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #1d4a17;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.55), 0 10px 22px rgba(29, 74, 23, 0.25);
+  line-height: 1;
+}
+.counter strong {
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--s, 10px) * 2.1);
+}
+.counter span {
+  margin-top: 3px;
+  font-size: clamp(7px, calc(var(--s, 10px) * 0.55), 10px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c3d6a8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin { animation: none; }
+}

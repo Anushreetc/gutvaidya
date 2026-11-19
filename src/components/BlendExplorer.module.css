@@ -1,4 +1,4 @@
-/* One screen tall (below the 53px navbar); everything scales with --s,
+/* One screen tall (below the navbar); everything scales with --s,
    the smaller of 1% of the width and ~1.75% of the height. */
 .section {
   --green: #1d4a17;
@@ -7,13 +7,22 @@
   --card: #a9c48c;
   --s: min(1vw, 1.75vh);
   position: relative;
-  height: calc(100svh - 53px);
+  /* Scroll runway: the pinned screen below stays put while the visitor
+     scrolls through ~4 extra screens, which move the pouch along the path. */
+  height: calc((100svh - var(--nav-h)) * 5);
+  background: #edf2e2;
+  color: var(--green);
+}
+
+/* The visible screen, pinned under the navbar while the section scrolls */
+.pin {
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100svh - var(--nav-h));
   min-height: 600px;
   display: flex;
   flex-direction: column;
   padding: calc(var(--s) * 3) 4% calc(var(--s) * 2);
-  background: #edf2e2;
-  color: var(--green);
   overflow: hidden;
 }
 
@@ -220,9 +229,10 @@
 
 /* ── Phone ── */
 @media (max-width: 760px) {
-  .section { --s: 3vw; height: auto; min-height: calc(100svh - 53px); padding: 60px 4% 40px; }
+  .section { --s: 3vw; }
+  .pin { padding: 24px 4% 24px; min-height: 0; }
   .h2 { font-size: 40px; }
-  .stage { height: 560px; flex: none; }
+  .stage { flex: 1; min-height: 0; }
   .cardSlot { width: 92%; left: 50% !important; }
   .bigNum { font-size: 64px; right: 0; top: -40px; }
   .cardTitle { font-size: 24px; }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Bean, ShieldCheck, Sprout, Wheat } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import styles from "./ReferenceLanding.module.css";
 import BlendExplorer from "./BlendExplorer";
@@ -209,10 +210,10 @@ export default function ReferenceLanding() {
             </p>
 
             <div className={styles.nutritionPills}>
-              <span className={styles.nutritionPill}>🌾 36+ Ancient Ingredients</span>
-              <span className={styles.nutritionPill}>💪 22g Plant Protein / 100g</span>
-              <span className={styles.nutritionPill}>🌱 Rich In Prebiotic Fiber</span>
-              <span className={styles.nutritionPill}>🍃 100% Preservative Free</span>
+              <span className={styles.nutritionPill}><Wheat size={15} strokeWidth={1.9} aria-hidden="true" /> 36+ Ancient Ingredients</span>
+              <span className={styles.nutritionPill}><Bean size={15} strokeWidth={1.9} aria-hidden="true" /> 22g Plant Protein / 100g</span>
+              <span className={styles.nutritionPill}><Sprout size={15} strokeWidth={1.9} aria-hidden="true" /> Rich In Prebiotic Fiber</span>
+              <span className={styles.nutritionPill}><ShieldCheck size={15} strokeWidth={1.9} aria-hidden="true" /> 100% Preservative Free</span>
             </div>
 
             <div className={styles.buttonGroup} style={{ justifyContent: "flex-start" }}>
@@ -224,14 +225,6 @@ export default function ReferenceLanding() {
               >
                 {product.stock_quantity <= 0 ? "Out of Stock" : `Add to Cart · ₹${product.price}`} <span>↗</span>
               </button>
-              <a
-                className={styles.secondaryButton}
-                href="/cinematic/pouch-back.jpeg"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Inspect Pack Details ↗
-              </a>
             </div>
           </div>
         </div>
@@ -326,8 +319,9 @@ export default function ReferenceLanding() {
                 type="button"
                 className={styles.primaryButton}
                 onClick={handleAddToCart}
+                disabled={product.stock_quantity <= 0}
               >
-                Order Your Pouch Now · ₹799 <span>↗</span>
+                {product.stock_quantity <= 0 ? "Out of Stock" : `Order Your Pouch Now · ₹${product.price}`} <span>↗</span>
               </button>
             </div>
           </div>

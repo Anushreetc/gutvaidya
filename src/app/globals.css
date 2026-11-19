@@ -35,6 +35,8 @@
 }
 
 :root {
+  /* Header height, shared by the navbar and the full-screen hero/blend */
+  --nav-h: 68px;
   --background: #edf2e2;
   --foreground: #17300f;
   --primary: #2f5a1f;
@@ -67,7 +69,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  scroll-padding-top: calc(var(--nav-h) + 12px);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -179,4 +181,8 @@ input[type="button"] {
     0 0 14px rgba(248, 245, 236, 0.9),
     0 0 28px rgba(248, 245, 236, 0.8),
     0 1px 3px rgba(248, 245, 236, 0.9);
+}
+
+@media (max-width: 640px) {
+  :root { --nav-h: 60px; }
 }

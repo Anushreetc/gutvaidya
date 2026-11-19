@@ -2,7 +2,7 @@
   background: #f3f8ef;
   color: #2f3c26;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip; /* clip (not hidden) so the pinned blend section can stay sticky */
   --gold: #8aad71;
   --gold-dark: #618547;
   --caramel: #648a48;
@@ -228,6 +228,9 @@
 }
 
 .nutritionPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   background: #deebd5;
   border: 1px solid #c4d4b8;
   padding: 8px 14px;
@@ -236,6 +239,7 @@
   color: #3d512e;
   font-weight: 500;
 }
+.nutritionPill svg { color: #1d4a17; flex: none; }
 
 /* =========================================
    3 SIMPLE STEPS
