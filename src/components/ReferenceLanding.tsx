@@ -183,12 +183,43 @@ export default function ReferenceLanding() {
     <div className={styles.landing}>
       {/* 1. HERO SECTION */}
       <section ref={heroRef} className={styles.hero}>
-        <motion.div
-          className={styles.heroContent}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        {/* Hero Bowl & Floating Badges (Background Stage behind letters) */}
+        <div className={styles.heroBowlContainer}>
+          <div className={styles.glowRing} />
+
+          <motion.div
+            className={styles.bowlWrapper}
+            style={{ rotate: bowlRotate, scale: bowlScale, y: bowlY }}
+          >
+            <img
+              src="/cinematic/hero-bowl.jpg"
+              alt="Scalloped glass bowl with GutVaidya diet powder"
+              className={styles.bowlImage}
+              width={500}
+              height={500}
+            />
+          </motion.div>
+
+          {/* Badges floating around bowl */}
+          <div className={`${styles.badge} ${styles.badgeTopLeft}`}>
+            <span className={styles.badgeIcon}>🌿</span> 100% Natural & Organic
+          </div>
+
+          <div className={`${styles.badge} ${styles.badgeTopRight}`}>
+            <span className={styles.badgeIcon}>💪</span> High Fiber & Protein
+          </div>
+
+          <div className={`${styles.badge} ${styles.badgeBottomLeft}`}>
+            <span className={styles.badgeIcon}>🌾</span> Sprouted Ragi & Millets
+          </div>
+
+          <div className={`${styles.badge} ${styles.badgeBottomRight}`}>
+            <span className={styles.badgeIcon}>✨</span> Zero Added Sugar
+          </div>
+        </div>
+
+        {/* Foreground Hero Headline & Actions */}
+        <div className={styles.heroContent}>
           <span className={styles.eyebrow}>Everyday Nutrition · A Blend of 36+ Millets & Herbs</span>
           <h1>
             A little tradition.<br />
@@ -206,63 +237,6 @@ export default function ReferenceLanding() {
               How to Prepare ↓
             </a>
           </div>
-        </motion.div>
-
-        {/* Hero Bowl & Floating Badges */}
-        <div className={styles.heroBowlContainer}>
-          <div className={styles.glowRing} />
-
-          <motion.div
-            className={styles.bowlWrapper}
-            style={{ rotate: bowlRotate, scale: bowlScale, y: bowlY }}
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <img
-              src="/cinematic/hero-bowl.jpg"
-              alt="Scalloped glass bowl with GutVaidya diet powder"
-              className={styles.bowlImage}
-              width={500}
-              height={500}
-            />
-          </motion.div>
-
-          {/* Badges floating around bowl */}
-          <motion.div
-            className={`${styles.badge} ${styles.badgeTopLeft}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>🌿</span> 100% Natural & Organic
-          </motion.div>
-
-          <motion.div
-            className={`${styles.badge} ${styles.badgeTopRight}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>💪</span> High Fiber & Protein
-          </motion.div>
-
-          <motion.div
-            className={`${styles.badge} ${styles.badgeBottomLeft}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>🌾</span> Sprouted Ragi & Millets
-          </motion.div>
-
-          <motion.div
-            className={`${styles.badge} ${styles.badgeBottomRight}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-          >
-            <span className={styles.badgeIcon}>✨</span> Zero Added Sugar
-          </motion.div>
         </div>
 
         <a className={styles.scrollHint} href="#product-spotlight">
