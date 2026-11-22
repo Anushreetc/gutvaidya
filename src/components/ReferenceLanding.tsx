@@ -181,62 +181,86 @@ export default function ReferenceLanding() {
 
   return (
     <div className={styles.landing}>
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO SECTION (Side-by-Side: Wordings on Left, Bowl on Right) */}
       <section ref={heroRef} className={styles.hero}>
-        {/* Hero Bowl & Floating Badges (Background Stage behind letters) */}
-        <div className={styles.heroBowlContainer}>
-          <div className={styles.glowRing} />
-
+        <div className={styles.heroGrid}>
+          {/* Left: Wordings & Action Buttons */}
           <motion.div
-            className={styles.bowlWrapper}
-            style={{ rotate: bowlRotate, scale: bowlScale, y: bowlY }}
+            className={styles.heroContent}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <img
-              src="/cinematic/hero-bowl.jpg"
-              alt="Scalloped glass bowl with GutVaidya diet powder"
-              className={styles.bowlImage}
-              width={500}
-              height={500}
-            />
+            <span className={styles.eyebrow}>Everyday Nutrition · A Blend of 36+ Millets & Herbs</span>
+            <h1>
+              A little tradition.<br />
+              A <em>wholesome</em> new beginning.
+            </h1>
+            <p className={styles.heroSubtitle}>
+              Rediscover the power of ancient sprouted millets, native seeds, and Ayurvedic herbs in your daily diet powder ritual.
+            </p>
+
+            <div className={styles.buttonGroup}>
+              <Link className={styles.primaryButton} href="/products/gutvaidya-health-mix">
+                Discover Diet Powder <span>↗</span>
+              </Link>
+              <a className={styles.secondaryButton} href="#preparation">
+                How to Prepare ↓
+              </a>
+            </div>
+
+            <div className={styles.heroTrust}>
+              <span className={styles.heroTrustItem}>
+                <span aria-hidden="true">🌾</span> 36+ Ingredients
+              </span>
+              <span className={styles.heroTrustItem}>
+                <span aria-hidden="true">🪔</span> Stone Milled
+              </span>
+              <span className={styles.heroTrustItem}>
+                <span aria-hidden="true">🚫</span> No Preservatives
+              </span>
+            </div>
           </motion.div>
 
-          {/* Badges floating around bowl */}
-          <div className={`${styles.badge} ${styles.badgeTopLeft}`}>
-            <span className={styles.badgeIcon}>🌿</span> 100% Natural & Organic
-          </div>
+          {/* Right: Powder Bowl & Floating Badges */}
+          <motion.div
+            className={styles.heroBowlContainer}
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          >
+            <div className={styles.glowRing} />
 
-          <div className={`${styles.badge} ${styles.badgeTopRight}`}>
-            <span className={styles.badgeIcon}>💪</span> High Fiber & Protein
-          </div>
+            <motion.div
+              className={styles.bowlWrapper}
+              style={{ rotate: bowlRotate, scale: bowlScale, y: bowlY }}
+            >
+              <img
+                src="/cinematic/hero-bowl.jpg"
+                alt="Scalloped glass bowl with GutVaidya diet powder"
+                className={styles.bowlImage}
+                width={500}
+                height={500}
+              />
+            </motion.div>
 
-          <div className={`${styles.badge} ${styles.badgeBottomLeft}`}>
-            <span className={styles.badgeIcon}>🌾</span> Sprouted Ragi & Millets
-          </div>
+            {/* Badges floating around bowl */}
+            <div className={`${styles.badge} ${styles.badgeTopLeft}`}>
+              <span className={styles.badgeIcon}>🌿</span> 100% Natural & Organic
+            </div>
 
-          <div className={`${styles.badge} ${styles.badgeBottomRight}`}>
-            <span className={styles.badgeIcon}>✨</span> Zero Added Sugar
-          </div>
-        </div>
+            <div className={`${styles.badge} ${styles.badgeTopRight}`}>
+              <span className={styles.badgeIcon}>💪</span> High Fiber & Protein
+            </div>
 
-        {/* Foreground Hero Headline & Actions */}
-        <div className={styles.heroContent}>
-          <span className={styles.eyebrow}>Everyday Nutrition · A Blend of 36+ Millets & Herbs</span>
-          <h1>
-            A little tradition.<br />
-            A <em>wholesome</em> new beginning.
-          </h1>
-          <p className={styles.heroSubtitle}>
-            Rediscover the power of ancient sprouted millets, native seeds, and Ayurvedic herbs in your daily diet powder ritual.
-          </p>
+            <div className={`${styles.badge} ${styles.badgeBottomLeft}`}>
+              <span className={styles.badgeIcon}>🌾</span> Sprouted Ragi & Millets
+            </div>
 
-          <div className={styles.buttonGroup}>
-            <Link className={styles.primaryButton} href="/products/gutvaidya-health-mix">
-              Discover Diet Powder <span>↗</span>
-            </Link>
-            <a className={styles.secondaryButton} href="#preparation">
-              How to Prepare ↓
-            </a>
-          </div>
+            <div className={`${styles.badge} ${styles.badgeBottomRight}`}>
+              <span className={styles.badgeIcon}>✨</span> Zero Added Sugar
+            </div>
+          </motion.div>
         </div>
 
         <a className={styles.scrollHint} href="#product-spotlight">

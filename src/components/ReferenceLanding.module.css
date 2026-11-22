@@ -13,48 +13,90 @@
 }
 
 /* =========================================
-   HERO SECTION
+   HERO SECTION (Split: Left Words, Right Bowl)
 ========================================= */
 .hero {
   min-height: calc(100vh - 60px);
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 6% 80px;
-  background: radial-gradient(circle at 50% 45%, #f7edd7 0%, #faf7ed 65%);
-  text-align: center;
+  padding: 70px 6% 90px;
+  background:
+    radial-gradient(circle at 70% 46%, #f8eed8 0%, rgba(250, 247, 237, 0) 62%),
+    radial-gradient(circle at 8% 90%, #f4ead3 0%, rgba(250, 247, 237, 0) 45%),
+    #faf7ed;
   overflow: hidden;
+}
+
+/* Soft vignette so the split never looks flat */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0) 55%, rgba(189, 163, 117, 0.12) 100%);
+  z-index: 0;
+}
+
+.heroGrid {
+  width: 100%;
+  max-width: 1240px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: clamp(28px, 5vw, 70px);
+  position: relative;
+  z-index: 2;
+}
+
+.heroGrid > * {
+  min-width: 0;
 }
 
 .heroContent {
   width: 100%;
-  max-width: 840px;
+  max-width: 580px;
   position: relative;
   z-index: 3;
-  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  min-width: 0;
 }
 
 .eyebrow {
   font-size: 11px;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #a47a32;
   font-weight: 600;
-  display: inline-block;
-  margin-bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  flex: none;
+  background: linear-gradient(90deg, rgba(191, 161, 95, 0), #bfa15f);
 }
 
 .hero h1 {
-  font-size: clamp(38px, 5.5vw, 76px);
+  font-size: clamp(36px, 4.4vw, 60px);
   font-weight: 500;
-  line-height: 1.1;
+  line-height: 1.12;
   color: #24180d;
   font-family: var(--font-playfair), Georgia, serif;
-  margin: 0 0 18px;
-  letter-spacing: -0.03em;
-  text-shadow: 0 0 35px rgba(250, 246, 238, 0.98), 0 2px 12px rgba(250, 246, 238, 0.98);
+  margin: 0 0 20px;
+  letter-spacing: -0.022em;
+  text-align: left;
 }
 
 .hero h1 em {
@@ -63,19 +105,19 @@
 }
 
 .heroSubtitle {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #3a2711;
-  font-weight: 500;
-  max-width: 580px;
-  margin: 0 auto 28px;
-  text-shadow: 0 0 25px rgba(250, 246, 238, 0.98), 0 1px 6px rgba(250, 246, 238, 0.98);
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: #574026;
+  font-weight: 400;
+  max-width: 480px;
+  margin: 0 0 32px;
+  text-align: left;
 }
 
 .buttonGroup {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
   flex-wrap: wrap;
 }
@@ -127,29 +169,73 @@
   color: #4a3417;
 }
 
-/* Bowl Stage (Centered directly behind the hero text) */
+/* Small trust strip under the buttons */
+.heroTrust {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(166, 124, 46, 0.18);
+  width: 100%;
+  max-width: 480px;
+}
+
+.heroTrustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #8a7149;
+}
+
+.heroTrustItem span {
+  font-size: 14px;
+}
+
+/* Bowl Stage (Right Side) */
 .heroBowlContainer {
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(680px, 92vw);
+  position: relative;
+  width: min(540px, 100%);
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
+  margin: 0 0 0 auto;
+  min-width: 0;
   z-index: 1;
-  pointer-events: none;
+}
+
+/* Thin ornamental rings framing the bowl */
+.heroBowlContainer::before {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  border: 1px solid rgba(166, 124, 46, 0.18);
+  z-index: 0;
+}
+
+.heroBowlContainer::after {
+  content: "";
+  position: absolute;
+  inset: -4%;
+  border-radius: 50%;
+  border: 1px dashed rgba(166, 124, 46, 0.12);
+  z-index: 0;
 }
 
 .glowRing {
   position: absolute;
-  width: 95%;
-  height: 95%;
+  width: 92%;
+  height: 92%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(230, 206, 161, 0.75) 0%, rgba(247, 237, 215, 0.25) 55%, rgba(247, 237, 215, 0) 75%);
-  filter: blur(40px);
+  background: radial-gradient(circle, rgba(230, 206, 161, 0.8) 0%, rgba(247, 237, 215, 0.3) 55%, rgba(247, 237, 215, 0) 75%);
+  filter: blur(35px);
   z-index: 1;
   animation: pulseGlow 6s ease-in-out infinite alternate;
 }
@@ -170,45 +256,57 @@
 }
 
 .bowlImage {
-  width: 88%;
-  height: 88%;
+  width: 90%;
+  height: 90%;
   object-fit: contain;
   mix-blend-mode: multiply;
-  opacity: 0.85;
-  filter: drop-shadow(0 20px 40px rgba(97, 68, 32, 0.2));
+  opacity: 0.97;
+  filter: drop-shadow(0 24px 45px rgba(97, 68, 32, 0.22));
   -webkit-mask-image: radial-gradient(circle, black 58%, transparent 72%);
   mask-image: radial-gradient(circle, black 58%, transparent 72%);
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Floating Badges */
+/* Floating Badges around the bowl */
 .badge {
   position: absolute;
-  z-index: 12;
-  background: rgba(255, 253, 245, 0.95);
-  border: 1px solid #dfd3b5;
-  padding: 8px 18px;
+  z-index: 10;
+  background: rgba(255, 253, 245, 0.96);
+  border: 1px solid #e3d8bd;
+  padding: 9px 16px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #4a341b;
-  box-shadow: 0 10px 25px rgba(116, 88, 48, 0.15);
+  box-shadow: 0 12px 28px rgba(116, 88, 48, 0.14);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   gap: 7px;
   white-space: nowrap;
-  pointer-events: auto;
+  animation: badgeFloat 7s ease-in-out infinite alternate;
 }
 
 .badgeIcon {
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.badgeTopLeft { top: 2%; left: -6%; }
-.badgeTopRight { top: 4%; right: -6%; }
-.badgeBottomLeft { bottom: 2%; left: -6%; }
-.badgeBottomRight { bottom: 0%; right: -6%; }
+@keyframes badgeFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+.badgeTopLeft { top: 4%; left: -9%; animation-delay: 0s; }
+.badgeTopRight { top: 12%; right: -4%; animation-delay: 1.4s; }
+.badgeBottomLeft { bottom: 12%; left: -11%; animation-delay: 2.8s; }
+.badgeBottomRight { bottom: 2%; right: -4%; animation-delay: 4.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .badge,
+  .glowRing {
+    animation: none;
+  }
+}
 
 .scrollHint {
   position: absolute;
@@ -758,6 +856,44 @@
    RESPONSIVE DESIGN
 ========================================= */
 @media (max-width: 992px) {
+  .hero {
+    padding: 56px 6% 80px;
+    background:
+      radial-gradient(circle at 50% 72%, #f8eed8 0%, rgba(250, 247, 237, 0) 58%),
+      #faf7ed;
+  }
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 44px;
+    justify-items: center;
+  }
+  .heroContent {
+    max-width: min(640px, 100%);
+    align-items: center;
+    text-align: center;
+  }
+  .heroTrust {
+    max-width: 100%;
+  }
+  .hero h1,
+  .heroSubtitle {
+    text-align: center;
+  }
+  .heroSubtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .buttonGroup {
+    justify-content: center;
+  }
+  .heroTrust {
+    justify-content: center;
+  }
+  .heroBowlContainer {
+    width: min(440px, 80vw);
+    margin: 0 auto;
+    order: 2;
+  }
   .spotlightGrid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -788,9 +924,12 @@
   .eyebrow {
     font-size: 10px;
     letter-spacing: 0.1em;
-    display: inline-block;
     line-height: 1.4;
     margin-bottom: 12px;
+    gap: 8px;
+  }
+  .eyebrow::before {
+    display: none;
   }
   .hero h1 {
     font-size: clamp(22px, 6vw, 28px);
@@ -817,8 +956,21 @@
     padding: 12px 18px;
   }
   .heroBowlContainer {
-    width: min(320px, 86vw);
-    top: 42%;
+    width: min(320px, 82vw);
+    margin: 0 auto;
+  }
+  .heroBowlContainer::after {
+    display: none;
+  }
+  .heroTrust {
+    margin-top: 24px;
+    padding-top: 18px;
+    gap: 8px 16px;
+    justify-content: center;
+  }
+  .heroTrustItem {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
   }
   .badge {
     display: none;
