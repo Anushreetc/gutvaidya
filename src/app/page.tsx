@@ -4,7 +4,6 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import ReferenceLanding from "../components/ReferenceLanding";
 import ProofBand from "../components/ProofBand";
-import ComparisonSection from "../components/ComparisonSection";
 import RecipesSection from "../components/RecipesSection";
 import ReviewsSection from "../components/ReviewsSection";
 import BlogsSection from "../components/BlogsSection";
@@ -25,9 +24,6 @@ export default function Home() {
 
         {/* Rating, ingredient icons and headline numbers */}
         <ProofBand />
-
-        {/* A shelf of ingredients vs one pouch, plus trust badges */}
-        <ComparisonSection />
 
         {/* Recipes Tabs Showcase */}
         <RecipesSection />
