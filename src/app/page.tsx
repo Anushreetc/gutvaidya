@@ -20,7 +20,7 @@ export default function Home() {
 
       {/* Core Main content */}
       <main className="flex-grow">
-        {/* Cinematic product and ingredient journey (Hero, Product Spotlight at ₹799, Preparation, Blend, Benefits, Manufacturing) */}
+        {/* Cinematic product and ingredient journey (Hero, Product Spotlight at ₹899, Preparation, Blend, Benefits, Manufacturing) */}
         <ReferenceLanding />
 
         {/* Rating, ingredient icons and headline numbers */}

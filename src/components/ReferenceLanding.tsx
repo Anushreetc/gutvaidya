@@ -343,14 +343,6 @@ export default function ReferenceLanding() {
               >
                 {product.stock_quantity <= 0 ? "Out of Stock" : `Add to Cart · ₹${product.price}`} <span>↗</span>
               </button>
-              <a
-                className={styles.secondaryButton}
-                href="/cinematic/pouch-back.jpeg"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Inspect Pack Details ↗
-              </a>
             </div>
           </div>
         </div>
@@ -491,7 +483,7 @@ export default function ReferenceLanding() {
                 className={styles.primaryButton}
                 onClick={handleAddToCart}
               >
-                Order Your Pouch Now · ₹799 <span>↗</span>
+                Order Your Pouch Now · ₹{product.price || 899} <span>↗</span>
               </button>
             </div>
           </div>
