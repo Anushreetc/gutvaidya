@@ -105,19 +105,6 @@ export default function Navbar() {
 
             {/* Right-side actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
-              {/* Admin Dashboard Pill (Visible for Admins) */}
-              {isAdmin && (
-                <Link
-                  href="/admin"
-                  className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-900 font-sans text-[11px] sm:text-xs font-bold transition-all shadow-sm"
-                  title="Open Admin Dashboard"
-                >
-                  <ShieldCheck className="h-3.5 w-3.5 text-amber-700 flex-shrink-0" />
-                  <span className="hidden xs:inline">Admin</span>
-                  <span className="hidden sm:inline">Dashboard</span>
-                </Link>
-              )}
-
               {/* Account button */}
               <Link
                 href={user ? "/account" : "/auth/login"}
